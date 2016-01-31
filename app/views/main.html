@@ -1,35 +1,215 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+{{graphs=graph_result.results;""}}
+{{infections=infection_result.results;""}}
+
+
+<div class="col-md-4">
+<!-- Graph -->
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Graph : {{ currentIndex }}</h3>
+	</div>
+    <div class="panel-body">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#new_graph" aria-controls="new_graph" role="tab" data-toggle="tab">Nouveau</a></li>
+            <li role="presentation"><a href="#existing_graph" aria-controls="existing_graph" role="tab" data-toggle="tab">Existant</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="new_graph">
+
+
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                            <form class="form-horizontal" method="post" action="/graph/import/" enctype="multipart/form-data">
+                                <!--{% csrf_token %}-->
+                                <input type="file" name="import_graph" accept="application/*"/>
+                                <button class="btn btn-default" type="submit">OK</button>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                            <form class="form-horizontal" method="post" action="/graph/generate/">
+                                <!--{% csrf_token %}-->
+                                <select class="form-control" name="generate_method" onchange="console.log(this.selectedIndex);">
+                                    <option value="1">Complete graph</option>
+                                    <option value="2">Cycle graph</option>
+                                    <option value="3">Circular ladder graph</option>
+                                    <option value="4">Dorogovtsev_goltsev_mendes graph</option>
+                                    <option value="5">Empty graph</option>
+                                    <option value="6">Hypercube graph</option>
+                                    <option value="7">Ladder graph</option>
+                                    <option value="8">Path graph</option>
+                                    <option value="9">Star graph</option>
+                                    <option value="10">Wheel graph</option>
+                                </select>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="sizing-addon">Valeur de n</span>
+                                    <input id="generate_n" name="generate_n" type="number" class="form-control" placeholder="10" aria-describedby="sizing-addon"/>
+                                </div>
+                                <input type="hidden" name="request" value="new_graph"/>
+                                <button class="btn btn-default" type="submit">OK</button>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Créer
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                Coming soon !
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="existing_graph">
+            <form class="form-horizontal" method="post" action="/graph/">
+                <!-- {% csrf_token %} -->
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Graph</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="graph_id" ng-if="graphs !== []">
+                            <option ng-repeat="graph in graphs" ng-if="graph.id==currentIndex" selected="selected" value="{{ graph.id }}">{{ graph.name }}</option>
+                            <option ng-repeat="graph in graphs" ng-if="graph.id !== currentIndex" value="{{ graph.id }}">{{ graph.name }}</option>
+                        </select>
+                        <p ng-if="graphs == []">No graphs are available.</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <input type="hidden" name="request" value="existing_graph"/>
+                        <button type="submit" class="btn btn-default">Select</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    <div class="text-center">
+    <form class="form-horizontal" method="post" action="/graph/export/graph/">
+        <!--{% csrf_token %}-->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Export Graph (JSON)</button>
+        </div>
+    </form>
+    </div>
+
+</div>
 </div>
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
-
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+<!-- Infection -->
+<div class="panel panel-default">
+	<div class="panel-heading"><h3 class="panel-title">Infection {{currentInfectionIndex}} for graph {{currentIndex}}</h3></div>
+	<div class="panel-body">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#new_infection" aria-controls="new_infection" role="tab" data-toggle="tab">Nouveau</a></li>
+			<li role="presentation"><a href="#existing_infection" aria-controls="existing_infection" role="tab" data-toggle="tab">Existant</a></li>
+		</ul>
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="new_infection">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOneInfection">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneInfection" aria-expanded="true" aria-controls="collapseOneInfection"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer</a>
+							</h4>
+						</div>
+						<div id="collapseOneInfection" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneInfection">
+							<div class="panel-body">
+							<form class="form-horizontal" method="post" action="/graph/import/infection" enctype="multipart/form-data">
+								<!--{% csrf_token %}-->
+								<input type="file" name="import_infection" accept="application/*"/>
+								<button class="btn btn-default" type="submit">OK</button>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="existing_infection">
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label">Infection</label>
+					<div class="col-sm-10">
+						<select class="form-control" name="infection_id" ng-if="infections !== []">
+							<option ng-repeat="infection in infections" ng-if="infection.id == currentInfectionIndex" selected="selected" value="{{ forloop.counter }}">{{ infection.name }}</option>
+							<option ng-repeat="infection in infections" ng-if="infection.id !== currentInfectionIndex" value="{{ forloop.counter }}">{{ infection.name }}</option>
+						</select>
+						<p ng-if="infections == []">No infection graphs are available.</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<input type="hidden" name="request" value="infection"/>
+						<button type="submit" class="btn btn-default">Select</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Export infection -->
+		<div class="text-center">
+			<form class="form-horizontal" method="post" action="/graph/export/infection/">
+				<!--{% csrf_token %}-->
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+						Export Infection (JSON)
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
-<div>
-    Graphs : {{ graphs }}
-    {{hello}}
+<!-- Algorithm -->
+<div class="panel panel-default">
+	<div class="panel-heading"><h3 class="panel-title">Choose Algorithm</h3></div>
+	<div class="panel-body">
+		<div class="text-center">
+			<form class="form-horizontal" method="post" action="/graph/import/algorithm/" enctype="multipart/form-data">
+				<!--{% csrf_token %}-->
+				<div class="form-actions">
+					<input type="file" name="import_algorithm" accept="application/*"/>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+						Import Algorithm (*.py)
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
 
-    <ul>
-        <li>Hi</li>
-        <li ng-repeat="graph in graphs.results">
-            {{ graph.name }}
-        </li>
-    </ul>
+<!-- Canvas with graph drawing -->
+<div class="col-md-7" id="canvas">
+    <div graph></div>
+</div>
+
 </div>

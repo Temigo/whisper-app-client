@@ -54,4 +54,8 @@ Just add the following statement during module instantiation:
   .factory('Graph', function($resource) {
       var urlBase = 'http://127.0.0.1:8000/graph/graphs/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+  })
+  .factory('Infection', function($resource) {
+      var urlBase = 'http://127.0.0.1:8000/graph/infections/';
+      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   });
