@@ -11,7 +11,8 @@ angular.module('whisperApp')
     .controller('MainCtrl', ['$scope', 'Graph', 'Infection', function ($scope, Graph, Infection) {
       //$scope.graphResult = Graph.query();
       Graph.query(function(data) {
-          $scope.graphResult = data.results[0].data;
+          $scope.graphList = data.results;
+          $scope.currentGraph = data.results[0].data;
           //$scope.graph = $scope.graphResult[0].data;
       });
 

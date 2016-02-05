@@ -1,7 +1,3 @@
-{{graphs=graphResult.results;""}}
-{{infections=infectionResult.results;""}}
-
-
 <div class="col-md-4">
 <!-- Graph -->
 <div class="panel panel-default">
@@ -94,11 +90,11 @@
                 <div class="form-group">
                     <label for="" class="col-sm-2 control-label">Graph</label>
                     <div class="col-sm-10">
-                        <select class="form-control" name="graph_id" ng-if="graphs !== []">
-                            <option ng-repeat="graph in graphs" ng-if="graph.id==currentIndex" selected="selected" value="{{ graph.id }}">{{ graph.name }}</option>
-                            <option ng-repeat="graph in graphs" ng-if="graph.id !== currentIndex" value="{{ graph.id }}">{{ graph.name }}</option>
+                        <select class="form-control" name="graph_id" ng-if="graphList !== []">
+                            <option ng-repeat="graph in graphList" ng-if="graph.id==currentIndex" selected="selected" value="{{ graph.id }}">{{ graph.name }}</option>
+                            <option ng-repeat="graph in graphList" ng-if="graph.id !== currentIndex" value="{{ graph.id }}">{{ graph.name }}</option>
                         </select>
-                        <p ng-if="graphs == []">No graphs are available.</p>
+                        <p ng-if="graphList == []">No graphs are available.</p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -209,7 +205,7 @@
 
 <!-- Canvas with graph drawing -->
 <div class="col-md-7" id="canvas">
-    <d3graph graph-data="graphResult"></d3graph>
+    <d3graph graph-data="currentGraph"></d3graph>
 </div>
 
 </div>
