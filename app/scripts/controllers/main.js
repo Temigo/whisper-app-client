@@ -10,19 +10,37 @@
 angular.module('whisperApp')
     .controller('MainCtrl', ['$scope', 'Graph', 'Infection', function ($scope, Graph, Infection) {
       //$scope.graphResult = Graph.query();
+      $scope.currentIndex = 0;
+      $scope.graphList = [];
+      $scope.currentGraph = null;
+
       Graph.query(function(data) {
           $scope.graphList = data.results;
-          $scope.currentGraph = data.results[0].data;
+          $scope.currentGraph = data.results[$scope.currentIndex].data;
           //$scope.graph = $scope.graphResult[0].data;
+          console.log($scope.graphList);
       });
 
-      $scope.currentIndex = 1;
+      /*$scope.watch('currentIndex', function(newVal, oldVal) {
+         if (newVal !== oldVal) {
+             //if (graphList !== []) {
+             $scope.currentGraph = $scope.graphList[newVal].data;
+            //}
+         }
+     });*/
 
       Infection.query(function(data) {
           $scope.infectionResult = data;
       });
 
       $scope.currentInfectionIndex = 1;
+
+      $scope.parseInt = function(number) {
+        return parseInt(number, 10);
+    };
+    $scope.setCurrentIndex = function(index) {
+        $scope.currentGraph = $scope.graphList[index].data;
+    };
   }])
     .directive('d3graph', ['d3Service', function(d3Service) {
         //Constants for the SVG
@@ -54,7 +72,6 @@ angular.module('whisperApp')
                 if (!newData) { // || newData === oldData
                     return;
                 }
-                //else {
                     // TODO scope.currentIndex
                     var currentGraph = angular.fromJson(newData);
                     //Read the data from the mis element
@@ -121,11 +138,18 @@ angular.module('whisperApp')
                                 return d.y;
                             });
                         });
-
-                //}
-            });
-        //});//
-          });
-      }
-      };
+                        // End force tick
+                    }); // scope watch
+                }); // d3Service.then
+            } // link
+        }; // return
+  }])
+  .controller('existingGraphCtrl', ['$scope', function($scope) {
+      $scope.watch('currentIndex', function(newVal, oldVal) {
+         if (newVal !== oldVal) {
+             //if (graphList !== []) {
+             $scope.currentGraph = $scope.graphList[newVal].data;
+            //}
+         }
+     });
   }]);
