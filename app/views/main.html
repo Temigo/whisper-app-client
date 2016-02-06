@@ -5,99 +5,86 @@
 		<h3 class="panel-title">Graph : {{ currentIndex }}</h3>
 	</div>
     <div class="panel-body">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#new_graph" aria-controls="new_graph" role="tab" data-toggle="tab">Nouveau</a></li>
-            <li role="presentation"><a href="#existing_graph" aria-controls="existing_graph" role="tab" data-toggle="tab">Existant</a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="new_graph">
-
-
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
+		<uib-tabset>
+			<uib-tab>
+				<uib-tab-heading>
+					Nouveau
+				</uib-tab-heading>
+				<uib-accordion close-others="oneAtATime">
+					<uib-accordion-group is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+						<uib-accordion-heading>
+							<h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer
                                 </a>
                             </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                            <form class="form-horizontal" method="post" action="/graph/import/" enctype="multipart/form-data">
-                                <!--{% csrf_token %}-->
-                                <input type="file" name="import_graph" accept="application/*"/>
-                                <button class="btn btn-default" type="submit">OK</button>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
+							<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+						</uib-accordion-heading>
+						<form class="form-horizontal" method="post" action="/graph/import/" enctype="multipart/form-data">
+							<!--{% csrf_token %}-->
+							<input type="file" name="import_graph" accept="application/*"/>
+							<button class="btn btn-default" type="submit">OK</button>
+						</form>
+					</uib-accordion-group>
+					<uib-accordion-group>
+						<uib-accordion-heading>
+							<h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
                                 </a>
                             </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-                            <form class="form-horizontal" ng-submit="generateGraph(generationMethod, generateN)">
-                                <!--{% csrf_token %}-->
-                                <select class="form-control" name="generate_method" ng-model="generationMethod">
-                                    <option value="1">Complete graph</option>
-                                    <option value="2">Cycle graph</option>
-                                    <option value="3">Circular ladder graph</option>
-                                    <option value="4">Dorogovtsev_goltsev_mendes graph</option>
-                                    <option value="5">Empty graph</option>
-                                    <option value="6">Hypercube graph</option>
-                                    <option value="7">Ladder graph</option>
-                                    <option value="8">Path graph</option>
-                                    <option value="9">Star graph</option>
-                                    <option value="10">Wheel graph</option>
-                                </select>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon">Valeur de n</span>
-                                    <input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>
-                                </div>
-                                <input type="hidden" name="request" value="new_graph"/>
-                                <button class="btn btn-default" type="submit">OK</button>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingThree">
-                            <h4 class="panel-title">
+						</uib-accordion-heading>
+						<form class="form-horizontal" ng-submit="generateGraph(generationMethod, generateN)">
+							<!--{% csrf_token %}-->
+							<select class="form-control" name="generate_method" ng-model="generationMethod">
+								<option value="1">Complete graph</option>
+								<option value="2">Cycle graph</option>
+								<option value="3">Circular ladder graph</option>
+								<option value="4">Dorogovtsev_goltsev_mendes graph</option>
+								<option value="5">Empty graph</option>
+								<option value="6">Hypercube graph</option>
+								<option value="7">Ladder graph</option>
+								<option value="8">Path graph</option>
+								<option value="9">Star graph</option>
+								<option value="10">Wheel graph</option>
+							</select>
+							<div class="input-group">
+								<span class="input-group-addon" id="sizing-addon">Valeur de n</span>
+								<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>
+							</div>
+							<input type="hidden" name="request" value="new_graph"/>
+							<button class="btn btn-default" type="submit">OK</button>
+						</form>
+					</uib-accordion-group>
+					<uib-accordion-group>
+						<uib-accordion-heading>
+							<h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Créer
                                 </a>
                             </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                            <div class="panel-body">
-                                Coming soon !
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="existing_graph">
-            <form class="form-horizontal">
-                <!-- {% csrf_token %} -->
-                <div class="form-group">
-                    <label for="graph_id" class="col-sm-2 control-label">Graph</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" name="graph_id" ng-model="currentIndex" ng-options="parseInt(index) as graph.name for (index, graph) in graphList" ng-change="setCurrentIndex(currentIndex)">
-                            <!--<option value="">Choisir</option>-->
-                        </select>
-                        <p ng-if="graphList === []">No graphs are available.</p>
-                    </div>
-                </div>
-            </form>
-            </div>
+						</uib-accordion-heading>
+                        Coming soon !
+					</uib-accordion-group>
+			</uib-tab>
+			<uib-tab>
+				<uib-tab-heading>
+					Existant
+				</uib-tab-heading>
+				<form class="form-horizontal">
+	                <!-- {% csrf_token %} -->
+	                <div class="form-group">
+	                    <label for="graph_id" class="col-sm-2 control-label">Graph</label>
+	                    <div class="col-sm-10">
+	                        <select class="form-control" name="graph_id" ng-model="currentIndex" ng-options="parseInt(index) as graph.name for (index, graph) in graphList" ng-change="setCurrentIndex(currentIndex)">
+	                            <!--<option value="">Choisir</option>-->
+	                        </select>
+	                        <p ng-if="graphList === []">No graphs are available.</p>
+	                    </div>
+	                </div>
+	            </form>
+			</uib-tab>
+		</uib-tabset>
         </div>
     <div class="text-center">
     <form class="form-horizontal" method="post" action="/graph/export/graph/">
@@ -109,40 +96,35 @@
     </div>
 
 </div>
-</div>
 
 <!-- Infection -->
 <div class="panel panel-default">
 	<div class="panel-heading"><h3 class="panel-title">Infection {{currentInfectionIndex}} for graph {{currentIndex}}</h3></div>
 	<div class="panel-body">
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active"><a href="#new_infection" aria-controls="new_infection" role="tab" data-toggle="tab">Nouveau</a></li>
-			<li role="presentation"><a href="#existing_infection" aria-controls="existing_infection" role="tab" data-toggle="tab">Existant</a></li>
-		</ul>
-		<!-- Tab panes -->
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="new_infection">
-				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingOneInfection">
+		<uib-tabset>
+			<uib-tab>
+				<uib-tab-heading>
+					Nouveau
+				</uib-tab-heading>
+				<uib-accordion>
+					<uib-accordion-group>
+						<uib-accordion-heading>
 							<h4 class="panel-title">
 								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneInfection" aria-expanded="true" aria-controls="collapseOneInfection"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer</a>
 							</h4>
-						</div>
-						<div id="collapseOneInfection" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneInfection">
-							<div class="panel-body">
-							<form class="form-horizontal" method="post" action="/graph/import/infection" enctype="multipart/form-data">
-								<!--{% csrf_token %}-->
-								<input type="file" name="import_infection" accept="application/*"/>
-								<button class="btn btn-default" type="submit">OK</button>
-							</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="existing_infection">
+						</uib-accordion-heading>
+						<form class="form-horizontal" method="post" action="/graph/import/infection" enctype="multipart/form-data">
+							<!--{% csrf_token %}-->
+							<input type="file" name="import_infection" accept="application/*"/>
+							<button class="btn btn-default" type="submit">OK</button>
+						</form>
+					</uib-accordion-group>
+				</uib-accordion>
+			</uib-tab>
+			<uib-tab>
+				<uib-tab-heading>
+					Existant
+				</uib-tab-heading>
 				<div class="form-group">
 					<label for="" class="col-sm-2 control-label">Infection</label>
 					<div class="col-sm-10">
@@ -159,8 +141,9 @@
 						<button type="submit" class="btn btn-default">Select</button>
 					</div>
 				</div>
-			</div>
-		</div>
+			</uib-tab>
+		</uib-tabset>
+
 		<!-- Export infection -->
 		<div class="text-center">
 			<form class="form-horizontal" method="post" action="/graph/export/infection/">
