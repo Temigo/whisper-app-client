@@ -59,6 +59,10 @@ Just add the following statement during module instantiation:
   .factory('Infection', function($resource) {
       var urlBase = 'http://127.0.0.1:8000/graph/infections/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+  })
+  .factory('GenerateGraph', function($resource) {
+      var urlBase = 'http://127.0.0.1:8000/graph/generate/';
+      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   });
 
   angular.module('d3', [])

@@ -44,9 +44,9 @@
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div class="panel-body">
-                            <form class="form-horizontal" method="post" action="/graph/generate/">
+                            <form class="form-horizontal" ng-submit="generateGraph(generationMethod, generateN)">
                                 <!--{% csrf_token %}-->
-                                <select class="form-control" name="generate_method" onchange="console.log(this.selectedIndex);">
+                                <select class="form-control" name="generate_method" ng-model="generationMethod">
                                     <option value="1">Complete graph</option>
                                     <option value="2">Cycle graph</option>
                                     <option value="3">Circular ladder graph</option>
@@ -60,7 +60,7 @@
                                 </select>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="sizing-addon">Valeur de n</span>
-                                    <input id="generate_n" name="generate_n" type="number" class="form-control" placeholder="10" aria-describedby="sizing-addon"/>
+                                    <input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>
                                 </div>
                                 <input type="hidden" name="request" value="new_graph"/>
                                 <button class="btn btn-default" type="submit">OK</button>

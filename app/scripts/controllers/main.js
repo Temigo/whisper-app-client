@@ -8,7 +8,7 @@
  * Controller of the whisperApp
  */
 angular.module('whisperApp')
-    .controller('MainCtrl', ['$scope', 'Graph', 'Infection', function ($scope, Graph, Infection) {
+    .controller('MainCtrl', ['$scope', 'Graph', 'Infection', 'GenerateGraph', function ($scope, Graph, Infection, GenerateGraph) {
       //$scope.graphResult = Graph.query();
       $scope.currentIndex = 0;
       $scope.graphList = [];
@@ -40,6 +40,12 @@ angular.module('whisperApp')
     };
     $scope.setCurrentIndex = function(index) {
         $scope.currentGraph = $scope.graphList[index].data;
+    };
+
+    $scope.generateGraph = function(index, n) {
+        GenerateGraph.query({'generateMethod':index, 'n': n}, function (data) {
+            $scope.currentGraph = data;
+        });
     };
   }])
     .directive('d3graph', ['d3Service', function(d3Service) {
