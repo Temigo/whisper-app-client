@@ -24,16 +24,21 @@ angular.module('whisperApp')
       /*$scope.watch('currentIndex', function(newVal, oldVal) {
          if (newVal !== oldVal) {
              //if (graphList !== []) {
+             $scope.currentIndex = newVal;
              $scope.currentGraph = $scope.graphList[newVal].data;
             //}
          }
      });*/
+     $scope.infectionList = [];
+     $scope.currentInfection = null;
+     $scope.currentInfectionIndex = 1;
 
-      Infection.query(function(data) {
-          $scope.infectionResult = data;
+     Infection.query(function(data) {
+          $scope.infectionList = data.results;
+          $scope.currentInfection = data.results[$scope.currentInfectionIndex].data;
       });
 
-      $scope.currentInfectionIndex = 1;
+
 
       $scope.parseInt = function(number) {
         return parseInt(number, 10);
@@ -42,9 +47,18 @@ angular.module('whisperApp')
         $scope.currentGraph = $scope.graphList[index].data;
     };
 
-    $scope.generateGraph = function(index, n) {
+    $scope.setCurrentInfectionIndex = function(index) {
+        $scope.currentInfection = $scope.infectionList[index].data;
+    };
+    
+    $scope.generateGraph = function(index, n, infection=false) {
         GenerateGraph.query({'generateMethod':index, 'n': n}, function (data) {
-            $scope.currentGraph = data;
+            if (infection) {
+                $scope.currentInfection = data;
+            }
+            else {
+                $scope.currentGraph = data;
+            }
         });
     };
   }])
@@ -56,7 +70,8 @@ angular.module('whisperApp')
         return {
           restrict: 'EA',
           scope: {
-              data: '=graphData'
+              data: '=graphData',
+              infectionData: '=infectionData'
           },
           link: function(scope, element, attrs) {
               d3Service.then(function(d3) {
@@ -73,25 +88,25 @@ angular.module('whisperApp')
                       .attr("height", height)
                       .style("width", "100%");
 
-            scope.$watch('data', function(newData, oldData) {
+            scope.$watchGroup(['data', 'infectionData'], function(newData, oldData) {
                 svg.selectAll('*').remove();
                 if (!newData) { // || newData === oldData
                     return;
                 }
-                    // TODO scope.currentIndex
-                    var currentGraph = angular.fromJson(newData);
+
+                    var currentGraph = angular.fromJson(newData[0]);
                     //Read the data from the mis element
                     var nodes = currentGraph.nodes;
                     var links = currentGraph.links;
                     //var nodes = [{'id': 1}, {'id': 2}];
                     //var links = [];
-                    var infected_nodes = [];
-
+                    var infected_nodes = angular.fromJson(newData[1]).nodes;
+                    //var infected_nodes = [];
+                    console.log(angular.fromJson(newData[1]).nodes);
 
                     for (var d in nodes) {
                     	if (d in infected_nodes) { nodes[d].infected = true; } else {nodes[d].infected = false; }
                     }
-
                     //Creates the graph data structure out of the json data
                     force.nodes(nodes)
                         .links(links)

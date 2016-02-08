@@ -16,6 +16,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'ngMaterial',
     'ui.bootstrap',
     'd3'])
     .config(function($httpProvider) {
