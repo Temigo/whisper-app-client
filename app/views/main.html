@@ -222,6 +222,7 @@
 
 <!-- Canvas with graph drawing -->
 <div class="col-md-7" id="canvas" style="position:relative;">
+	{{currentGraph}}
 	<!--<md-fab-toolbar md-direction="left">
 		<md-fab-trigger>
 			<md-button class="md-fab md-primary">
@@ -246,8 +247,8 @@
 		</md-fab-trigger>
 		<!--<md-toolbar>-->
 			<md-fab-actions>
-				<md-button class="md-fab md-raised md-mini">
-					<md-tooltip md-direction="top">Add</md-tooltip>
+				<md-button class="md-fab md-raised md-mini" ng-click="addNode()">
+					<md-tooltip md-direction="top">Add a node</md-tooltip>
 					<md-icon>add</md-icon>
 				</md-button>
 				<md-button class="md-fab md-raised md-mini">
@@ -259,6 +260,7 @@
 	</md-fab-speed-dial>
 
     <d3graph graph-data="currentGraph" infection-data="currentInfection"></d3graph>
+
 </div>
 
 </div>

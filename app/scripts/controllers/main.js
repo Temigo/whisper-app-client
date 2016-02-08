@@ -97,6 +97,14 @@ angular.module('whisperApp')
             }
         });
     };
+
+    $scope.addNode = function() {
+        var graph = angular.fromJson($scope.currentGraph);
+        var n = graph.nodes.length;
+        graph.nodes.push({"id": n+1});
+        $scope.currentGraph = angular.toJson(graph);
+        console.log($scope.currentGraph);
+    };
   }])
     .directive('d3graph', ['d3Service', function(d3Service) {
         //Constants for the SVG
@@ -131,14 +139,16 @@ angular.module('whisperApp')
                 }
 
                     var currentGraph = angular.fromJson(newData[0]);
+                    //var currentGraph = newData[0];
                     //Read the data from the mis element
                     var nodes = currentGraph.nodes;
                     var links = currentGraph.links;
                     //var nodes = [{'id': 1}, {'id': 2}];
                     //var links = [];
                     var infected_nodes = angular.fromJson(newData[1]).nodes;
+                    //var infected_nodes = newData[1].nodes;
                     //var infected_nodes = [];
-                    console.log(angular.fromJson(newData[1]).nodes);
+                    //console.log(angular.fromJson(newData[1]).nodes);
 
                     for (var d in nodes) {
                     	if (d in infected_nodes) { nodes[d].infected = true; } else {nodes[d].infected = false; }
