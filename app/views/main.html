@@ -11,27 +11,39 @@
 					Nouveau
 				</uib-tab-heading>
 				<uib-accordion close-others="oneAtATime">
-					<uib-accordion-group is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+					<uib-accordion-group is-open="status.open">
 						<uib-accordion-heading>
 							<h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer
                                 </a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
                             </h4>
-							<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
 						</uib-accordion-heading>
-						<form class="form-horizontal" method="post" action="/graph/import/" enctype="multipart/form-data">
+						<form class="form-horizontal" enctype="multipart/form-data">
 							<!--{% csrf_token %}-->
-							<input type="file" name="import_graph" accept="application/*"/>
-							<button class="btn btn-default" type="submit">OK</button>
+							<!--<input type="file" nv-file-select uploader="uploader" name="import_graph" accept="application/*"/>
+							<ul>
+								<li ng-repeat="item in uploader.queue">
+									<span ng-bind="item.file.name"></span><br/>
+									<button class="btn btn-default" ng-click="item.upload()">Upload</button>
+								</li>
+							</ul>-->
+							<!--<input type="file" ng-model="upload.src"/>
+							<button class="btn btn-default" type="submit">Upload</button>
+							File : {{upload.src}}-->
+							<!--<button type="file" ngf-select="uploadFiles($file, $invalidFiles)">Upload</button>
+							{{f}}-->
+							Coming soon
 						</form>
 					</uib-accordion-group>
-					<uib-accordion-group>
+					<uib-accordion-group is-open="status.open2">
 						<uib-accordion-heading>
 							<h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
                                 </a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
                             </h4>
 						</uib-accordion-heading>
 						<form class="form-horizontal" ng-submit="generateGraph(generationMethod, generateN)">
@@ -52,16 +64,16 @@
 								<span class="input-group-addon" id="sizing-addon">Valeur de n</span>
 								<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>
 							</div>
-							<input type="hidden" name="request" value="new_graph"/>
 							<button class="btn btn-default" type="submit">OK</button>
 						</form>
 					</uib-accordion-group>
-					<uib-accordion-group>
+					<uib-accordion-group is-open="status.open3">
 						<uib-accordion-heading>
 							<h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Créer
                                 </a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open3, 'glyphicon-chevron-right': !status.open3}"></i>
                             </h4>
 						</uib-accordion-heading>
                         Coming soon !
@@ -108,24 +120,26 @@
 					Nouveau
 				</uib-tab-heading>
 				<uib-accordion>
-					<uib-accordion-group>
+					<uib-accordion-group is-open="status.open4">
 						<uib-accordion-heading>
 							<h4 class="panel-title">
 								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneInfection" aria-expanded="true" aria-controls="collapseOneInfection"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer</a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open4, 'glyphicon-chevron-right': !status.open4}"></i>
 							</h4>
 						</uib-accordion-heading>
-						<form class="form-horizontal" method="post" action="/graph/import/infection" enctype="multipart/form-data">
-							<!--{% csrf_token %}-->
+						<!--<form class="form-horizontal" method="post" action="/graph/import/infection" enctype="multipart/form-data">
 							<input type="file" name="import_infection" accept="application/*"/>
 							<button class="btn btn-default" type="submit">OK</button>
-						</form>
+						</form>-->
+						Coming soon
 					</uib-accordion-group>
-					<uib-accordion-group>
+					<uib-accordion-group is-open="status.open5">
 						<uib-accordion-heading>
 							<h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
                                 </a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open5, 'glyphicon-chevron-right': !status.open5}"></i>
                             </h4>
 						</uib-accordion-heading>
 						<form class="form-horizontal" ng-submit="generateGraph(generationInfectionMethod, generateInfectionN, true)">
@@ -191,8 +205,7 @@
 	<div class="panel-heading"><h3 class="panel-title">Choose Algorithm</h3></div>
 	<div class="panel-body">
 		<div class="text-center">
-			<form class="form-horizontal" method="post" action="/graph/import/algorithm/" enctype="multipart/form-data">
-				<!--{% csrf_token %}-->
+			<!--<form class="form-horizontal" method="post" action="/graph/import/algorithm/" enctype="multipart/form-data">
 				<div class="form-actions">
 					<input type="file" name="import_algorithm" accept="application/*"/>
 					<button type="submit" class="btn btn-primary">
@@ -200,7 +213,8 @@
 						Import Algorithm (*.py)
 					</button>
 				</div>
-			</form>
+			</form>-->
+			Coming soon
 		</div>
 	</div>
 </div>

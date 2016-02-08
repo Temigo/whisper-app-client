@@ -8,7 +8,43 @@
  * Controller of the whisperApp
  */
 angular.module('whisperApp')
-    .controller('MainCtrl', ['$scope', 'Graph', 'Infection', 'GenerateGraph', function ($scope, Graph, Infection, GenerateGraph) {
+    .controller('MainCtrl', ['$scope', 'Graph', 'Infection', 'GenerateGraph', 'FileUploader', 'Upload', '$timeout', function ($scope, Graph, Infection, GenerateGraph, FileUploader, Upload, $timeout) {
+        /*$scope.uploader = new FileUploader({method: 'GET'});
+        console.log($scope.uploader);
+        $scope.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            var graph = angular.fromJson(fileItem.url);
+            console.log("Hi");
+        };
+        $scope.upload = {};
+        $scope.upload.src = "";
+        $scope.run_upload = function(file) {
+                console.log(file);
+        };*/
+            $scope.uploadFiles = function(file, errFiles) {
+                $scope.f = file;
+                $scope.errFile = errFiles && errFiles[0];
+                if (file) {
+                    console.log(file);
+                    angular.fromJson(file);
+                    /*file.upload = Upload.upload({
+                        url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                        data: {file: file}
+                    });
+
+                    file.upload.then(function (response) {
+                        $timeout(function () {
+                            file.result = response.data;
+                        });
+                    }, function (response) {
+                        if (response.status > 0)
+                            $scope.errorMsg = response.status + ': ' + response.data;
+                    }, function (evt) {
+                        file.progress = Math.min(100, parseInt(100.0 *
+                                                 evt.loaded / evt.total));
+                    });*/
+                }
+            };
+
       //$scope.graphResult = Graph.query();
       $scope.currentIndex = 0;
       $scope.graphList = [];
@@ -50,7 +86,7 @@ angular.module('whisperApp')
     $scope.setCurrentInfectionIndex = function(index) {
         $scope.currentInfection = $scope.infectionList[index].data;
     };
-    
+
     $scope.generateGraph = function(index, n, infection=false) {
         GenerateGraph.query({'generateMethod':index, 'n': n}, function (data) {
             if (infection) {
