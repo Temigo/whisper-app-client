@@ -1,4 +1,6 @@
 'use strict';
+var URL = 'http://temigo.pythonanywhere.com/';
+//var URL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc overview
@@ -56,15 +58,15 @@ Just add the following statement during module instantiation:
   })
 
   .factory('Graph', function($resource) {
-      var urlBase = 'http://127.0.0.1:8000/graph/graphs/';
+      var urlBase = URL+'graph/graphs/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
   .factory('Infection', function($resource) {
-      var urlBase = 'http://127.0.0.1:8000/graph/infections/';
+      var urlBase = URL+'graph/infections/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
   .factory('GenerateGraph', function($resource) {
-      var urlBase = 'http://127.0.0.1:8000/graph/generate/';
+      var urlBase = URL+'graph/generate/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   });
 
