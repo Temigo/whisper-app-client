@@ -105,6 +105,10 @@ angular.module('whisperApp')
         $scope.currentGraph = angular.toJson(graph);
         console.log($scope.currentGraph);
     };
+
+    $scope.addEdge = function() {
+
+    };
   }])
     .directive('d3graph', ['d3Service', function(d3Service) {
         //Constants for the SVG
@@ -130,7 +134,11 @@ angular.module('whisperApp')
                   var svg = d3.select(element[0]).append("svg")
                       //.attr("width", width)
                       .attr("height", height)
+                      .call(d3.behavior.zoom().on("zoom", function () {
+                          svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+                        }))
                       .style("width", "100%");
+
 
             scope.$watchGroup(['data', 'infectionData'], function(newData, oldData) {
                 svg.selectAll('*').remove();
@@ -167,6 +175,10 @@ angular.module('whisperApp')
                             return 1;
                         });
 
+                        var highlightNode = function(node) {
+                            d3.select(this).style("fill", "red");
+                        };
+
                         //Do the same with the circles for the nodes - no
                         var color_index = 1;
                         var connectedNodes = [];
@@ -180,7 +192,7 @@ angular.module('whisperApp')
                             return color(color_index);
                         })
                             .call(force.drag)
-                            .on('dblclick', connectedNodes);
+                            .on('click', highlightNode);
 
 
                         //Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
