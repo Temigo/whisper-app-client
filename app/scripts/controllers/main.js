@@ -87,7 +87,8 @@ angular.module('whisperApp')
         $scope.currentInfection = $scope.infectionList[index].data;
     };
 
-    $scope.generateGraph = function(index, n, infection=false) {
+    $scope.generateGraph = function(index, n, infection) {
+        infection = typeof(infection) !== 'undefined' ? infection : false;
         GenerateGraph.query({'generateMethod':index, 'n': n}, function (data) {
             if (infection) {
                 $scope.currentInfection = data;
