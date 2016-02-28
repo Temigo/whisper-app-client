@@ -8,7 +8,7 @@
  * Controller of the whisperApp
  */
 angular.module('whisperApp')
-    .controller('MainCtrl', ['$scope', 'Graph', 'Infection', 'GenerateGraph', 'FileUploader', 'Upload', '$timeout', function ($scope, Graph, Infection, GenerateGraph, FileUploader, Upload, $timeout) {
+    .controller('MainCtrl', ['$scope', 'Graph', 'Infection', 'Algorithm', 'GenerateGraph', 'FileUploader', 'Upload', '$timeout', function ($scope, Graph, Infection, Algorithm, GenerateGraph, FileUploader, Upload, $timeout) {
         /*$scope.uploader = new FileUploader({method: 'GET'});
         console.log($scope.uploader);
         $scope.uploader.onCompleteItem = function(fileItem, response, status, headers) {
@@ -53,18 +53,8 @@ angular.module('whisperApp')
       Graph.query(function(data) {
           $scope.graphList = data.results;
           $scope.currentGraph = data.results[$scope.currentIndex].data;
-          //$scope.graph = $scope.graphResult[0].data;
-          console.log($scope.graphList);
       });
 
-      /*$scope.watch('currentIndex', function(newVal, oldVal) {
-         if (newVal !== oldVal) {
-             //if (graphList !== []) {
-             $scope.currentIndex = newVal;
-             $scope.currentGraph = $scope.graphList[newVal].data;
-            //}
-         }
-     });*/
      $scope.infectionList = [];
      $scope.currentInfection = null;
      $scope.currentInfectionIndex = 1;
@@ -73,8 +63,6 @@ angular.module('whisperApp')
           $scope.infectionList = data.results;
           $scope.currentInfection = data.results[$scope.currentInfectionIndex].data;
       });
-
-
 
       $scope.parseInt = function(number) {
         return parseInt(number, 10);
@@ -86,6 +74,10 @@ angular.module('whisperApp')
     $scope.setCurrentInfectionIndex = function(index) {
         $scope.currentInfection = $scope.infectionList[index].data;
     };
+
+    /*$scope.setCurrentAlgorithmIndex = function(index) {
+        $scope.currentInfection = $scope.algorithmList[index].data;
+    };*/
 
     $scope.generateGraph = function(index, n, infection) {
         infection = typeof(infection) !== 'undefined' ? infection : false;
@@ -99,16 +91,40 @@ angular.module('whisperApp')
         });
     };
 
+    $scope.applyAlgorithm = function(index) {
+        Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection}, function (data) {
+            $scope.source = data['source'];
+        });
+    };
+
+    $scope.infectMode = false;
     $scope.addNode = function() {
         var graph = angular.fromJson($scope.currentGraph);
         var n = graph.nodes.length;
         graph.nodes.push({"id": n+1});
         $scope.currentGraph = angular.toJson(graph);
-        console.log($scope.currentGraph);
+        //console.log($scope.currentGraph);
+    };
+
+    $scope.infectNode = function(node, infected) {
+        var infected_graph = angular.fromJson($scope.currentInfection);
+        if (!infected) {
+            infected_graph.nodes.push({"id": node.id});
+        }
+        else {
+            var removeIndex = infected_graph.nodes.map(function(item) { return item.id; }).indexOf(node.id);
+            infected_graph.nodes.splice(removeIndex, 1);
+        }
+        $scope.currentInfection = angular.toJson(infected_graph);
     };
 
     $scope.addEdge = function() {
 
+    };
+
+
+    $scope.updateInfectMode = function() {
+        $scope.infectMode = !$scope.infectMode;
     };
   }])
     .directive('d3graph', ['d3Service', function(d3Service) {
@@ -119,8 +135,11 @@ angular.module('whisperApp')
         return {
           restrict: 'EA',
           scope: {
-              data: '=graphData',
-              infectionData: '=infectionData'
+              data: '@graphData', // One-way data binding
+              infectionData: '@infectionData',
+              infectMode: '=',
+              source: '=',
+              infectNode: '&'
           },
           link: function(scope, element, attrs) {
               d3Service.then(function(d3) {
@@ -131,37 +150,34 @@ angular.module('whisperApp')
                   .charge(-120)
                   .linkDistance(50)
                   .size([width, height]);
-                  //Append a SVG to the body of the html page. Assign this SVG as an object to svg
-                  var svg = d3.select(element[0]).append("svg")
-                      //.attr("width", width)
-                      .attr("height", height)
-                      .call(d3.behavior.zoom().on("zoom", function () {
-                          svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
-                        }))
-                      .style("width", "100%");
+              //Append a SVG to the body of the html page. Assign this SVG as an object to svg
+              var svg = d3.select(element[0]).append("svg")
+                  //.attr("width", width)
+                  .attr("height", height)
+                  .call(d3.behavior.zoom().on("zoom", function () {
+                      svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+                    }))
+                  .style("width", "100%");
 
-
+            //console.log(scope.infectionData);
             scope.$watchGroup(['data', 'infectionData'], function(newData, oldData) {
                 svg.selectAll('*').remove();
                 if (!newData) { // || newData === oldData
                     return;
                 }
-
                     var currentGraph = angular.fromJson(newData[0]);
-                    //var currentGraph = newData[0];
+
                     //Read the data from the mis element
                     var nodes = currentGraph.nodes;
                     var links = currentGraph.links;
-                    //var nodes = [{'id': 1}, {'id': 2}];
-                    //var links = [];
                     var infected_nodes = angular.fromJson(newData[1]).nodes;
-                    //var infected_nodes = newData[1].nodes;
-                    //var infected_nodes = [];
-                    //console.log(angular.fromJson(newData[1]).nodes);
 
                     for (var d in nodes) {
+                        nodes[d].selected = false;
                     	if (d in infected_nodes) { nodes[d].infected = true; } else {nodes[d].infected = false; }
+                        if (d == scope.source) { nodes[d].source = true; } else {nodes[d].source = false; }
                     }
+
                     //Creates the graph data structure out of the json data
                     force.nodes(nodes)
                         .links(links)
@@ -176,8 +192,36 @@ angular.module('whisperApp')
                             return 1;
                         });
 
-                        var highlightNode = function(node) {
-                            d3.select(this).style("fill", "red");
+
+                        var standardColor = function(d) {
+                            if (d.infected) { color_index = 0; } else { color_index = 1; }
+                            if (d.source) {color_index = 3; }
+                            return color(color_index);
+                        };
+
+                        var highlightNode = function(d) {
+                            var node = d3.select(this);
+                            if (!scope.infectMode) {
+                                if (d.selected) {
+                                    node.style("fill", standardColor);
+                                    d.selected = false;
+                                }
+                                else {
+                                    node.style("fill", "red");
+                                    d.selected = true;
+                                }
+                            }
+                            else { // infectMode
+                                scope.infectNode({node: d, infected: d.infected});
+                                if (d.infected) {
+                                    d.infected = false;
+                                    node.style("fill", standardColor);
+                                }
+                                else {
+                                    d.infected = true;
+                                    node.style("fill", standardColor);
+                                }
+                            }
                         };
 
                         //Do the same with the circles for the nodes - no
@@ -188,10 +232,7 @@ angular.module('whisperApp')
                             .enter().append("circle")
                             .attr("class", "node")
                             .attr("r", 8)
-                            .style("fill", function (d) {
-                            if (d.infected) { color_index = 0; } else { color_index = 1; }
-                            return color(color_index);
-                        })
+                            .style("fill", standardColor)
                             .call(force.drag)
                             .on('click', highlightNode);
 

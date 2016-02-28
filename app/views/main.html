@@ -214,7 +214,14 @@
 					</button>
 				</div>
 			</form>-->
-			Coming soon
+			<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod)">
+				<!--{% csrf_token %}-->
+				<select class="form-control" name="algorithm_method" ng-model="algorithmMethod">
+					<option value="1">Shah and Zaman</option>
+					<option value="2">Netsleuth</option>
+				</select>
+				<button class="btn btn-default" type="submit">OK</button>
+			</form>
 		</div>
 	</div>
 </div>
@@ -222,7 +229,6 @@
 
 <!-- Canvas with graph drawing -->
 <div class="col-md-7" id="canvas" style="position:relative;">
-	{{currentGraph}}
 	<!--<md-fab-toolbar md-direction="left">
 		<md-fab-trigger>
 			<md-button class="md-fab md-primary">
@@ -237,6 +243,8 @@
 			</md-fab-actions>
 		</md-toolbar>
 	</md-fab-toolbar>-->
+
+	<uib-alert ng-if="source!==undefined" type="success">Source is {{ source }}</uib-alert>
 
 	<md-fab-speed-dial class="md-fling md-fab-top-right" md-direction="left">
 		<md-fab-trigger>
@@ -255,11 +263,14 @@
 					<md-tooltip md-direction="top">Add an edge</md-tooltip>
 					<md-icon>timeline</md-icon>
 				</md-button>
+				<md-button class="md-fab md-raised md-mini" ng-click="updateInfectMode()" ng-class="{'md-primary': infectMode}">
+					<md-tooltip md-direction="top">Infection mode</md-tooltip>
+					<md-icon>settings_input_antenna</md-icon>
+				</md-button>
 			</md-fab-actions>
 		<!--</md-toolbar>-->
 	</md-fab-speed-dial>
-
-    <d3graph graph-data="currentGraph" infection-data="currentInfection"></d3graph>
+    <d3graph graph-data="{{currentGraph}}" infection-data="{{currentInfection}}" infect-mode="infectMode" source="source" infect-node="infectNode(node, infected)"></d3graph>
 
 </div>
 
