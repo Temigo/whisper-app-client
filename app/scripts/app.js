@@ -1,6 +1,6 @@
 'use strict';
 //var URL = 'http://temigo.pythonanywhere.com/';
-var URL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc overview
@@ -20,8 +20,9 @@ angular
     'ngTouch',
     'ngMaterial',
     'ui.bootstrap',
-    'angularFileUpload',
-    'ngFileUpload',
+    //'angularFileUpload',
+    //'ngFileUpload',
+    'ngFileSaver',
     'd3'])
     .config(function($httpProvider) {
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -58,19 +59,19 @@ Just add the following statement during module instantiation:
   })
 
   .factory('Graph', function($resource) {
-      var urlBase = URL+'graph/graphs/';
+      var urlBase = BaseURL+'graph/graphs/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
   .factory('Infection', function($resource) {
-      var urlBase = URL+'graph/infections/';
+      var urlBase = BaseURL+'graph/infections/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
   .factory('Algorithm', function($resource) {
-      var urlBase = URL+'graph/algorithm/';
+      var urlBase = BaseURL+'graph/algorithm/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
   .factory('GenerateGraph', function($resource) {
-      var urlBase = URL+'graph/generate/';
+      var urlBase = BaseURL+'graph/generate/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   });
 

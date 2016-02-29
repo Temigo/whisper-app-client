@@ -8,7 +8,7 @@
  * Controller of the whisperApp
  */
 angular.module('whisperApp')
-    .controller('MainCtrl', ['$scope', 'Graph', 'Infection', 'Algorithm', 'GenerateGraph', 'FileUploader', 'Upload', '$timeout', function ($scope, Graph, Infection, Algorithm, GenerateGraph, FileUploader, Upload, $timeout) {
+    .controller('MainCtrl', ['$scope', '$window', 'Graph', 'Infection', 'Algorithm', 'GenerateGraph', '$timeout', 'FileSaver', 'Blob', function ($scope, $window, Graph, Infection, Algorithm, GenerateGraph, $timeout, FileSaver, Blob) {
         /*$scope.uploader = new FileUploader({method: 'GET'});
         console.log($scope.uploader);
         $scope.uploader.onCompleteItem = function(fileItem, response, status, headers) {
@@ -91,10 +91,21 @@ angular.module('whisperApp')
         });
     };
 
-    $scope.applyAlgorithm = function(index) {
-        Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection}, function (data) {
-            $scope.source = data['source'];
-        });
+    //$scope.source = 1;
+    //$scope.sourceHyp = 1;
+    $scope.applyAlgorithm = function(index, source) {
+        if (index == 1) {
+            console.log(source);
+            console.log($scope.sourceHyp);
+            Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection}, function (data) {
+                $scope.source = data['source'];
+            });
+        }
+        else {
+            Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection}, function (data) {
+                $scope.source = data['source'];
+            });
+        }
     };
 
     $scope.infectMode = false;
@@ -126,6 +137,13 @@ angular.module('whisperApp')
     $scope.updateInfectMode = function() {
         $scope.infectMode = !$scope.infectMode;
     };
+
+    // Export Graph or Infection - using FileSaver
+    $scope.export = function(data) {
+        var pretty_data = JSON.stringify(angular.fromJson(data), null, "    ");
+        FileSaver.saveAs(new Blob([pretty_data], {type: "application/json"}), "graph.json");
+    };
+
   }])
     .directive('d3graph', ['d3Service', function(d3Service) {
         //Constants for the SVG
@@ -144,7 +162,8 @@ angular.module('whisperApp')
           link: function(scope, element, attrs) {
               d3Service.then(function(d3) {
               //Set up the colour scale
-              var color = d3.scale.category20();
+              var color = d3.scale.category20().domain(d3.range(0,20));
+
               //Set up the force layout
               var force = d3.layout.force()
                   .charge(-120)
@@ -160,7 +179,7 @@ angular.module('whisperApp')
                   .style("width", "100%");
 
             //console.log(scope.infectionData);
-            scope.$watchGroup(['data', 'infectionData'], function(newData, oldData) {
+            scope.$watchGroup(['data', 'infectionData', 'source'], function(newData, oldData) {
                 svg.selectAll('*').remove();
                 if (!newData) { // || newData === oldData
                     return;
@@ -177,7 +196,6 @@ angular.module('whisperApp')
                     	if (d in infected_nodes) { nodes[d].infected = true; } else {nodes[d].infected = false; }
                         if (d == scope.source) { nodes[d].source = true; } else {nodes[d].source = false; }
                     }
-
                     //Creates the graph data structure out of the json data
                     force.nodes(nodes)
                         .links(links)
@@ -194,38 +212,27 @@ angular.module('whisperApp')
 
 
                         var standardColor = function(d) {
-                            if (d.infected) { color_index = 0; } else { color_index = 1; }
-                            if (d.source) {color_index = 3; }
+                            var color_index = 1;
+                            if (d.infected) { color_index = 0; }
+                            if (d.source) { color_index = 2; }
+                            if (d.selected) { color_index = 5; }
                             return color(color_index);
                         };
 
                         var highlightNode = function(d) {
                             var node = d3.select(this);
                             if (!scope.infectMode) {
-                                if (d.selected) {
-                                    node.style("fill", standardColor);
-                                    d.selected = false;
-                                }
-                                else {
-                                    node.style("fill", "red");
-                                    d.selected = true;
-                                }
+                                d.selected = !d.selected;
                             }
                             else { // infectMode
                                 scope.infectNode({node: d, infected: d.infected});
-                                if (d.infected) {
-                                    d.infected = false;
-                                    node.style("fill", standardColor);
-                                }
-                                else {
-                                    d.infected = true;
-                                    node.style("fill", standardColor);
-                                }
+                                d.infected = !d.infected;
                             }
+                            node.style("fill", standardColor);
                         };
 
                         //Do the same with the circles for the nodes - no
-                        var color_index = 1;
+                        //var color_index = 1;
                         var connectedNodes = [];
                         var node = svg.selectAll(".node")
                             .data(nodes)
@@ -233,6 +240,7 @@ angular.module('whisperApp')
                             .attr("class", "node")
                             .attr("r", 8)
                             .style("fill", standardColor)
+                            //.style("fill", color(5))
                             .call(force.drag)
                             .on('click', highlightNode);
 
