@@ -34,11 +34,14 @@ angular.module('whisperApp')
       $scope.parseInt = function(number) {
         return parseInt(number, 10);
     };
+
+
     $scope.setCurrentIndex = function(index) {
         $scope.currentGraph = $scope.graphList[index].data;
     };
 
     $scope.setCurrentInfectionIndex = function(index) {
+        console.log($scope.infectionList);
         $scope.currentInfection = $scope.infectionList[index].data;
     };
 
