@@ -20,22 +20,7 @@
 								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
                             </h4>
 						</uib-accordion-heading>
-						<form class="form-horizontal" enctype="multipart/form-data">
-							<!--{% csrf_token %}-->
-							<!--<input type="file" nv-file-select uploader="uploader" name="import_graph" accept="application/*"/>
-							<ul>
-								<li ng-repeat="item in uploader.queue">
-									<span ng-bind="item.file.name"></span><br/>
-									<button class="btn btn-default" ng-click="item.upload()">Upload</button>
-								</li>
-							</ul>-->
-							<!--<input type="file" ng-model="upload.src"/>
-							<button class="btn btn-default" type="submit">Upload</button>
-							File : {{upload.src}}-->
-							<!--<button type="file" ngf-select="uploadFiles($file, $invalidFiles)">Upload</button>
-							{{f}}-->
-							Coming soon
-						</form>
+						<input type="file" on-read-file="uploadGraph($fileContent)" accept="application/json"/>
 					</uib-accordion-group>
 					<uib-accordion-group is-open="status.open2">
 						<uib-accordion-heading>
@@ -123,11 +108,9 @@
 								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open4, 'glyphicon-chevron-right': !status.open4}"></i>
 							</h4>
 						</uib-accordion-heading>
-						<!--<form class="form-horizontal" method="post" action="/graph/import/infection" enctype="multipart/form-data">
-							<input type="file" name="import_infection" accept="application/*"/>
-							<button class="btn btn-default" type="submit">OK</button>
-						</form>-->
-						Coming soon
+
+						<input type="file" on-read-file="uploadInfection($fileContent)" accept="application/json"/>
+
 					</uib-accordion-group>
 					<uib-accordion-group is-open="status.open5">
 						<uib-accordion-heading>
