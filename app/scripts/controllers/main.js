@@ -9,9 +9,6 @@
  */
 angular.module('whisperApp')
     .controller('MainCtrl', ['$scope', '$window', 'Graph', 'Infection', 'Algorithm', 'GenerateGraph', '$timeout', 'FileSaver', 'Blob', function ($scope, $window, Graph, Infection, Algorithm, GenerateGraph, $timeout, FileSaver, Blob) {
-
-
-
       //$scope.graphResult = Graph.query();
       $scope.currentIndex = 0;
       $scope.graphList = [];
@@ -37,6 +34,7 @@ angular.module('whisperApp')
 
 
     $scope.setCurrentIndex = function(index) {
+        $scope.currentIndex = index;
         $scope.currentGraph = $scope.graphList[index].data;
     };
 
@@ -44,10 +42,6 @@ angular.module('whisperApp')
         console.log($scope.infectionList);
         $scope.currentInfection = $scope.infectionList[index].data;
     };
-
-    /*$scope.setCurrentAlgorithmIndex = function(index) {
-        $scope.currentInfection = $scope.algorithmList[index].data;
-    };*/
 
     $scope.generateGraph = function(index, n, infection) {
         infection = typeof(infection) !== 'undefined' ? infection : false;
@@ -65,9 +59,7 @@ angular.module('whisperApp')
     //$scope.sourceHyp = 1;
     $scope.applyAlgorithm = function(index, source) {
         if (index == 1) {
-            console.log(source);
-            console.log($scope.sourceHyp);
-            Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection}, function (data) {
+            Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'v': source}, function (data) {
                 $scope.source = data['source'];
             });
         }

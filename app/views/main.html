@@ -21,6 +21,7 @@
                             </h4>
 						</uib-accordion-heading>
 						<input type="file" on-read-file="uploadGraph($fileContent)" accept="application/json"/>
+						<!--<uib-progressbar value=""></uib-progressbar>-->
 					</uib-accordion-group>
 					<uib-accordion-group is-open="status.open2">
 						<uib-accordion-heading>
@@ -66,7 +67,6 @@
 	                            <!--<option value="">Choisir</option>-->
 	                        </select>
 	                        <p ng-if="graphList === []">No graphs are available.</p>
-							Index : {{currentIndex}}
 	                    </div>
 	                </div>
 	            </form>
@@ -128,7 +128,6 @@
 								<span class="input-group-addon" id="sizing-addon">Valeur de n</span>
 								<input ng-model="generateInfectionN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>
 							</div>
-							<input type="hidden" name="request" value="new_graph"/>
 							<button class="btn btn-default" type="submit">OK</button>
 						</form>
 					</uib-accordion-group>
@@ -174,15 +173,14 @@
 				</div>
 			</form>-->
 			<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod, sourceHyp)">
-				<!--{% csrf_token %}-->
 				<select class="form-control" name="algorithm_method" ng-model="algorithmMethod">
 					<option value="1">Shah and Zaman</option>
 					<option value="2">Netsleuth</option>
 				</select>
 				<h4>Paramètres de l'algorithme</h4>
 				<div class="input-group" ng-if="algorithmMethod==1">
-					<span class="input-group-addon" id="siz-addon">Source</span>
-					<input ng-model="sourceHyp" id="source_hyp" name="source_hyp" type="number" class="form-control" aria-describedby="siz-addon"/>
+					<span class="input-group-addon" id="siz-addon">Source of BFS tree</span>
+					<input ng-model="$parent.sourceHyp" id="source_hyp" name="source_hyp" type="number" class="form-control" aria-describedby="siz-addon" placeholder="Infected node"/>
 				</div>
 				<button class="btn btn-default" type="submit">OK</button>
 			</form>
