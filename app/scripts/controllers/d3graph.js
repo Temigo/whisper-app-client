@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('whisperApp')
-.directive('d3graph', ['d3Service', function(d3Service) {
+.directive('d3graph', ['d3Service', 'ViewParameters', function(d3Service, ViewParameters) {
     //Constants for the SVG
     var width = 500,
       height = 500;
+
 
     return {
       restrict: 'EA',
@@ -16,23 +17,39 @@ angular.module('whisperApp')
           infectNode: '&'
       },
       link: function(scope, element, attrs) {
+          scope.params = ViewParameters;
+
           d3Service.then(function(d3) {
           //Set up the colour scale
           var color = d3.scale.category20().domain(d3.range(0,20));
 
           //Set up the force layout
           var force = d3.layout.force()
-              .charge(-120)
-              .linkDistance(50)
+              .charge(scope.params.charge)
+              .linkDistance(scope.params.linkDistance)
               .size([width, height]);
+
           //Append a SVG to the body of the html page. Assign this SVG as an object to svg
           var svg = d3.select(element[0]).append("svg")
               //.attr("width", width)
               .attr("height", height)
-              .call(d3.behavior.zoom().on("zoom", function () {
-                  svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
-                }))
               .style("width", "100%");
+
+
+          scope.$watch('params', function(newValue, oldValue) {
+              if (newValue !== oldValue) {
+                  scope.params = newValue;
+                  force.charge(scope.params.charge).linkDistance(scope.params.linkDistance).start();
+                  if (scope.params.zoom) {
+                      svg.call(d3.behavior.zoom().on("zoom", function () {
+                          svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+                      }));
+                  }
+                  else {
+                      svg.call(d3.behavior.zoom().on("zoom", function () {}));
+                  }
+              }
+          }, true);
 
         //console.log(scope.infectionData);
         scope.$watchGroup(['data', 'infectionData', 'source'], function(newData, oldData) {

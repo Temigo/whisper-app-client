@@ -8,7 +8,7 @@
  * Controller of the whisperApp
  */
 angular.module('whisperApp')
-    .controller('MainCtrl', ['$scope', '$window', 'Graph', 'Infection', 'Algorithm', 'GenerateGraph', '$timeout', 'FileSaver', 'Blob', function ($scope, $window, Graph, Infection, Algorithm, GenerateGraph, $timeout, FileSaver, Blob) {
+    .controller('MainCtrl', ['$scope', '$mdSidenav', '$window', 'Graph', 'Infection', 'Algorithm', 'GenerateGraph', '$timeout', 'FileSaver', 'Blob', function ($scope, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, $timeout, FileSaver, Blob) {
       //$scope.graphResult = Graph.query();
       $scope.currentIndex = 0;
       $scope.graphList = [];
@@ -58,16 +58,17 @@ angular.module('whisperApp')
     //$scope.source = 1;
     //$scope.sourceHyp = 1;
     $scope.applyAlgorithm = function(index, source) {
+        var params;
         if (index == 1) {
-            Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'v': source}, function (data) {
-                $scope.source = data['source'];
-            });
+            params = {'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'v': source};
         }
         else {
-            Algorithm.query({'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection}, function (data) {
-                $scope.source = data['source'];
-            });
+            params = {'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection};
         }
+        Algorithm.query(params, function (data) {
+            $scope.source = data['source'];
+            $scope.timeElapsed = data['timeElapsed'];
+        });
     };
 
     $scope.infectMode = false;
@@ -113,6 +114,18 @@ angular.module('whisperApp')
         $scope.currentGraph = $fileContent;
     };
 
+    $scope.toggleSide = buildToggler('right');
+    function buildToggler(navID) {
+        console.log("Toggle");
+      return function() {
+        $mdSidenav(navID)
+          .toggle()
+          .then(function () {
+            console.debug("toggle " + navID + " is done");
+          });
+      }
+    }
+
   }])
   .controller('existingGraphCtrl', ['$scope', function($scope) {
       $scope.watch('currentIndex', function(newVal, oldVal) {
@@ -123,6 +136,22 @@ angular.module('whisperApp')
          }
      });
   }])
+  .controller('SidenavCtrl', function ($scope, $timeout, $mdSidenav, ViewParameters) {
+    $scope.params = ViewParameters;
+
+    console.log($scope.params);
+    $scope.$watch('params', function(newValue, oldValue) {
+        if (newValue !== oldValue) ViewParameters.set(newValue);
+        console.log(ViewParameters);
+    }, true);
+
+    $scope.close = function () {
+      $mdSidenav('right').close()
+        .then(function () {
+          console.debug("close RIGHT is done");
+        });
+    };
+  })
   .directive('onReadFile', function ($parse) {
  	return {
  		restrict: 'A',

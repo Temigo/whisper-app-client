@@ -73,6 +73,15 @@ Just add the following statement during module instantiation:
   .factory('GenerateGraph', function($resource) {
       var urlBase = BaseURL+'graph/generate/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+  })
+  .factory('ViewParameters', function() {
+      var params = {'charge': -120, 'linkDistance': 50, 'zoom': false};
+      params.set = function(data) {
+        params.charge = data.charge;
+        params.linkDistance = data.linkDistance;
+        params.zoom = data.zoom;
+      };
+      return params;
   });
 
   angular.module('d3', [])

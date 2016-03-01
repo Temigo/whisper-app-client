@@ -2,7 +2,7 @@
 <!-- Graph -->
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">Graph : {{ currentIndex }}</h3>
+		<h3 class="panel-title">Graph : {{ graphList[currentIndex].name }}</h3>
 	</div>
     <div class="panel-body">
 		<uib-tabset>
@@ -82,7 +82,7 @@
 
 <!-- Infection -->
 <div class="panel panel-default">
-	<div class="panel-heading"><h3 class="panel-title">Infection {{currentInfectionIndex}} for graph {{currentIndex}}</h3></div>
+	<div class="panel-heading"><h3 class="panel-title">Infection {{currentInfectionIndex}} for {{graphList[currentIndex].name}}</h3></div>
 	<div class="panel-body">
 		<uib-tabset>
 			<uib-tab>
@@ -191,7 +191,7 @@
 
 <!-- Canvas with graph drawing -->
 <div class="col-md-7" id="canvas" style="position:relative;">
-	<uib-alert ng-if="source!==undefined" type="success"><md-icon>info</md-icon> Source is {{ source }}</uib-alert>
+	<!--<uib-alert ng-if="source!==undefined" type="success"><md-icon>info</md-icon> Source is {{ source }}</uib-alert>-->
 
 	<md-fab-speed-dial class="md-fling md-fab-top-right" md-direction="left">
 		<md-fab-trigger>
@@ -202,6 +202,10 @@
 		</md-fab-trigger>
 		<!--<md-toolbar>-->
 			<md-fab-actions>
+				<md-button class="md-fab md-raised md-mini" ng-click="toggleSide()">
+					<md-tooltip md-direction="top">Parameters of view</md-tooltip>
+					<md-icon>build</md-icon>
+				</md-button>
 				<md-button class="md-fab md-raised md-mini" ng-click="addNode()">
 					<md-tooltip md-direction="top">Add a node</md-tooltip>
 					<md-icon>add</md-icon>
@@ -217,8 +221,57 @@
 			</md-fab-actions>
 		<!--</md-toolbar>-->
 	</md-fab-speed-dial>
-    <d3graph graph-data="{{currentGraph}}" infection-data="{{currentInfection}}" infect-mode="infectMode" source="source" infect-node="infectNode(node, infected)"></d3graph>
 
+	<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$mdMedia('gt-md')">
+		<md-toolbar class="md-theme-light">
+			<h1 class="md-toolbar-tools">Parameters of view</h1>
+		</md-toolbar>
+		<md-content layout-padding ng-controller="SidenavCtrl">
+			<div layout>
+				<div flex="40" layout layout-align="center center">
+					<span class="md-body-1">Charge</span>
+				</div>
+				<md-slider flex min="-200" max="0" ng-model="params.charge" class="md-primary" aria-label="charge" id="charge-slider">
+				</md-slider>
+				<div flex="20" layout layout-align="center center">
+					<input flex type="number" ng-model="params.charge" aria-label="charge" aria-controls="charge-slider"/>
+				</div>
+			</div>
+			<div layout>
+				<div flex="40" layout layout-align="center center">
+					<span class="md-body-1">Link distance</span>
+				</div>
+				<md-slider flex min="0" max="100" ng-model="params.linkDistance" class="md-primary" aria-label="linkDistance" id="linkDistance-slider">
+				</md-slider>
+				<div flex="20" layout layout-align="center center">
+					<input flex type="number" ng-model="params.linkDistance" aria-label="linkDistance" aria-controls="linkDistance-slider"/>
+				</div>
+			</div>
+			<div layout>
+				<div flex="40" layout layout-align="center center">
+					<span class="md-body-1">Zoom & Pan</span>
+				</div>
+				<md-switch ng-model="params.zoom" aria-label="zoom-switch">
+				</md-switch>
+			</div>
+			<md-button ng-click="close()" class="md-primary" hide-gt-md>
+				<md-icon>close</md-icon>
+	          	Close
+	        </md-button>
+		</md-content>
+	</md-sidenav>
+
+    <d3graph graph-data="{{currentGraph}}" infection-data="{{currentInfection}}" infect-mode="infectMode" source="source" infect-node="infectNode(node, infected)"></d3graph>
+	<md-toolbar>
+		<div ng-if="source!==undefined" class="md-toolbar-tools">
+			Time : {{timeElapsed}} s
+			<span flex></span>
+			Source : {{source}}
+		</div>
+		<div ng-if="source === undefined" class="md-toolbar-tools">
+			No algorithm applied
+		</div>
+	</md-toolbar>
 </div>
 
 </div>
