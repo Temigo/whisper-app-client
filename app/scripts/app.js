@@ -75,6 +75,9 @@ angular
   });
 
   angular.module('d3', [])
+    /*
+    d3 Service to inject in directives
+    */
       .provider('d3Service', function() {
           function createScript($document, callback, success) {
               var scriptTag = $document.createElement('script');
@@ -95,6 +98,33 @@ angular
                   var deferred = $q.defer();
                   createScript($document[0], function(callback) {
                       $rootScope.$apply(function()  { deferred.resolve($window.d3); });
+                  });
+                  return deferred.promise;
+              }];
+      })
+      /*
+      d3tooltip from labratrevenge.com
+      */
+      .provider('d3tipService', function() {
+          function createScript($document, callback, success) {
+              var scriptTag = $document.createElement('script');
+              scriptTag.type = "text/javascript";
+              scriptTag.async = true;
+              scriptTag.src = 'http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js';
+              scriptTag.onreadystatechange = function() {
+                  if (this.readyState === 'complete') {
+                      callback();
+                  }
+              };
+              scriptTag.onload = callback;
+              $document.getElementsByTagName('body')[0].appendChild(scriptTag);
+          }
+
+          this.$get = ['$document','$q', '$window', '$rootScope',
+              function($document, $q, $window, $rootScope) {
+                  var deferred = $q.defer();
+                  createScript($document[0], function(callback) {
+                      $rootScope.$apply(function()  { deferred.resolve($window.d3.tip); });
                   });
                   return deferred.promise;
               }];

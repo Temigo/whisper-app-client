@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('whisperApp')
-.directive('d3graph', ['d3Service', 'ViewParameters', function(d3Service, ViewParameters) {
+.directive('d3graph', ['d3Service', 'd3tipService', 'ViewParameters', function(d3Service, d3tipService, ViewParameters) {
     //Constants for the SVG
     var width = 500,
       height = 500;
@@ -20,6 +20,7 @@ angular.module('whisperApp')
           scope.params = ViewParameters;
 
           d3Service.then(function(d3) {
+          d3tipService.then(function(d3tip) {
           //Set up the colour scale
           var color = d3.scale.category20().domain(d3.range(0,20));
 
@@ -34,6 +35,15 @@ angular.module('whisperApp')
               //.attr("width", width)
               .attr("height", height)
               .style("width", "100%");
+
+          //Set up tooltip
+          var tip = d3tip()
+              .attr('class', 'd3-tip')
+              .offset([-10, 0])
+              .html(function (d) {
+              return  d.id + "";
+          });
+          svg.call(tip);
 
         // Don't compute again everything in force layout
           scope.$watch('params', function(newValue, oldValue) {
@@ -135,7 +145,11 @@ angular.module('whisperApp')
                             .style("fill", standardColor)
                             .call(force.drag)
                             .on('click', highlightNode);
+                        // Tooltip on node
+                        node.on('mouseover', tip.show)
+                            .on('mouseout', tip.hide);
                     }
+
 
                     //Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
                     force.on("tick", function () {
@@ -154,6 +168,7 @@ angular.module('whisperApp')
                     });
                     // End force tick
                 }); // scope watch
+            });
             }); // d3Service.then
         } // link
     }; // return
