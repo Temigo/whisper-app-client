@@ -35,7 +35,7 @@ angular.module('whisperApp')
               .attr("height", height)
               .style("width", "100%");
 
-
+        // Don't compute again everything in force layout
           scope.$watch('params', function(newValue, oldValue) {
               if (newValue !== oldValue) {
                   scope.params = newValue;
@@ -48,16 +48,18 @@ angular.module('whisperApp')
                   else {
                       svg.call(d3.behavior.zoom().on("zoom", function () {}));
                   }
+
               }
           }, true);
 
         //console.log(scope.infectionData);
-        scope.$watchGroup(['data', 'infectionData', 'source'], function(newData, oldData) {
+        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels'], function(newData, oldData) {
             svg.selectAll('*').remove();
             if (!newData) { // || newData === oldData
                 return;
             }
                 var currentGraph = angular.fromJson(newData[0]);
+                scope.params.showLabels = newData[3];
 
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
@@ -107,38 +109,48 @@ angular.module('whisperApp')
                     //Do the same with the circles for the nodes - no
                     //var color_index = 1;
                     var connectedNodes = [];
-                    var node = svg.selectAll(".node")
-                        .data(nodes)
-                        .enter().append("circle")
-                        .attr("class", "node")
-                        .attr("r", 8)
-                        .style("fill", standardColor)
-                        //.style("fill", color(5))
-                        .call(force.drag)
-                        .on('click', highlightNode);
-
+                    if (scope.params.showLabels) {
+                        var node_g = svg.selectAll(".node")
+                            .data(nodes)
+                            .enter().append("g")
+                            .attr("class", "node")
+                            .call(force.drag);
+                        node_g.append("circle")
+                            .attr("r", 8)
+                            .style("fill", standardColor)
+                            .on('click', highlightNode);
+                        node_g.append("text")
+                            .attr("dx", 10)
+                            .attr("dy", "0.35em")
+                            .text(function(d) { return d.id; })
+                            .style("stroke", "gray");
+                        var node = d3.selectAll("circle");
+                    }
+                    else {
+                        var node = svg.selectAll(".node")
+                            .data(nodes)
+                            .enter().append("circle")
+                            .attr("class", "node")
+                            .attr("r", 8)
+                            .style("fill", standardColor)
+                            .call(force.drag)
+                            .on('click', highlightNode);
+                    }
 
                     //Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
                     force.on("tick", function () {
-                        link.attr("x1", function (d) {
-                            return d.source.x;
-                        })
-                            .attr("y1", function (d) {
-                            return d.source.y;
-                        })
-                            .attr("x2", function (d) {
-                            return d.target.x;
-                        })
-                            .attr("y2", function (d) {
-                            return d.target.y;
-                        });
+                        link.attr("x1", function (d) { return d.source.x; })
+                            .attr("y1", function (d) { return d.source.y; })
+                            .attr("x2", function (d) { return d.target.x; })
+                            .attr("y2", function (d) { return d.target.y; });
+                        if (scope.params.showLabels) {
+                            d3.selectAll("text")
+                                .attr("x", function (d) { return d.x; })
+                                .attr("y", function (d) { return d.y; });
+                        }
+                        node.attr("cx", function (d) { return d.x; })
+                            .attr("cy", function (d) { return d.y; });
 
-                        node.attr("cx", function (d) {
-                            return d.x;
-                        })
-                            .attr("cy", function (d) {
-                            return d.y;
-                        });
                     });
                     // End force tick
                 }); // scope watch

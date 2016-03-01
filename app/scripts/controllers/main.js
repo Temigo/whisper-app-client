@@ -142,7 +142,6 @@ angular.module('whisperApp')
     console.log($scope.params);
     $scope.$watch('params', function(newValue, oldValue) {
         if (newValue !== oldValue) ViewParameters.set(newValue);
-        console.log(ViewParameters);
     }, true);
 
     $scope.close = function () {

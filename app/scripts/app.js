@@ -1,6 +1,6 @@
 'use strict';
-var BaseURL = 'http://temigo.pythonanywhere.com/';
-//var BaseURL = 'http://127.0.0.1:8000/';
+//var BaseURL = 'http://temigo.pythonanywhere.com/';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc overview
@@ -27,17 +27,6 @@ angular
     .config(function($httpProvider) {
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     })
-/*
-The cleanest solution to circumvent this, is by using the verbatim tag,
-which became available in Django 1.5.
-A less clean solution, is to change the syntax of the AngularJS template tags.
-Just add the following statement during module instantiation:
-
-    .config(function($interpolateProvider) {
-        $interpolateProvider.startSymbol('{$');
-        $interpolateProvider.endSymbol('$}');
-    })
-*/
     .config(function($resourceProvider) {
       $resourceProvider.defaults.stripTrailingSlashes = false;
     })
@@ -75,11 +64,12 @@ Just add the following statement during module instantiation:
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
   .factory('ViewParameters', function() {
-      var params = {'charge': -120, 'linkDistance': 50, 'zoom': false};
+      var params = {'charge': -120, 'linkDistance': 50, 'zoom': false, 'showLabels': false};
       params.set = function(data) {
         params.charge = data.charge;
         params.linkDistance = data.linkDistance;
         params.zoom = data.zoom;
+        params.showLabels = data.showLabels;
       };
       return params;
   });
