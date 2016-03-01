@@ -1,0 +1,79 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Graph : {{ graphList[currentIndex].name }}</h3>
+	</div>
+    <div class="panel-body">
+		<uib-tabset>
+			<uib-tab>
+				<uib-tab-heading>
+					Nouveau
+				</uib-tab-heading>
+				<uib-accordion close-others="oneAtATime">
+					<uib-accordion-group is-open="status.open">
+						<uib-accordion-heading>
+							<h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer
+                                </a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                            </h4>
+						</uib-accordion-heading>
+						<input type="file" on-read-file="uploadGraph($fileContent)" accept="application/json"/>
+						<!--<uib-progressbar value=""></uib-progressbar>-->
+					</uib-accordion-group>
+					<uib-accordion-group is-open="status.open2">
+						<uib-accordion-heading>
+							<h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
+                                </a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
+                            </h4>
+						</uib-accordion-heading>
+						<form class="form-horizontal" ng-submit="generateGraph(generationMethod, generateN)">
+							<!--{% csrf_token %}-->
+							<select class="form-control" name="generate_method" ng-model="generationMethod">
+								<option value="1">Complete graph</option>
+								<option value="2">Cycle graph</option>
+								<option value="3">Circular ladder graph</option>
+								<option value="4">Dorogovtsev_goltsev_mendes graph</option>
+								<option value="5">Empty graph</option>
+								<option value="6">Hypercube graph</option>
+								<option value="7">Ladder graph</option>
+								<option value="8">Path graph</option>
+								<option value="9">Star graph</option>
+								<option value="10">Wheel graph</option>
+							</select>
+							<div class="input-group">
+								<span class="input-group-addon" id="sizing-addon">Valeur de n</span>
+								<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>
+							</div>
+							<button class="btn btn-default" type="submit">OK</button>
+						</form>
+					</uib-accordion-group>
+			</uib-tab>
+			<uib-tab>
+				<uib-tab-heading>
+					Existant
+				</uib-tab-heading>
+				<form class="form-horizontal">
+	                <!-- {% csrf_token %} -->
+	                <div class="form-group">
+	                    <label for="graph_id" class="col-sm-2 control-label">Graph</label>
+	                    <div class="col-sm-10">
+	                        <select class="form-control" name="graph_id" ng-model="currentIndex" ng-options="parseInt(index) as graph.name for (index, graph) in graphList" ng-change="setCurrentIndex(currentIndex)">
+	                            <!--<option value="">Choisir</option>-->
+	                        </select>
+	                        <p ng-if="graphList === []">No graphs are available.</p>
+	                    </div>
+	                </div>
+	            </form>
+			</uib-tab>
+		</uib-tabset>
+
+		<div class="text-center">
+			<button class="btn btn-primary" ng-click="export(currentGraph)"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Export Graph (JSON)</button>
+	    </div>
+
+        </div>
+</div>

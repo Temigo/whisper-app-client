@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+	<div class="panel-heading"><h3 class="panel-title">Choose Algorithm</h3></div>
+	<div class="panel-body">
+		<div class="text-center">
+			<!--<form class="form-horizontal" method="post" action="/graph/import/algorithm/" enctype="multipart/form-data">
+				<div class="form-actions">
+					<input type="file" name="import_algorithm" accept="application/*"/>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+						Import Algorithm (*.py)
+					</button>
+				</div>
+			</form>-->
+			<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod, sourceHyp)">
+				<select class="form-control" name="algorithm_method" ng-model="algorithmMethod">
+					<option value="1">Shah and Zaman</option>
+					<option value="2">Netsleuth</option>
+				</select>
+				<h4>Paramètres de l'algorithme</h4>
+				<div class="input-group" ng-if="algorithmMethod==1">
+					<span class="input-group-addon" id="siz-addon">Source of BFS tree</span>
+					<input ng-model="$parent.sourceHyp" id="source_hyp" name="source_hyp" type="number" class="form-control" aria-describedby="siz-addon" placeholder="Infected node"/>
+				</div>
+				<button class="btn btn-default" type="submit">OK</button>
+			</form>
+		</div>
+	</div>
+</div>

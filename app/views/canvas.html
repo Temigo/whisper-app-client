@@ -1,0 +1,88 @@
+<!--<uib-alert ng-if="source!==undefined" type="success"><md-icon>info</md-icon> Source is {{ source }}</uib-alert>-->
+
+<md-fab-speed-dial class="md-fling md-fab-top-right" md-direction="left">
+    <md-fab-trigger>
+        <md-button class="md-fab md-primary">
+            <md-tooltip md-direction="top">Settings</md-tooltip>
+            <md-icon>settings</md-icon>
+        </md-button>
+    </md-fab-trigger>
+    <!--<md-toolbar>-->
+        <md-fab-actions>
+            <md-button class="md-fab md-raised md-mini" ng-click="toggleSide()">
+                <md-tooltip md-direction="top">Parameters of view</md-tooltip>
+                <md-icon>build</md-icon>
+            </md-button>
+            <md-button class="md-fab md-raised md-mini" ng-click="addNode()">
+                <md-tooltip md-direction="top">Add a node</md-tooltip>
+                <md-icon>add</md-icon>
+            </md-button>
+            <md-button class="md-fab md-raised md-mini" ng-click="addEdge()">
+                <md-tooltip md-direction="top">Add an edge</md-tooltip>
+                <md-icon>timeline</md-icon>
+            </md-button>
+            <md-button class="md-fab md-raised md-mini" ng-click="updateInfectMode()" ng-class="{'md-primary': infectMode}">
+                <md-tooltip md-direction="top">Infection mode</md-tooltip>
+                <md-icon>settings_input_antenna</md-icon>
+            </md-button>
+        </md-fab-actions>
+    <!--</md-toolbar>-->
+</md-fab-speed-dial>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$mdMedia('gt-md')">
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Parameters of view</h1>
+    </md-toolbar>
+    <md-content layout-padding ng-controller="SidenavCtrl">
+        <div layout>
+            <div flex="40" layout layout-align="center center">
+                <span class="md-body-1">Charge</span>
+            </div>
+            <md-slider flex min="-200" max="0" ng-model="params.charge" class="md-primary" aria-label="charge" id="charge-slider">
+            </md-slider>
+            <div flex="20" layout layout-align="center center">
+                <input flex type="number" ng-model="params.charge" aria-label="charge" aria-controls="charge-slider"/>
+            </div>
+        </div>
+        <div layout>
+            <div flex="40" layout layout-align="center center">
+                <span class="md-body-1">Link distance</span>
+            </div>
+            <md-slider flex min="0" max="100" ng-model="params.linkDistance" class="md-primary" aria-label="linkDistance" id="linkDistance-slider">
+            </md-slider>
+            <div flex="20" layout layout-align="center center">
+                <input flex type="number" ng-model="params.linkDistance" aria-label="linkDistance" aria-controls="linkDistance-slider"/>
+            </div>
+        </div>
+        <div layout>
+            <div flex="40" layout layout-align="center center">
+                <span class="md-body-1">Zoom & Pan</span>
+            </div>
+            <md-switch ng-model="params.zoom" aria-label="zoom-switch">
+            </md-switch>
+        </div>
+        <div layout>
+            <div flex="40" layout layout-align="center center">
+                <span class="md-body-1">Show labels</span>
+            </div>
+            <md-switch ng-model="params.showLabels" aria-label="showLabels-switch">
+            </md-switch>
+        </div>
+        <md-button ng-click="close()" class="md-primary" hide-gt-md>
+            <md-icon>close</md-icon>
+            Close
+        </md-button>
+    </md-content>
+</md-sidenav>
+
+<d3graph graph-data="{{currentGraph}}" infection-data="{{currentInfection}}" infect-mode="infectMode" source="source" infect-node="infectNode(node, infected)"></d3graph>
+<md-toolbar>
+    <div ng-if="source!==undefined" class="md-toolbar-tools">
+        Time : {{timeElapsed}} s
+        <span flex></span>
+        Source : {{source}}
+    </div>
+    <div ng-if="source === undefined" class="md-toolbar-tools">
+        No algorithm applied
+    </div>
+</md-toolbar>

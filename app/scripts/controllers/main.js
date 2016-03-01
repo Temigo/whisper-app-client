@@ -8,8 +8,19 @@
  * Controller of the whisperApp
  */
 angular.module('whisperApp')
-    .controller('MainCtrl', ['$scope', '$mdSidenav', '$window', 'Graph', 'Infection', 'Algorithm', 'GenerateGraph', '$timeout', 'FileSaver', 'Blob', function ($scope, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, $timeout, FileSaver, Blob) {
-      //$scope.graphResult = Graph.query();
+    .controller('MainCtrl', [
+        '$scope',
+        '$mdSidenav',
+        '$window',
+        'Graph',
+        'Infection',
+        'Algorithm',
+        'GenerateGraph',
+        'SimulateInfection',
+        '$timeout',
+        'FileSaver',
+        'Blob',
+        function ($scope, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob) {
       $scope.currentIndex = 0;
       $scope.graphList = [];
       $scope.currentGraph = null;
@@ -28,7 +39,7 @@ angular.module('whisperApp')
           $scope.currentInfection = data.results[$scope.currentInfectionIndex].data;
       });
 
-      $scope.parseInt = function(number) {
+    $scope.parseInt = function(number) {
         return parseInt(number, 10);
     };
 
@@ -55,8 +66,6 @@ angular.module('whisperApp')
         });
     };
 
-    //$scope.source = 1;
-    //$scope.sourceHyp = 1;
     $scope.applyAlgorithm = function(index, source) {
         var params;
         if (index == 1) {
@@ -71,7 +80,12 @@ angular.module('whisperApp')
         });
     };
 
-    $scope.infectMode = false;
+    $scope.simulateInfection = function(seeds, ratio, proba) {
+        SimulateInfection.query({'currentGraph': $scope.currentGraph, 'seeds': seeds, 'ratio': ratio, 'proba': proba}, function(data) {
+            console.log(data);
+        });
+    };
+
     $scope.addNode = function() {
         var graph = angular.fromJson($scope.currentGraph);
         var n = graph.nodes.length;
@@ -96,7 +110,7 @@ angular.module('whisperApp')
 
     };
 
-
+    $scope.infectMode = false;
     $scope.updateInfectMode = function() {
         $scope.infectMode = !$scope.infectMode;
     };
@@ -107,6 +121,7 @@ angular.module('whisperApp')
         FileSaver.saveAs(new Blob([pretty_data], {type: "application/json"}), "graph.json");
     };
 
+    /* Upload */
     $scope.uploadInfection = function($fileContent){
         $scope.currentInfection = $fileContent;
     };
@@ -114,6 +129,10 @@ angular.module('whisperApp')
         $scope.currentGraph = $fileContent;
     };
 
+    /*
+    View parameters
+    Sidenav
+    */
     $scope.toggleSide = buildToggler('right');
     function buildToggler(navID) {
         console.log("Toggle");
@@ -125,7 +144,6 @@ angular.module('whisperApp')
           });
       }
     }
-
   }])
   .controller('existingGraphCtrl', ['$scope', function($scope) {
       $scope.watch('currentIndex', function(newVal, oldVal) {

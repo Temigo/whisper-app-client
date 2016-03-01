@@ -63,6 +63,10 @@ angular
       var urlBase = BaseURL+'graph/generate/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
+  .factory('SimulateInfection', function($resource) {
+      var urlBase = BaseURL+'graph/simulate/';
+      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+  })
   .factory('ViewParameters', function() {
       var params = {'charge': -120, 'linkDistance': 50, 'zoom': false, 'showLabels': false};
       params.set = function(data) {
