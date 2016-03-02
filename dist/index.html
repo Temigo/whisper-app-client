@@ -1,6 +1,11 @@
-<!doctype html> <html> <head> <meta charset="utf-8"> <title></title> <meta name="description" content=""> <meta name="viewport" content="width=device-width"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel="stylesheet" href="styles/vendor.85de7a48.css"> <link rel="stylesheet" href="styles/main.16c86e60.css"> <!-- Material Icons --> <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- D3.js --> <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> <style>.node {
+<!doctype html> <html> <head> <meta charset="utf-8"> <title></title> <meta name="description" content=""> <meta name="viewport" content="width=device-width"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel="stylesheet" href="styles/vendor.85de7a48.css"> <link rel="stylesheet" href="styles/main.16c86e60.css"> <!-- Material Icons --> <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- D3.js --> <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> <style>/* D3.JS */
+    .node {
     stroke: #fff;
     stroke-width: 1.5px;
+    }
+
+    .node text {
+      font: 14px sans-serif;
     }
 
     .link {
@@ -8,7 +13,34 @@
     stroke-opacity: .6;
     }
 
+    .d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+    }
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+    }
+
+    /* Style northward tooltips differently */
+    .d3-tip.n:after {
+      margin: -1px 0 0 0;
+      top: 100%;
+      left: 0;
+    }
     /* UI Bootstrap */
     .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }</style> </head> <body ng-app="whisperApp" class="container-fluid"> <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]--> <!-- Add your site or application content here --> <div class="header"> <h1>Whisper App</h1> </div> <div class="row"> <div ng-view=""></div> </div> <div class="footer"> <div class="container"> <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p> </div> </div> <script src="scripts/vendor.49a7d4be.js"></script> <script src="scripts/scripts.1ee97f14.js"></script> </body> </html>
+    <![endif]--> <!-- Add your site or application content here --> <div class="header"> <h1>Whisper App</h1> </div> <div class="row"> <div ng-view=""></div> </div> <div class="footer"> <div class="container"> <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p> </div> </div> <script src="scripts/vendor.49a7d4be.js"></script> <script src="scripts/scripts.443665b5.js"></script> </body> </html>

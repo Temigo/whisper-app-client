@@ -1,6 +1,6 @@
 'use strict';
-//var BaseURL = 'http://temigo.pythonanywhere.com/';
-var BaseURL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://temigo.pythonanywhere.com/';
+//var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc overview
@@ -81,7 +81,7 @@ angular
       var params = {};
       params.nodes = [];
       params.on = false;
-      
+
       params.add = function(node) {
           params.nodes.push(node.id);
       };
