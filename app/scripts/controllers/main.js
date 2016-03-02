@@ -10,6 +10,7 @@
 angular.module('whisperApp')
     .controller('MainCtrl', [
         '$scope',
+        '$compile',
         '$mdSidenav',
         '$window',
         'Graph',
@@ -20,7 +21,7 @@ angular.module('whisperApp')
         '$timeout',
         'FileSaver',
         'Blob',
-        function ($scope, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob) {
+        function ($scope, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob) {
       $scope.currentIndex = 0;
       $scope.graphList = [];
       $scope.currentGraph = null;
@@ -66,11 +67,11 @@ angular.module('whisperApp')
                             {"id": 7, "name": "Ladder graph", group: "Classic", description: "Return the Ladder graph of length n.", params: [{name: "n", value: 0}]},
                             {"id": 8, "name": "Path graph", group: "Classic", description: "Return the Path graph P_n of n nodes linearly connected by n-1 edges.", params: [{name: "n", value: 0}]},
                             {"id": 9, "name": "Star graph", group: "Classic", description: "Return the Star graph with n+1 nodes: one center node, connected to n outer nodes.", params: [{name: "n", value: 0}]},
-                            {"id": 10, "name": "Wheel graph", group: "Classic", description: "Return the wheel graph: a single hub node connected to each node of the (n-1)-node cycle graph.", params: [{name: "n", value: 0}]},
-                            {"id": 11, "name": "Balanced tree", group: "Classic", description: "Return the perfectly balanced r-tree of height h.", params: [{name: "r", value: 0}, {name: "h", value: 0}]},
-                            {"id": 12, "name": "Barbell graph", group: "Classic", description: "Return the Barbell Graph: two complete graphs of m1 nodes connected by a path of m2 nodes.", params: [{name: "m1", value: 0}, {name: "m2", value: 0}]},
-                            {"id": 13, "name": "2D Grid Graph", group: "Classic", description: "Return the 2d grid graph of mxn nodes, each connected to its nearest neighbors.", params: [{name: "m", value: 0}, {name: "n", value: 0}]},
-                            {"id": 14, "name": "Lollipop Graph", group: "Classic", description: "Return the Lollipop Graph; K_m connected to P_n.", params: [{name: "m", value: 0}, {name: "n", value: 0}]},
+                            {id: 10, name: "Wheel graph", group: "Classic", description: "Return the wheel graph: a single hub node connected to each node of the (n-1)-node cycle graph.", params: [{name: "n", value: 0}]},
+                            {id: 11, name: "Balanced tree", group: "Classic", description: "Return the perfectly balanced r-tree of height h.", params: [{name: "r", value: 0}, {name: "h", value: 0}]},
+                            {id: 12, name: "Barbell graph", group: "Classic", description: "Return the Barbell Graph: two complete graphs of m1 nodes connected by a path of m2 nodes.", params: [{name: "m1", value: 0}, {name: "m2", value: 0}]},
+                            {id: 13, name: "2D Grid Graph", group: "Classic", description: "Return the 2d grid graph of mxn nodes, each connected to its nearest neighbors.", params: [{name: "m", value: 0}, {name: "n", value: 0}]},
+                            {id: 14, name: "Lollipop Graph", group: "Classic", description: "Return the Lollipop Graph; K_m connected to P_n.", params: [{name: "m", value: 0}, {name: "n", value: 0}]},
                             {id: 15, name: "Margulis-Gabber-Galil", group: "Expanders", description: "Return the Margulis-Gabber-Galil undirected MultiGraph on n^2 nodes.", params: [{name: "n", value: 0}]},
                             {id: 16, name: "Chordal cycle graph", group: "Expanders", description: "Return the chordal cycle graph on p nodes.", params: [{name: "p", value: 0}]},
                             {id: 17, name: "Bull graph", group: "Small", description: "Return the Bull graph.", params: []},
@@ -97,14 +98,13 @@ angular.module('whisperApp')
         });
     };
 
-    $scope.applyAlgorithm = function(index, source) {
-        var params;
-        if (index == 1) {
-            params = {'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'v': source};
-        }
-        else {
-            params = {'algorithmMethod': index, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection};
-        }
+    $scope.algorithmMethods = [{id: 1, name: "Shah and Zaman", params: [{name: "Source of BFS tree", value: null, help: "Infected node"}]},
+                                {id: 2, name: "Netsleuth", params: []},
+                                {id: 3, name: "Pinto", params: [{name: "Observers", value: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]}];
+    $scope.algorithmMethod = $scope.algorithmMethods[0];
+    $scope.applyAlgorithm = function(algorithmMethod) {
+        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection};
+
         Algorithm.query(params, function (data) {
             $scope.source = data['source'];
             $scope.timeElapsed = data['timeElapsed'];
