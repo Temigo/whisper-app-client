@@ -14,7 +14,7 @@
 			<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod)">
 				<select class="form-control" name="algorithm_method" ng-model="algorithmMethod" ng-options="method.name for method in algorithmMethods track by method.id">
 				</select>
-				<h4 ng-show="algorithmMethod.params.length">Paramètres de l'algorithme</h4>
+				<h4 class="md-title" ng-show="algorithmMethod.params.length">Paramètres de l'algorithme</h4>
 				<div class="input-group" ng-repeat="param in algorithmMethod.params" ng-if="param.selectNodes == undefined">
 {{param.selectNodes}}
 					<span class="input-group-addon" id="siz-addon">{{param.name}}</span>

@@ -25,6 +25,10 @@
                 <md-tooltip md-direction="top">Infection mode</md-tooltip>
                 <md-icon>settings_input_antenna</md-icon>
             </md-button>
+            <md-button class="md-fab md-raised md-mini" ng-click="reinitializeInfection()" ng-class="{'md-primary': infectMode}">
+                <md-tooltip md-direction="top">Delete infection</md-tooltip>
+                <md-icon>cached</md-icon>
+            </md-button>
         </md-fab-actions>
     <!--</md-toolbar>-->
 </md-fab-speed-dial>

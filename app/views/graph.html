@@ -32,17 +32,19 @@
                             </h4>
 						</uib-accordion-heading>
 						<form class="form-horizontal" ng-submit="generateGraph(generationMethod)">
-							<div class="input-group">
+						<md-content layout-padding layout-gt-sm="column" >
+							<md-input-container>
 								<select class="form-control" name="generate_method" ng-model="generationMethod" ng-options="method.name group by method.group for method in generateMethods track by method.id">
 								</select>
 								Description : {{generationMethod.description}}
-							</div>
-							<div class="input-group" ng-repeat="param in generationMethod.params">
-								<span class="input-group-addon" id="sizing-addon">{{param.name}}</span>
+							</md-input-container>
+							<md-input-container class="md-block" ng-repeat="param in generationMethod.params">
+								<label>{{param.name}}</label>
 								<!--<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>-->
-								<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}" class="form-control" aria-describedby="sizing-addon"/>
-							</div>
-							<button class="btn btn-default" type="submit">OK</button>
+								<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}"/>
+							</md-input-container>
+							<md-button class="md-primary md-raised" type="submit">OK</md-button>
+						</md-content>
 						</form>
 					</uib-accordion-group>
 			</uib-tab>

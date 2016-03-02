@@ -58,7 +58,7 @@ angular.module('whisperApp')
     /*
     Generation methods (cf NetworkX documentation)
     */
-    $scope.generateMethods = [{id: 1, name: "Complete graph", group: "Classic", description: "Return the complete graph K_n with n nodes.", params: [{name: "n", value: 0}]},
+    $scope.generateMethods = [{id: 1, name: "Complete graph", group: "Classic", description: "Return the complete graph K_n with n nodes.", params: [{name: "n", value: undefined}]},
                             {id: 2, name: "Cycle graph", group: "Classic", description: "Return the cycle graph C_n over n nodes.", params: [{name: "n", value: 0}]},
                             {"id": 3, "name": "Circular ladder graph", group: "Classic", description: "Return the circular ladder graph CL_n of length n.", params: [{name: "n", value: 0}]},
                             {"id": 4, "name": "Dorogovtsev_goltsev_mendes graph", group: "Classic", description: "Return the hierarchically constructed Dorogovtsev-Goltsev-Mendes graph.", params: [{name: "n", value: 0}]},
@@ -94,8 +94,15 @@ angular.module('whisperApp')
             }
             else {
                 $scope.currentGraph = data;
+                $scope.reinitializeInfection();
             }
         });
+    };
+
+    $scope.reinitializeInfection = function() {
+        var infection = angular.fromJson($scope.currentInfection);
+        infection.nodes = [];
+        $scope.currentInfection = angular.toJson(infection);
     };
 
     $scope.algorithmMethods = [{id: 1, name: "Shah and Zaman", params: [{name: "Source of BFS tree", value: null, help: "Infected node"}]},

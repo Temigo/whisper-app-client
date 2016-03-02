@@ -1,5 +1,10 @@
-<button type="button" class="btn btn-primary" ng-model="select" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+<!--<button type="button" class="btn btn-primary" ng-model="select" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
     <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
     Select nodes
-</button>
-<md-chips ng-model="nodes" readonly="true"></md-chips>
+</button>-->
+<md-content layout-padding layout-align="center center">
+    <md-switch ng-model="select">
+        Select nodes
+    </md-switch>
+    <md-chips ng-model="nodes" ng-attr-readonly="true"></md-chips>
+</md-content>
