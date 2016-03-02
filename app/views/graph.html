@@ -19,6 +19,7 @@
                             </h4>
 						</uib-accordion-heading>
 						<input type="file" on-read-file="uploadGraph($fileContent)" accept="application/json"/>
+
 						<!--<uib-progressbar value=""></uib-progressbar>-->
 					</uib-accordion-group>
 					<uib-accordion-group is-open="status.open2">
@@ -30,23 +31,16 @@
 								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
                             </h4>
 						</uib-accordion-heading>
-						<form class="form-horizontal" ng-submit="generateGraph(generationMethod, generateN)">
-							<!--{% csrf_token %}-->
-							<select class="form-control" name="generate_method" ng-model="generationMethod">
-								<option value="1">Complete graph</option>
-								<option value="2">Cycle graph</option>
-								<option value="3">Circular ladder graph</option>
-								<option value="4">Dorogovtsev_goltsev_mendes graph</option>
-								<option value="5">Empty graph</option>
-								<option value="6">Hypercube graph</option>
-								<option value="7">Ladder graph</option>
-								<option value="8">Path graph</option>
-								<option value="9">Star graph</option>
-								<option value="10">Wheel graph</option>
-							</select>
+						<form class="form-horizontal" ng-submit="generateGraph(generationMethod)">
 							<div class="input-group">
-								<span class="input-group-addon" id="sizing-addon">Valeur de n</span>
-								<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>
+								<select class="form-control" name="generate_method" ng-model="generationMethod" ng-options="method.name group by method.group for method in generateMethods track by method.id">
+								</select>
+								Description : {{generationMethod.description}}
+							</div>
+							<div class="input-group" ng-repeat="param in generationMethod.params">
+								<span class="input-group-addon" id="sizing-addon">{{param.name}}</span>
+								<!--<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>-->
+								<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}" class="form-control" aria-describedby="sizing-addon"/>
 							</div>
 							<button class="btn btn-default" type="submit">OK</button>
 						</form>

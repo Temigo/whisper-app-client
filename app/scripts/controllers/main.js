@@ -54,9 +54,40 @@ angular.module('whisperApp')
         $scope.currentInfection = $scope.infectionList[index].data;
     };
 
-    $scope.generateGraph = function(index, n, infection) {
+    /*
+    Generation methods (cf NetworkX documentation)
+    */
+    $scope.generateMethods = [{id: 1, name: "Complete graph", group: "Classic", description: "Return the complete graph K_n with n nodes.", params: [{name: "n", value: 0}]},
+                            {id: 2, name: "Cycle graph", group: "Classic", description: "Return the cycle graph C_n over n nodes.", params: [{name: "n", value: 0}]},
+                            {"id": 3, "name": "Circular ladder graph", group: "Classic", description: "Return the circular ladder graph CL_n of length n.", params: [{name: "n", value: 0}]},
+                            {"id": 4, "name": "Dorogovtsev_goltsev_mendes graph", group: "Classic", description: "Return the hierarchically constructed Dorogovtsev-Goltsev-Mendes graph.", params: [{name: "n", value: 0}]},
+                            {"id": 5, "name": "Empty graph", group: "Classic", description: "Return the empty graph with n nodes and zero edges.", params: [{name: "n", value: 0}]},
+                            {"id": 6, "name": "Hypercube graph", group: "Classic", description: "Return the n-dimensional hypercube.", params: [{name: "n", value: 0}]},
+                            {"id": 7, "name": "Ladder graph", group: "Classic", description: "Return the Ladder graph of length n.", params: [{name: "n", value: 0}]},
+                            {"id": 8, "name": "Path graph", group: "Classic", description: "Return the Path graph P_n of n nodes linearly connected by n-1 edges.", params: [{name: "n", value: 0}]},
+                            {"id": 9, "name": "Star graph", group: "Classic", description: "Return the Star graph with n+1 nodes: one center node, connected to n outer nodes.", params: [{name: "n", value: 0}]},
+                            {"id": 10, "name": "Wheel graph", group: "Classic", description: "Return the wheel graph: a single hub node connected to each node of the (n-1)-node cycle graph.", params: [{name: "n", value: 0}]},
+                            {"id": 11, "name": "Balanced tree", group: "Classic", description: "Return the perfectly balanced r-tree of height h.", params: [{name: "r", value: 0}, {name: "h", value: 0}]},
+                            {"id": 12, "name": "Barbell graph", group: "Classic", description: "Return the Barbell Graph: two complete graphs of m1 nodes connected by a path of m2 nodes.", params: [{name: "m1", value: 0}, {name: "m2", value: 0}]},
+                            {"id": 13, "name": "2D Grid Graph", group: "Classic", description: "Return the 2d grid graph of mxn nodes, each connected to its nearest neighbors.", params: [{name: "m", value: 0}, {name: "n", value: 0}]},
+                            {"id": 14, "name": "Lollipop Graph", group: "Classic", description: "Return the Lollipop Graph; K_m connected to P_n.", params: [{name: "m", value: 0}, {name: "n", value: 0}]},
+                            {id: 15, name: "Margulis-Gabber-Galil", group: "Expanders", description: "Return the Margulis-Gabber-Galil undirected MultiGraph on n^2 nodes.", params: [{name: "n", value: 0}]},
+                            {id: 16, name: "Chordal cycle graph", group: "Expanders", description: "Return the chordal cycle graph on p nodes.", params: [{name: "p", value: 0}]},
+                            {id: 17, name: "Bull graph", group: "Small", description: "Return the Bull graph.", params: []},
+                            {id: 18, name: "Chvátal graph", group: "Small", description: "Return the Chvátal graph.", params: []},
+                            {id: 19, name: "Moebius-Kantor graph", group: "Small", description: "Return the Moebius-Kantor graph.", params: []},
+                            {id: 20, name: "Karate Club graph", group: "Social Networks", description: "Return Zachary’s Karate Club graph.", params: []},
+                            {id: 21, name: "Davis Southern", group: "Social Networks", description: "Return Davis Southern women social network.", params: []},
+                            {id: 22, name: "Florentine families graph", group: "Social Networks", description: "Return Florentine families graph.", params: []},
+                            {id: 23, name: "Caveman graph", group: "Community", description: "Returns a caveman graph of l cliques of size k.", params: [{name: "l", value: 0}, {name: "k", value: 0}]},
+                            {id: 24, name: "Erdős-Rényi graph", group: "Random Graphs", description: "Returns a G_{n,p} random graph, also known as an Erdős-Rényi graph or a binomial graph.", params: [{name: "n", value: 0}, {name: "p", value: 0, float: true}]},
+                            {id: 25, name: "Newman–Watts–Strogatz graph", group: "Random Graphs", description: "Return a Newman–Watts–Strogatz small-world graph.", params: [{name: "n", value: 0}, {name: "k", value: 0}, {name: "p", value: 0, float: true}]},
+                            {id: 26, name: "Barabási–Albert graph", group: "Random Graphs", description: "Returns a random graph according to the Barabási–Albert preferential attachment model.", params: [{name: "n", value: 0}, {name: "m", value: 0}]}];
+    // Default value
+    $scope.generationMethod =   $scope.generateMethods[0];
+    $scope.generateGraph = function(generateMethod, infection) {
         infection = typeof(infection) !== 'undefined' ? infection : false;
-        GenerateGraph.query({'generateMethod':index, 'n': n}, function (data) {
+        GenerateGraph.query({'generateMethod':generateMethod}, function (data) {
             if (infection) {
                 $scope.currentInfection = data;
             }
