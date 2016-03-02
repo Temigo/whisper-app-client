@@ -48,6 +48,30 @@
 							<button class="btn btn-default" type="submit">OK</button>
 						</form>
 					</uib-accordion-group>
+                    <uib-accordion-group is-open="status.open6">
+						<uib-accordion-heading>
+							<h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <span class="glyphicon glyphicon-signal" aria-hidden="true"></span> Simuler
+                                </a>
+								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open6, 'glyphicon-chevron-right': !status.open6}"></i>
+                            </h4>
+						</uib-accordion-heading>
+						<form class="form-horizontal" ng-submit="simulateInfection(seeds, ratio, proba)">
+							<div class="input-group">
+								<select-nodes nodes="seeds" select="selectSeeds"></select-nodes>
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon" id="sizing-addon">Ratio</span>
+								<input ng-model="ratio" id="ratio" name="ratio" type="number" step="0.01" class="form-control" aria-describedby="sizing-addon"/>
+							</div>
+                            <div class="input-group">
+								<span class="input-group-addon" id="sizing-addon">Probability</span>
+								<input ng-model="proba" id="proba" name="proba" type="number" step="0.01" class="form-control" aria-describedby="sizing-addon"/>
+							</div>
+							<button class="btn btn-default" type="submit">OK</button>
+						</form>
+					</uib-accordion-group>
 				</uib-accordion>
 			</uib-tab>
 			<uib-tab>
@@ -70,7 +94,7 @@
 
 		<!-- Export infection -->
 		<div class="text-center">
-			<button class="btn btn-primary" ng-click="export(currentInfection)"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Export Infection (JSON)</button>
+			<button class="btn btn-primary" ng-click="export(currentInfection)"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Export Infection (JSON)</button>
 	    </div>
 	</div>
 </div>

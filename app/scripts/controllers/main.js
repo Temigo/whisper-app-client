@@ -80,9 +80,12 @@ angular.module('whisperApp')
         });
     };
 
+    $scope.seeds = [];
+    $scope.selectSeeds = 1;
     $scope.simulateInfection = function(seeds, ratio, proba) {
-        SimulateInfection.query({'currentGraph': $scope.currentGraph, 'seeds': seeds, 'ratio': ratio, 'proba': proba}, function(data) {
-            console.log(data);
+        console.log(seeds);
+        SimulateInfection.query({'currentGraph': $scope.currentGraph, 'seeds': {"data": seeds}, 'ratio': ratio, 'proba': proba}, function(data) {
+            $scope.currentInfection = data['infectionGraph'];
         });
     };
 
@@ -135,14 +138,13 @@ angular.module('whisperApp')
     */
     $scope.toggleSide = buildToggler('right');
     function buildToggler(navID) {
-        console.log("Toggle");
       return function() {
         $mdSidenav(navID)
           .toggle()
           .then(function () {
             console.debug("toggle " + navID + " is done");
           });
-      }
+      };
     }
   }])
   .controller('existingGraphCtrl', ['$scope', function($scope) {
@@ -159,7 +161,9 @@ angular.module('whisperApp')
 
     console.log($scope.params);
     $scope.$watch('params', function(newValue, oldValue) {
-        if (newValue !== oldValue) ViewParameters.set(newValue);
+        if (newValue !== oldValue) {
+            ViewParameters.set(newValue);
+        }
     }, true);
 
     $scope.close = function () {
@@ -189,4 +193,41 @@ angular.module('whisperApp')
  			});
  		}
  	};
-});
+})
+.directive('selectNodes', ['SelectionNodes', function (SelectionNodes) {
+  return {
+      restrict: 'EA',
+      scope: {
+          'nodes': '=',
+          'select': '='
+      },
+      templateUrl: 'views/selectNodes.html',
+      link: function(scope, element, attrs) {
+          scope.p = SelectionNodes;
+          scope.select = scope.p.on;
+
+          scope.$watch('p.nodes', function(newValue, oldValue) {
+              if (!newValue) {
+                  return;
+              }
+              scope.nodes = newValue;
+          }, true);
+
+          /*scope.$watch('p', function(newValue, oldValue) {
+              if (!newValue) return;
+              console.log("selectNodes");
+              console.log(newValue);
+              scope.p = newValue;
+              scope.nodes = scope.p.nodes;
+              console.log(scope.nodes);
+          }, true);*/
+
+          scope.$watch('select', function(newValue, oldValue) {
+              if (newValue === oldValue) return;
+              console.log("select");
+              scope.p.set(newValue);
+              scope.select = newValue;
+          });
+      }
+  };
+}]);

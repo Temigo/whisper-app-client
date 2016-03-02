@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('whisperApp')
-.directive('d3graph', ['d3Service', 'd3tipService', 'ViewParameters', function(d3Service, d3tipService, ViewParameters) {
+.directive('d3graph', ['d3Service', 'd3tipService', 'ViewParameters', 'SelectionNodes', function(d3Service, d3tipService, ViewParameters, SelectionNodes) {
     //Constants for the SVG
     var width = 500,
       height = 500;
-
 
     return {
       restrict: 'EA',
@@ -14,10 +13,13 @@ angular.module('whisperApp')
           infectionData: '@infectionData',
           infectMode: '=',
           source: '=',
-          infectNode: '&'
+          infectNode: '&',
+          selectSeeds: '@',
+          seeds: '='
       },
       link: function(scope, element, attrs) {
           scope.params = ViewParameters;
+          scope.selectionNodes = SelectionNodes;
 
           d3Service.then(function(d3) {
           d3tipService.then(function(d3tip) {
@@ -61,6 +63,7 @@ angular.module('whisperApp')
 
               }
           }, true);
+
 
         //console.log(scope.infectionData);
         scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels'], function(newData, oldData) {
@@ -106,8 +109,21 @@ angular.module('whisperApp')
 
                     var highlightNode = function(d) {
                         var node = d3.select(this);
+
                         if (!scope.infectMode) {
+                            if (scope.selectionNodes.on) {
+                                if (d.selected) {
+                                    scope.selectionNodes.remove(d);
+                                }
+                                else {
+                                    scope.selectionNodes.add(d);
+                                }
+                            }
+                            console.log(scope.selectionNodes);
                             d.selected = !d.selected;
+                            /*if (scope.selectSeeds) {
+                                scope.seeds.push(d);
+                            }*/
                         }
                         else { // infectMode
                             scope.infectNode({node: d, infected: d.infected});
