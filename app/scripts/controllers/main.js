@@ -105,7 +105,8 @@ angular.module('whisperApp')
         $scope.currentInfection = angular.toJson(infection);
     };
 
-    $scope.algorithmMethods = [{id: 1, name: "Shah and Zaman", params: [{name: "Source of BFS tree", value: null, help: "Infected node"}]},
+    // [{name: "Source of BFS tree", value: null, help: "Infected node"}]
+    $scope.algorithmMethods = [{id: 1, name: "Shah and Zaman", params: []},
                                 {id: 2, name: "Netsleuth", params: []},
                                 {id: 3, name: "Pinto", params: [{name: "Observers", value: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]}];
     $scope.algorithmMethod = $scope.algorithmMethods[0];

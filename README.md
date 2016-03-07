@@ -1,5 +1,9 @@
 # whisper-app-client
-Client for Whisper App
+Client for Whisper App (front-end)
+
+## Install
+
+Run `npm install && bower install` to install dependencies.
 
 ## Build & development
 
