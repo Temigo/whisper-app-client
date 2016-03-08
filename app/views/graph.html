@@ -1,56 +1,16 @@
+<h1 class="md-title">Graph : {{ graphList[currentIndex].name }}</h1>
 
-Graph : {{ graphList[currentIndex].name }}
-<uib-tabset>
-	<uib-tab>
-		<uib-tab-heading>
-			Nouveau
-		</uib-tab-heading>
-		<uib-accordion close-others="oneAtATime">
-			<uib-accordion-group is-open="status.open">
-				<uib-accordion-heading>
-					<h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer
-                        </a>
-						<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                    </h4>
-				</uib-accordion-heading>
-				<input type="file" on-read-file="uploadGraph($fileContent)" accept="application/json"/>
-
-				<!--<uib-progressbar value=""></uib-progressbar>-->
-			</uib-accordion-group>
-			<uib-accordion-group is-open="status.open2">
-				<uib-accordion-heading>
-					<h4 class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
-                        </a>
-						<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
-                    </h4>
-				</uib-accordion-heading>
-				<form class="form-horizontal" ng-submit="generateGraph(generationMethod)">
-				<md-content layout-padding layout-gt-sm="column" >
-					<md-input-container>
-						<select class="form-control" name="generate_method" ng-model="generationMethod" ng-options="method.name group by method.group for method in generateMethods track by method.id">
-						</select>
-						Description : {{generationMethod.description}}
-					</md-input-container>
-					<md-input-container class="md-block" ng-repeat="param in generationMethod.params">
-						<label>{{param.name}}</label>
-						<!--<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>-->
-						<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}"/>
-					</md-input-container>
-					<md-button class="md-primary md-raised" type="submit">OK</md-button>
-				</md-content>
-				</form>
-			</uib-accordion-group>
-	</uib-tab>
-	<uib-tab>
-		<uib-tab-heading>
-			Existant
-		</uib-tab-heading>
+<uib-accordion close-others="oneAtATime">
+	<uib-accordion-group is-open="status.open3">
+		<uib-accordion-heading>
+			<h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> Existant
+                </a>
+				<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open3, 'glyphicon-chevron-right': !status.open3}"></i>
+            </h4>
+		</uib-accordion-heading>
 		<form class="form-horizontal">
-            <!-- {% csrf_token %} -->
             <div class="form-group">
                 <label for="graph_id" class="col-sm-2 control-label">Graph</label>
                 <div class="col-sm-10">
@@ -61,8 +21,46 @@ Graph : {{ graphList[currentIndex].name }}
                 </div>
             </div>
         </form>
-	</uib-tab>
-</uib-tabset>
+	</uib-accordion-group>
+	<uib-accordion-group is-open="status.open">
+		<uib-accordion-heading>
+			<h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer
+                </a>
+				<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            </h4>
+		</uib-accordion-heading>
+		<input type="file" on-read-file="uploadGraph($fileContent)" accept="application/json"/>
+
+		<!--<uib-progressbar value=""></uib-progressbar>-->
+	</uib-accordion-group>
+	<uib-accordion-group is-open="status.open2">
+		<uib-accordion-heading>
+			<h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
+                </a>
+				<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
+            </h4>
+		</uib-accordion-heading>
+		<form class="form-horizontal" ng-submit="generateGraph(generationMethod)">
+		<md-content layout-padding layout-gt-sm="column" >
+			<md-input-container>
+				<select class="form-control" name="generate_method" ng-model="generationMethod" ng-options="method.name group by method.group for method in generateMethods track by method.id">
+				</select>
+				Description : {{generationMethod.description}}
+			</md-input-container>
+			<md-input-container class="md-block" ng-repeat="param in generationMethod.params">
+				<label>{{param.name}}</label>
+				<!--<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>-->
+				<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}"/>
+			</md-input-container>
+			<md-button class="md-primary md-raised" type="submit">OK</md-button>
+		</md-content>
+		</form>
+	</uib-accordion-group>
+</uib-accordion>
 
 <div class="text-center">
 	<button class="btn btn-primary" ng-click="export(currentGraph)"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Export Graph (JSON)</button>
