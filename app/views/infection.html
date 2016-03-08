@@ -1,95 +1,92 @@
-<div class="panel panel-default">
-	<div class="panel-heading"><h3 class="panel-title">Infection {{currentInfectionIndex}} for {{graphList[currentIndex].name}}</h3></div>
-	<div class="panel-body">
-		<uib-tabset>
-			<uib-tab>
-				<uib-tab-heading>
-					Nouveau
-				</uib-tab-heading>
-				<uib-accordion>
-					<uib-accordion-group is-open="status.open4">
-						<uib-accordion-heading>
-							<h4 class="panel-title">
-								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneInfection" aria-expanded="true" aria-controls="collapseOneInfection"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer</a>
-								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open4, 'glyphicon-chevron-right': !status.open4}"></i>
-							</h4>
-						</uib-accordion-heading>
 
-						<input type="file" on-read-file="uploadInfection($fileContent)" accept="application/json"/>
+Infection {{currentInfectionIndex}} for {{graphList[currentIndex].name}}
+<uib-tabset>
+	<uib-tab>
+		<uib-tab-heading>
+			Nouveau
+		</uib-tab-heading>
+		<uib-accordion>
+			<uib-accordion-group is-open="status.open4">
+				<uib-accordion-heading>
+					<h4 class="panel-title">
+						<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneInfection" aria-expanded="true" aria-controls="collapseOneInfection"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Importer</a>
+						<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open4, 'glyphicon-chevron-right': !status.open4}"></i>
+					</h4>
+				</uib-accordion-heading>
 
-					</uib-accordion-group>
-					<uib-accordion-group is-open="status.open5">
-						<uib-accordion-heading>
-							<h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
-                                </a>
-								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open5, 'glyphicon-chevron-right': !status.open5}"></i>
-                            </h4>
-						</uib-accordion-heading>
-						<form class="form-horizontal" ng-submit="generateGraph(generationMethod, true)">
-							<div class="input-group">
-								<select class="form-control" name="generate_method" ng-model="generationMethod" ng-options="method.name group by method.group for method in generateMethods track by method.id">
-								</select>
-								Description : {{generationMethod.description}}
-							</div>
-							<div class="input-group" ng-repeat="param in generationMethod.params">
-								<span class="input-group-addon" id="sizing-addon">{{param.name}}</span>
-								<!--<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>-->
-								<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}" class="form-control" aria-describedby="sizing-addon"/>
-							</div>
-							<button class="btn btn-default" type="submit">OK</button>
-						</form>
-					</uib-accordion-group>
-                    <uib-accordion-group is-open="status.open6">
-						<uib-accordion-heading>
-							<h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <span class="glyphicon glyphicon-signal" aria-hidden="true"></span> Simuler
-                                </a>
-								<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open6, 'glyphicon-chevron-right': !status.open6}"></i>
-                            </h4>
-						</uib-accordion-heading>
-						<form class="form-horizontal" ng-submit="simulateInfection(seeds, ratio, proba)">
-							<div class="input-group">
-								<select-nodes nodes="seeds" select="selectSeeds"></select-nodes>
-							</div>
-							<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-								<md-input-container>
-									<label>Ratio</label>
-									<input ng-model="ratio" type="number" step="0.01"/>
-								</md-input-container>
-								<md-input-container>
-									<label>Probability</label>
-									<input ng-model="proba" type="number" step="0.01"/>
-								</md-input-container>
-							</md-content>
-							<md-button class="md-primary md-raised" type="submit">OK</md-button>
-						</form>
-					</uib-accordion-group>
-				</uib-accordion>
-			</uib-tab>
-			<uib-tab>
-				<uib-tab-heading>
-					Existant
-				</uib-tab-heading>
-				<form class="form-horizontal">
-	                <div class="form-group">
-	                    <label for="infection_id" class="col-sm-2 control-label">Infection</label>
-	                    <div class="col-sm-10">
-	                        <select class="form-control" name="infection_id" ng-model="currentInfectionIndex" ng-options="parseInt(index) as infection.name for (index, infection) in infectionList" ng-change="setCurrentInfectionIndex(currentInfectionIndex)">
-	                            <!--<option value="">Choisir</option>-->
-	                        </select>
-	                        <p ng-if="infectionList === []">No infection graphs are available.</p>
-	                    </div>
-	                </div>
-	            </form>
-			</uib-tab>
-		</uib-tabset>
+				<input type="file" on-read-file="uploadInfection($fileContent)" accept="application/json"/>
 
-		<!-- Export infection -->
-		<div class="text-center">
-			<button class="btn btn-primary" ng-click="export(currentInfection)"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Export Infection (JSON)</button>
-	    </div>
-	</div>
+			</uib-accordion-group>
+			<uib-accordion-group is-open="status.open5">
+				<uib-accordion-heading>
+					<h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Générer
+                        </a>
+						<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open5, 'glyphicon-chevron-right': !status.open5}"></i>
+                    </h4>
+				</uib-accordion-heading>
+				<form class="form-horizontal" ng-submit="generateGraph(generationMethod, true)">
+					<div class="input-group">
+						<select class="form-control" name="generate_method" ng-model="generationMethod" ng-options="method.name group by method.group for method in generateMethods track by method.id">
+						</select>
+						Description : {{generationMethod.description}}
+					</div>
+					<div class="input-group" ng-repeat="param in generationMethod.params">
+						<span class="input-group-addon" id="sizing-addon">{{param.name}}</span>
+						<!--<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>-->
+						<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}" class="form-control" aria-describedby="sizing-addon"/>
+					</div>
+					<button class="btn btn-default" type="submit">OK</button>
+				</form>
+			</uib-accordion-group>
+            <uib-accordion-group is-open="status.open6">
+				<uib-accordion-heading>
+					<h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <span class="glyphicon glyphicon-signal" aria-hidden="true"></span> Simuler
+                        </a>
+						<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open6, 'glyphicon-chevron-right': !status.open6}"></i>
+                    </h4>
+				</uib-accordion-heading>
+				<form class="form-horizontal" ng-submit="simulateInfection(seeds, ratio, proba)">
+					<div class="input-group">
+						<select-nodes nodes="seeds" select="selectSeeds"></select-nodes>
+					</div>
+					<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+						<md-input-container>
+							<label>Ratio</label>
+							<input ng-model="ratio" type="number" step="0.01"/>
+						</md-input-container>
+						<md-input-container>
+							<label>Probability</label>
+							<input ng-model="proba" type="number" step="0.01"/>
+						</md-input-container>
+					</md-content>
+					<md-button class="md-primary md-raised" type="submit">OK</md-button>
+				</form>
+			</uib-accordion-group>
+		</uib-accordion>
+	</uib-tab>
+	<uib-tab>
+		<uib-tab-heading>
+			Existant
+		</uib-tab-heading>
+		<form class="form-horizontal">
+            <div class="form-group">
+                <label for="infection_id" class="col-sm-2 control-label">Infection</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="infection_id" ng-model="currentInfectionIndex" ng-options="parseInt(index) as infection.name for (index, infection) in infectionList" ng-change="setCurrentInfectionIndex(currentInfectionIndex)">
+                        <!--<option value="">Choisir</option>-->
+                    </select>
+                    <p ng-if="infectionList === []">No infection graphs are available.</p>
+                </div>
+            </div>
+        </form>
+	</uib-tab>
+</uib-tabset>
+
+<!-- Export infection -->
+<div class="text-center">
+	<button class="btn btn-primary" ng-click="export(currentInfection)"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Export Infection (JSON)</button>
 </div>

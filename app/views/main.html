@@ -1,12 +1,27 @@
 <div class="col-md-4">
-<!-- Graph -->
-<ng-include src="'views/graph.html'"></ng-include>
+	<md-tabs md-dynamic-height md-border-bottom>
 
-<!-- Infection -->
-<ng-include src="'views/infection.html'"></ng-include>
+		<!-- Graph -->
+		<md-tab label="graph">
+			<md-content class="md-padding">
+				<ng-include src="'views/graph.html'"></ng-include>
+			</md-content>
+		</md-tab>
 
-<!-- Algorithm -->
-<ng-include src="'views/algorithm.html'"></ng-include>
+		<!-- Infection -->
+		<md-tab label="infection">
+			<md-content class="md-padding">
+				<ng-include src="'views/infection.html'"></ng-include>
+			</md-content>
+		</md-tab>
+
+		<!-- Algorithm -->
+		<md-tab label="algorithm">
+			<md-content class="md-padding">
+				<ng-include src="'views/algorithm.html'"></ng-include>
+			</md-content>
+		</md-tab>
+	</md-tabs>
 </div>
 
 <!-- Canvas with graph drawing -->
