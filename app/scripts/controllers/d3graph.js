@@ -43,8 +43,8 @@ angular.module('whisperApp')
               .attr('class', 'd3-tip')
               .offset([-10, 0])
               .html(function (d) {
-              return  d.id + "";
-          });
+                  return  d.id;
+                });
           svg.call(tip);
 
         // Don't compute again everything in force layout
@@ -80,10 +80,11 @@ angular.module('whisperApp')
                 var links = currentGraph.links;
                 var infected_nodes = angular.fromJson(newData[1]).nodes;
 
-                for (var d in nodes) {
+                for (var d in nodes) { // typeof(d) = int
                     console.log(d, nodes[d], scope.source);
+                    console.log(nodes, infected_nodes);
                     nodes[d].selected = false;
-                    if (d in infected_nodes) { nodes[d].infected = true; } else {nodes[d].infected = false; }
+                    if (infected_nodes.map(function(item) { return item.id; }).indexOf(nodes[d].id) != -1) { nodes[d].infected = true; } else {nodes[d].infected = false; }
                     if (scope.source.indexOf(nodes[d].id) !== -1) { nodes[d].source = true; } else {nodes[d].source = false; }
                 }
                 //Creates the graph data structure out of the json data

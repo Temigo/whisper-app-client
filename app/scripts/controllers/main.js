@@ -115,12 +115,13 @@ angular.module('whisperApp')
                                 {id: 3, name: "Pinto", params: [{name: "Observers", value: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]}];
     $scope.algorithmMethod = $scope.algorithmMethods[0];
     $scope.multiple = {};
+
     $scope.applyAlgorithm = function(algorithmMethod, multiple) {
         if (!multiple.enabled) { multiple.times = 1; }
         var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection};
         $scope.source = [];
         $scope.timeElapsed = 0;
-        
+
         for (var i = 0; i < multiple.times ; i++) {
             Algorithm.query(params, function (data) {
                 for (var j = 0; j < data.source.length; j++) {
@@ -129,7 +130,6 @@ angular.module('whisperApp')
                         $scope.source.push(source);
                     }
                 }
-                console.log(data.timeElapsed);
                 $scope.timeElapsed = $scope.timeElapsed + data.timeElapsed;
             });
         }

@@ -22,10 +22,19 @@
 			</md-content>
 		</md-tab>
 	</md-tabs>
+
+	<md-list ng-if="source.length">
+		<md-subheader class="md-no-sticky">More informations on sources</md-subheader>
+		<md-list-item class="md-3-line" ng-repeat="s in source">
+          <div class="md-list-item-text" layout="column">
+            {{s}}
+          </div>
+        </md-list-item>
+	</md-list>
 </div>
 
 <!-- Canvas with graph drawing -->
-<div class="col-md-7" ng-include src="'views/canvas.html'">
+<div class="col-md-8" ng-include src="'views/canvas.html'">
 </div>
 
 </div>
