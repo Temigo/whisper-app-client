@@ -25,6 +25,8 @@ angular.module('whisperApp')
       $scope.currentIndex = 0;
       $scope.graphList = [];
       $scope.currentGraph = null;
+      $scope.source = [];
+      $scope.timeElapsed = 0;
 
       Graph.query(function(data) {
           $scope.graphList = data.results;
@@ -103,6 +105,8 @@ angular.module('whisperApp')
         var infection = angular.fromJson($scope.currentInfection);
         infection.nodes = [];
         $scope.currentInfection = angular.toJson(infection);
+        $scope.source = [];
+        $scope.timeElapsed = 0;
     };
 
     // [{name: "Source of BFS tree", value: null, help: "Infected node"}]
@@ -110,13 +114,27 @@ angular.module('whisperApp')
                                 {id: 2, name: "Netsleuth", params: []},
                                 {id: 3, name: "Pinto", params: [{name: "Observers", value: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]}];
     $scope.algorithmMethod = $scope.algorithmMethods[0];
-    $scope.applyAlgorithm = function(algorithmMethod) {
+    $scope.multiple = {};
+    $scope.applyAlgorithm = function(algorithmMethod, multiple) {
+        if (!multiple.enabled) { multiple.times = 1; }
         var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection};
+        $scope.source = [];
+        $scope.timeElapsed = 0;
+        
+        for (var i = 0; i < multiple.times ; i++) {
+            Algorithm.query(params, function (data) {
+                for (var j = 0; j < data.source.length; j++) {
+                    var source = data.source[j];
+                    if ($scope.source.indexOf(source) == -1) {
+                        $scope.source.push(source);
+                    }
+                }
+                console.log(data.timeElapsed);
+                $scope.timeElapsed = $scope.timeElapsed + data.timeElapsed;
+            });
+        }
 
-        Algorithm.query(params, function (data) {
-            $scope.source = data['source'];
-            $scope.timeElapsed = data['timeElapsed'];
-        });
+        $scope.timeElapsed = $scope.timeElapsed / multiple.times;
     };
 
     $scope.seeds = [];
@@ -124,7 +142,7 @@ angular.module('whisperApp')
     $scope.simulateInfection = function(seeds, ratio, proba) {
         console.log(seeds);
         SimulateInfection.query({'currentGraph': $scope.currentGraph, 'seeds': {"data": seeds}, 'ratio': ratio, 'proba': proba}, function(data) {
-            $scope.currentInfection = data['infectionGraph'];
+            $scope.currentInfection = data.infectionGraph;
         });
     };
 
@@ -262,7 +280,7 @@ angular.module('whisperApp')
           }, true);*/
 
           scope.$watch('select', function(newValue, oldValue) {
-              if (newValue === oldValue) return;
+              if (newValue === oldValue) { return; }
               console.log("select");
               scope.p.set(newValue);
               scope.select = newValue;

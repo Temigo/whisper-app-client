@@ -8,7 +8,7 @@
 		</button>
 	</div>
 </form>-->
-<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod)">
+<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod, multiple)">
 	<select class="form-control" name="algorithm_method" ng-model="algorithmMethod" ng-options="method.name for method in algorithmMethods track by method.id">
 	</select>
 	<h4 class="md-title" ng-show="algorithmMethod.params.length">Paramètres de l'algorithme</h4>
@@ -22,6 +22,15 @@
 		{{param.name}}
 		<select-nodes nodes="param.nodes" select="param.selectNodes"></select-nodes>
 	</div>
+	<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+		<md-checkbox ng-model="multiple.enabled" aria-label="Checkbox 1" flex="60">
+		  Apply multiple
+		</md-checkbox>
+		<md-input-container class="md-block" ng-if="multiple.enabled" flex="40">
+			<label>Number of times</label>
+			<input ng-model="multiple.times" type="number"/>
+		</md-input-container>
+	</md-content>
 	<div class="text-center">
 		<button class="btn btn-default" type="submit">Apply algorithm</button>
 	</div>

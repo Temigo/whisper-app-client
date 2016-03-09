@@ -12,7 +12,7 @@ angular.module('whisperApp')
           data: '@graphData', // One-way data binding
           infectionData: '@infectionData',
           infectMode: '=',
-          source: '=',
+          source: '@',
           infectNode: '&',
           selectSeeds: '@',
           seeds: '='
@@ -73,6 +73,7 @@ angular.module('whisperApp')
             }
                 var currentGraph = angular.fromJson(newData[0]);
                 scope.params.showLabels = newData[3];
+                scope.source = newData[2];
 
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
@@ -80,9 +81,10 @@ angular.module('whisperApp')
                 var infected_nodes = angular.fromJson(newData[1]).nodes;
 
                 for (var d in nodes) {
+                    console.log(d, nodes[d], scope.source);
                     nodes[d].selected = false;
                     if (d in infected_nodes) { nodes[d].infected = true; } else {nodes[d].infected = false; }
-                    if (d == scope.source) { nodes[d].source = true; } else {nodes[d].source = false; }
+                    if (scope.source.indexOf(nodes[d].id) !== -1) { nodes[d].source = true; } else {nodes[d].source = false; }
                 }
                 //Creates the graph data structure out of the json data
                 force.nodes(nodes)
