@@ -73,7 +73,7 @@ angular.module('whisperApp')
             }
                 var currentGraph = angular.fromJson(newData[0]);
                 scope.params.showLabels = newData[3];
-                scope.source = newData[2];
+                scope.source = angular.fromJson(newData[2]);
 
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
@@ -81,8 +81,6 @@ angular.module('whisperApp')
                 var infected_nodes = angular.fromJson(newData[1]).nodes;
 
                 for (var d in nodes) { // typeof(d) = int
-                    console.log(d, nodes[d], scope.source);
-                    console.log(nodes, infected_nodes);
                     nodes[d].selected = false;
                     if (infected_nodes.map(function(item) { return item.id; }).indexOf(nodes[d].id) != -1) { nodes[d].infected = true; } else {nodes[d].infected = false; }
                     if (scope.source.indexOf(nodes[d].id) !== -1) { nodes[d].source = true; } else {nodes[d].source = false; }

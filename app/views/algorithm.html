@@ -31,7 +31,10 @@
 			<input ng-model="multiple.times" type="number"/>
 		</md-input-container>
 	</md-content>
-	<div class="text-center">
+	<div class="text-center" >
 		<button class="btn btn-default" type="submit">Apply algorithm</button>
+	</div>
+	<div ng-if="progress" layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-mode="determinate" value="{{progress}}"></md-progress-circular>
 	</div>
 </form>

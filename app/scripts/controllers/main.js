@@ -121,6 +121,8 @@ angular.module('whisperApp')
         var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection};
         $scope.source = [];
         $scope.timeElapsed = 0;
+        $scope.progress = 0;
+        var step = 100/multiple.times;
 
         for (var i = 0; i < multiple.times ; i++) {
             Algorithm.query(params, function (data) {
@@ -131,10 +133,16 @@ angular.module('whisperApp')
                     }
                 }
                 $scope.timeElapsed = $scope.timeElapsed + data.timeElapsed;
+                $scope.progress = $scope.progress + step;
+
+                if (i === multiple.times - 1) {
+                    $scope.progress = 0;
+                    $scope.timeElapsed = $scope.timeElapsed / multiple.times;
+                }
             });
         }
 
-        $scope.timeElapsed = $scope.timeElapsed / multiple.times;
+
     };
 
     $scope.seeds = [];
