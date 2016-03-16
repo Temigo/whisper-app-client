@@ -22,6 +22,7 @@ angular
     'ui.bootstrap',
     //'angularFileUpload',
     //'ngFileUpload',
+    'angular-inview',
     'ngFileSaver',
     'd3'])
     .config(function($httpProvider) {
@@ -79,25 +80,44 @@ angular
   })
   .factory('SelectionNodes', ['$rootScope', function($rootScope) {
       var params = {};
-      params.nodes = [];
-      params.on = false;
+      params.instances = [];
+      params.current = null;
 
-      params.add = function(node) {
-          $rootScope.$apply(function() {
-              params.nodes.push(node.id);
-          });
+      params.Instance = function() {
+          params.current = params.instances.push(this) - 1;
+
+          this.nodes = [];
+          this.on = false;
+          this.index = params.current;
+
+          this.add = function(node) {
+              var nodes = this.nodes;
+              $rootScope.$apply(function(scope) {
+                  nodes.push(node.id);
+              });
+          };
+
+          this.remove = function(node) {
+              var removeIndex = this.nodes.indexOf(node.id);
+              var nodes = this.nodes;
+              $rootScope.$apply(function(scope) {
+                  nodes.splice(removeIndex, 1);
+              });
+          };
+
+          this.set = function(select) {
+              this.on = (select == 1);
+              if (select == 1) {
+                  params.current = this.index;
+              }
+          };
+
       };
 
-      params.remove = function(node) {
-          $rootScope.$apply(function() {
-              var removeIndex = params.nodes.indexOf(node.id);
-              params.nodes.splice(removeIndex, 1);
-          });              
+      params.getCurrent = function() {
+          return params.instances[params.current];
       };
 
-      params.set = function(select) {
-          params.on = (select == 1);
-      };
       return params;
   }]);
 

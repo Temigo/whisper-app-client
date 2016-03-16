@@ -10,7 +10,7 @@ angular.module('whisperApp')
       },
       templateUrl: 'views/selectNodes.html',
       link: function(scope, element, attrs) {
-          scope.p = SelectionNodes;
+          scope.p = new SelectionNodes.Instance();
           scope.select = scope.p.on;
 
           scope.$watch('p.nodes', function(newValue, oldValue) {
@@ -19,15 +19,6 @@ angular.module('whisperApp')
               }
               scope.nodes = newValue;
           }, true);
-
-          /*scope.$watch('p', function(newValue, oldValue) {
-              if (!newValue) return;
-              console.log("selectNodes");
-              console.log(newValue);
-              scope.p = newValue;
-              scope.nodes = scope.p.nodes;
-              console.log(scope.nodes);
-          }, true);*/
 
           scope.$watch('select', function(newValue, oldValue) {
               if (newValue === oldValue) { return; }

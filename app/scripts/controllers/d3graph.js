@@ -19,13 +19,19 @@ angular.module('whisperApp')
       },
       link: function(scope, element, attrs) {
           scope.params = ViewParameters;
-          scope.selectionNodes = SelectionNodes;
+          scope.s = SelectionNodes;
+          scope.selectionNodes = SelectionNodes.getCurrent();
+          scope.$watch('s.current', function(newValue, oldValue) {
+              if (newValue !== oldValue) {
+                  scope.selectionNodes = SelectionNodes.getCurrent();
+              }
+          });
 
           d3Service.then(function(d3) {
           d3tipService.then(function(d3tip) {
           //Set up the colour scale
           var color = d3.scale.category20().domain(d3.range(0,20));
-
+          console.log(scope.selectionNodes);
           //Set up the force layout
           var force = d3.layout.force()
               .charge(scope.params.charge)
