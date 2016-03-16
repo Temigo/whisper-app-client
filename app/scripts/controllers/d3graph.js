@@ -64,8 +64,6 @@ angular.module('whisperApp')
               }
           }, true);
 
-
-        //console.log(scope.infectionData);
         scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels'], function(newData, oldData) {
             svg.selectAll('*').remove();
             if (!newData) { // || newData === oldData

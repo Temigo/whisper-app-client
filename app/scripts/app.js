@@ -77,24 +77,29 @@ angular
       };
       return params;
   })
-  .factory('SelectionNodes', function() {
+  .factory('SelectionNodes', ['$rootScope', function($rootScope) {
       var params = {};
       params.nodes = [];
       params.on = false;
 
       params.add = function(node) {
-          params.nodes.push(node.id);
+          $rootScope.$apply(function() {
+              params.nodes.push(node.id);
+          });
       };
+
       params.remove = function(node) {
-          //var removeIndex = params.nodes.map(function(item) { return item.id; }).indexOf(node.id);
-          var removeIndex = params.nodes.indexOf(node.id);
-          params.nodes.splice(removeIndex, 1);
+          $rootScope.$apply(function() {
+              var removeIndex = params.nodes.indexOf(node.id);
+              params.nodes.splice(removeIndex, 1);
+          });              
       };
+
       params.set = function(select) {
           params.on = (select == 1);
       };
       return params;
-  });
+  }]);
 
   angular.module('d3', [])
     /*
