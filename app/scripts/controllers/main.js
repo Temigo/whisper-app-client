@@ -116,32 +116,32 @@ angular.module('whisperApp')
     $scope.algorithmMethod = $scope.algorithmMethods[0];
     $scope.multiple = {};
 
+    $scope.inProgress = false;
+    $scope.sourceFrequencies = {};
+    $scope.timeElapsedList = [];
     $scope.applyAlgorithm = function(algorithmMethod, multiple) {
         if (!multiple.enabled) { multiple.times = 1; }
-        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection};
+        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times};
         $scope.source = [];
         $scope.timeElapsed = 0;
-        $scope.progress = 0;
-        var step = 100/multiple.times;
+        $scope.inProgress = true;
 
-        for (var i = 0; i < multiple.times ; i++) {
-            Algorithm.query(params, function (data) {
-                for (var j = 0; j < data.source.length; j++) {
-                    var source = data.source[j];
-                    if ($scope.source.indexOf(source) == -1) {
-                        $scope.source.push(source);
-                    }
+        Algorithm.query(params, function (data) {
+            for (var j = 0; j < data.source.length; j++) {
+                var source = data.source[j];
+                if ($scope.source.indexOf(source) == -1) {
+                    $scope.source.push(source);
+                    $scope.sourceFrequencies[source] = 1;
                 }
-                $scope.timeElapsed = $scope.timeElapsed + data.timeElapsed;
-                $scope.progress = $scope.progress + step;
-
-                if (i === multiple.times - 1) {
-                    $scope.progress = 0;
-                    $scope.timeElapsed = $scope.timeElapsed / multiple.times;
+                else {
+                    $scope.sourceFrequencies[source]++;
                 }
-            });
-        }
-
+            }
+            //$scope.source = data.source;
+            $scope.timeElapsedList = data.timeElapsed;
+            $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
+            $scope.inProgress = false;
+        });
 
     };
 
