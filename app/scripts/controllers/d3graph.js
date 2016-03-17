@@ -6,6 +6,7 @@ angular.module('whisperApp')
     var width = 500,
         radius = 8,
         height = 500;
+    var MAX_NODES_LAYOUT = 100;
 
     return {
       restrict: 'EA',
@@ -172,6 +173,10 @@ angular.module('whisperApp')
                     force.nodes(nodes)
                         .links(links);
 
+                    // Now we are giving the SVGs co-ordinates -
+                    // the force layout is generating the co-ordinates
+                    // which this code is using to update the attributes
+                    // of the SVG elements
                     scope.updatePositions = function() {
                         link.attr("x1", function (d) { return d.source.x; })
                             .attr("y1", function (d) { return d.source.y; })
@@ -185,10 +190,10 @@ angular.module('whisperApp')
                         node.attr("cx", function (d) { return d.x; })
                             .attr("cy", function (d) { return d.y; });
                     };
-                    //Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
+
                     force.on("tick", scope.updatePositions);
 
-                    if (nodes.length < 10) {
+                    if (nodes.length < MAX_NODES_LAYOUT) {
                         force.start();
                     }
                     else {
@@ -202,8 +207,8 @@ angular.module('whisperApp')
                         //node.on('mousedown.drag', null);
 
                         for (var d in nodes) {
-                            nodes[d].x = Math.random() * width; // FIXME
-                            nodes[d].y = Math.random() * height;
+                            nodes[d].x = Math.random() * (width-radius); // FIXME : which width ?
+                            nodes[d].y = Math.random() * (height-radius);
                             nodes[d].fixed = true;
                         }
                         force.start();

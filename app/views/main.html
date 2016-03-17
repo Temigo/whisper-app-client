@@ -18,15 +18,7 @@
 		<!-- Algorithm -->
 		<md-tab label="algorithm">
 			<md-content class="md-padding">
-				<ng-include src="'views/algorithm.html'"></ng-include>
-				<md-list ng-if="source.length">
-					<md-subheader class="md-no-sticky">More informations on sources</md-subheader>
-					<md-list-item class="md-3-line" ng-repeat="s in source">
-			          <div class="md-list-item-text" layout="column">
-			            {{s}} ({{sourceFrequencies[s]}} times)
-			          </div>
-			        </md-list-item>
-				</md-list>				
+				<ng-include src="'views/algorithm.html'"></ng-include>							
 			</md-content>
 		</md-tab>
 	</md-tabs>

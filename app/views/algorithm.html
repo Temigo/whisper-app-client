@@ -38,3 +38,15 @@
 		</div>
 	</div>
 </form>
+
+<md-list ng-if="source.length">
+	<md-subheader class="md-no-sticky md-primary">More informations on sources</md-subheader>
+	<md-list-item class="md-2-line" ng-repeat="s in source">
+		<!--<md-icon class="md-avatar-icon">add</md-icon>-->
+	  <div class="md-list-item-text" layout="row" layout-align="space-between center">
+		<span class="glyphicon glyphicon-chevron-right"> </span>
+		<h3>Node {{s}}</h3>
+		<p> was found {{sourceFrequencies[s]}} times</p>
+	  </div>
+	</md-list-item>
+</md-list>
