@@ -4,7 +4,8 @@ angular.module('whisperApp')
 .directive('d3graph', ['d3Service', 'd3tipService', 'ViewParameters', 'SelectionNodes', function(d3Service, d3tipService, ViewParameters, SelectionNodes) {
     //Constants for the SVG
     var width = 500,
-      height = 500;
+        radius = 8,
+        height = 500;
 
     return {
       restrict: 'EA',
@@ -31,7 +32,7 @@ angular.module('whisperApp')
           d3tipService.then(function(d3tip) {
           //Set up the colour scale
           var color = d3.scale.category20().domain(d3.range(0,20));
-          console.log(scope.selectionNodes);
+
           //Set up the force layout
           var force = d3.layout.force()
               .charge(scope.params.charge)
@@ -54,6 +55,7 @@ angular.module('whisperApp')
           svg.call(tip);
 
         // Don't compute again everything in force layout
+        // when view parameters change
           scope.$watch('params', function(newValue, oldValue) {
               if (newValue !== oldValue) {
                   scope.params = newValue;
@@ -89,10 +91,6 @@ angular.module('whisperApp')
                     if (infected_nodes.map(function(item) { return item.id; }).indexOf(nodes[d].id) != -1) { nodes[d].infected = true; } else {nodes[d].infected = false; }
                     if (scope.source.indexOf(nodes[d].id) !== -1) { nodes[d].source = true; } else {nodes[d].source = false; }
                 }
-                //Creates the graph data structure out of the json data
-                force.nodes(nodes)
-                    .links(links)
-                    .start();
 
                     //Create all the line svgs but without locations yet
                     var link = svg.selectAll(".link")
@@ -138,8 +136,6 @@ angular.module('whisperApp')
                     };
 
                     //Do the same with the circles for the nodes - no
-                    //var color_index = 1;
-                    var connectedNodes = [];
                     if (scope.params.showLabels) {
                         var node_g = svg.selectAll(".node")
                             .data(nodes)
@@ -147,7 +143,7 @@ angular.module('whisperApp')
                             .attr("class", "node")
                             .call(force.drag);
                         node_g.append("circle")
-                            .attr("r", 8)
+                            .attr("r", radius)
                             .style("fill", standardColor)
                             .on('click', highlightNode);
                         node_g.append("text")
@@ -162,7 +158,7 @@ angular.module('whisperApp')
                             .data(nodes)
                             .enter().append("circle")
                             .attr("class", "node")
-                            .attr("r", 8)
+                            .attr("r", radius)
                             .style("fill", standardColor)
                             .call(force.drag)
                             .on('click', highlightNode);
@@ -172,8 +168,11 @@ angular.module('whisperApp')
                     }
 
 
-                    //Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
-                    force.on("tick", function () {
+                    //Creates the graph data structure out of the json data
+                    force.nodes(nodes)
+                        .links(links);
+
+                    scope.updatePositions = function() {
                         link.attr("x1", function (d) { return d.source.x; })
                             .attr("y1", function (d) { return d.source.y; })
                             .attr("x2", function (d) { return d.target.x; })
@@ -185,8 +184,35 @@ angular.module('whisperApp')
                         }
                         node.attr("cx", function (d) { return d.x; })
                             .attr("cy", function (d) { return d.y; });
+                    };
+                    //Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
+                    force.on("tick", scope.updatePositions);
 
-                    });
+                    if (nodes.length < 10) {
+                        force.start();
+                    }
+                    else {
+                        /*var drag = d3.behavior.drag()
+                            .origin(function(d) { return d; })
+                            .on("drag", function(d) {
+                                    d.x = Math.max(radius, Math.min(width - radius, d3.event.x));
+                                    d.y = Math.max(radius, Math.min(width - radius, d3.event.y));
+                                    scope.updatePositions();
+                                });*/
+                        //node.on('mousedown.drag', null);
+
+                        for (var d in nodes) {
+                            nodes[d].x = Math.random() * width; // FIXME
+                            nodes[d].y = Math.random() * height;
+                            nodes[d].fixed = true;
+                        }
+                        force.start();
+                        force.tick();
+                        force.stop();
+                        //scope.updatePositions();
+                        //node.call(drag);
+                    }
+
                     // End force tick
                 }); // scope watch
             });
