@@ -237,4 +237,26 @@ angular.module('whisperApp')
           console.debug("close RIGHT is done");
         });
     };
-});
+})
+.directive('colorNode', ['d3Service', function(d3Service) {
+    return {
+      restrict: 'EA',
+      scope: {
+          color: '@'
+      },
+      link: function(scope, element, attrs) {
+        d3Service.then(function(d3) {
+
+            var color = d3.scale.category20().domain(d3.range(0,20));
+            var svg = d3.select(element[0]).append("svg")
+                .attr("height", 30)
+                .attr("width", 30);
+            var circle = svg.append("circle")
+                .attr("cx", 15)
+                .attr("cy", 15)
+                .attr("r", 10)
+                .style("fill", scope.color);
+        });
+      }
+  };
+}]);

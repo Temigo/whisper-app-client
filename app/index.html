@@ -82,8 +82,34 @@
     </div>
 
     <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the PSC team</p>
+      <div class="row">
+        <div class="col-md-2">
+            <p><span class="glyphicon glyphicon-heart"></span> from the PSC team</p>
+        </div>
+        <div class="col-md-10">
+            <!--<h1 class="md-subhead">Legend</h1>-->
+            <md-grid-list
+                  md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6"
+                  md-row-height="fit"
+                  md-gutter="2px" md-gutter-gt-sm="1px" >
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#aec7e8"></color-node>
+                    Node
+                </md-grid-tile>
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#1f77b4"></color-node>
+                    Infected node
+                </md-grid-tile>
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#ff7f0e"></color-node>
+                    Suspected source
+                </md-grid-tile>
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#98df8a"></color-node>
+                    Selected node
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
       </div>
     </div>
 
