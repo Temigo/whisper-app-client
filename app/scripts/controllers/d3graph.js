@@ -17,7 +17,8 @@ angular.module('whisperApp')
           source: '@',
           infectNode: '&',
           selectSeeds: '@',
-          seeds: '='
+          seeds: '=',
+          frontier: '@'
       },
       link: function(scope, element, attrs) {
           scope.params = ViewParameters;
@@ -73,7 +74,7 @@ angular.module('whisperApp')
               }
           }, true);
 
-        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels'], function(newData, oldData) {
+        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels', 'frontier'], function(newData, oldData) {
             svg.selectAll('*').remove();
             if (!newData) { // || newData === oldData
                 return;
@@ -81,6 +82,7 @@ angular.module('whisperApp')
                 var currentGraph = angular.fromJson(newData[0]);
                 scope.params.showLabels = newData[3];
                 scope.source = angular.fromJson(newData[2]);
+                scope.frontier = angular.fromJson(newData[4]);
 
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
@@ -89,8 +91,10 @@ angular.module('whisperApp')
 
                 for (var d in nodes) { // typeof(d) = int
                     nodes[d].selected = false;
-                    if (infected_nodes.map(function(item) { return item.id; }).indexOf(nodes[d].id) != -1) { nodes[d].infected = true; } else {nodes[d].infected = false; }
-                    if (scope.source.indexOf(nodes[d].id) !== -1) { nodes[d].source = true; } else {nodes[d].source = false; }
+                    nodes[d].infected = (infected_nodes.map(function(item) { return item.id; }).indexOf(nodes[d].id) != -1);
+                    nodes[d].source = (scope.source.indexOf(nodes[d].id) !== -1);
+                    nodes[d].in_frontier = (scope.frontier.indexOf(nodes[d].id) !== -1);
+
                 }
 
                     //Create all the line svgs but without locations yet
@@ -108,6 +112,7 @@ angular.module('whisperApp')
                         if (d.infected) { color_index = 0; }
                         if (d.source) { color_index = 2; }
                         if (d.selected) { color_index = 5; }
+                        if (d.in_frontier) { color_index = 6; }
                         return color(color_index);
                     };
 

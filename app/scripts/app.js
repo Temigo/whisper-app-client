@@ -1,6 +1,6 @@
 'use strict';
-var BaseURL = 'http://temigo.pythonanywhere.com/';
-//var BaseURL = 'http://127.0.0.1:8000/';
+//var BaseURL = 'http://temigo.pythonanywhere.com/';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc overview
@@ -66,6 +66,10 @@ angular
   })
   .factory('SimulateInfection', function($resource) {
       var urlBase = BaseURL+'graph/simulate/';
+      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+  })
+  .factory('Frontier', function($resource) {
+      var urlBase = BaseURL+'graph/frontier/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
   })
   .factory('ViewParameters', function() {

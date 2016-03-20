@@ -21,7 +21,8 @@ angular.module('whisperApp')
         '$timeout',
         'FileSaver',
         'Blob',
-        function ($scope, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob) {
+        'Frontier',
+        function ($scope, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob, Frontier) {
       $scope.currentIndex = 0;
       $scope.graphList = [];
       $scope.currentGraph = null;
@@ -176,6 +177,13 @@ angular.module('whisperApp')
 
     $scope.addEdge = function() {
 
+    };
+
+    $scope.convexHull = [];
+    $scope.findFrontier = function() {
+        Frontier.query({'currentInfection': $scope.currentInfection}, function(data) {
+            $scope.convexHull = data.convexHull;
+        });
     };
 
     $scope.infectMode = false;
