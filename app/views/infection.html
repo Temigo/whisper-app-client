@@ -33,7 +33,7 @@
 		<input type="file" on-read-file="uploadInfection($fileContent)" accept="application/json"/>
 
 	</uib-accordion-group>
-	<uib-accordion-group is-open="status.open5">
+	<!--<uib-accordion-group is-open="status.open5">
 		<uib-accordion-heading>
 			<h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -50,12 +50,11 @@
 			</div>
 			<div class="input-group" ng-repeat="param in generationMethod.params">
 				<span class="input-group-addon" id="sizing-addon">{{param.name}}</span>
-				<!--<input ng-model="generateN" id="generate_n" name="generate_n" type="number" class="form-control" aria-describedby="sizing-addon"/>-->
 				<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}" class="form-control" aria-describedby="sizing-addon"/>
 			</div>
 			<button class="btn btn-default" type="submit">OK</button>
 		</form>
-	</uib-accordion-group>
+	</uib-accordion-group>-->
     <uib-accordion-group is-open="status.open6">
 		<uib-accordion-heading>
 			<h4 class="panel-title">

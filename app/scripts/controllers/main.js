@@ -164,9 +164,11 @@ angular.module('whisperApp')
     };
 
     $scope.infectNode = function(node, infected) {
+        var graph = angular.fromJson($scope.currentGraph);
         var infected_graph = angular.fromJson($scope.currentInfection);
         if (!infected) {
             infected_graph.nodes.push({"id": node.id});
+
         }
         else {
             var removeIndex = infected_graph.nodes.map(function(item) { return item.id; }).indexOf(node.id);
@@ -232,7 +234,6 @@ angular.module('whisperApp')
   .controller('SidenavCtrl', function ($scope, $timeout, $mdSidenav, ViewParameters) {
     $scope.params = ViewParameters;
 
-    console.log($scope.params);
     $scope.$watch('params', function(newValue, oldValue) {
         if (newValue !== oldValue) {
             ViewParameters.set(newValue);
