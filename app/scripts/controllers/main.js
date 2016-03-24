@@ -1,4 +1,5 @@
 'use strict';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -10,6 +11,7 @@
 angular.module('whisperApp')
     .controller('MainCtrl', [
         '$scope',
+        '$log',
         '$compile',
         '$mdSidenav',
         '$window',
@@ -22,7 +24,10 @@ angular.module('whisperApp')
         'FileSaver',
         'Blob',
         'Frontier',
-        function ($scope, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob, Frontier) {
+        'ImportGraph',
+        'FileUploader',
+        'Upload',
+        function ($scope, $log, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob, Frontier, ImportGraph, FileUploader, Upload) {
       $scope.currentIndex = 0;
       $scope.graphList = [];
       $scope.currentGraph = null;
@@ -203,8 +208,20 @@ angular.module('whisperApp')
     $scope.uploadInfection = function($fileContent){
         $scope.currentInfection = $fileContent;
     };
+
+    $scope.graphUploader = new FileUploader();
+    $scope.graphUploader.url = BaseURL + 'graph/import/graph/';
+    $scope.graphUploader.method = 'PUT';
+    $scope.graphUploader.withCredentials = true;
+    $scope.graphUploader.autoUpload = true;
     $scope.uploadGraph = function($fileContent){
-        $scope.currentGraph = $fileContent;
+        Upload.upload({
+            url: BaseURL + 'graph/import/graph/',
+            data: {file: $fileContent}
+        }).then(function(data) {
+            $log.debug(data);
+            $scope.currentGraph = data.data;
+        });
     };
 
     /*

@@ -31,8 +31,13 @@
 				<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
             </h4>
 		</uib-accordion-heading>
-		<input type="file" on-read-file="uploadGraph($fileContent)" accept="application/json"/>
-
+		<md-content layout layout-align="center center">
+			<md-button class="md-primary md-raised" ngf-select="uploadGraph($file)">
+				<md-icon>file_upload</md-icon>
+				Upload Graph
+			</md-button>
+		</md-content>
+		<!--<div button ngf-select="uploadGraph($file)">Upload on file select</div>-->
 		<!--<uib-progressbar value=""></uib-progressbar>-->
 	</uib-accordion-group>
 	<uib-accordion-group is-open="status.open2">

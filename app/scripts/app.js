@@ -1,6 +1,6 @@
 'use strict';
-var BaseURL = 'http://temigo.pythonanywhere.com/';
-//var BaseURL = 'http://127.0.0.1:8000/';
+//var BaseURL = 'http://temigo.pythonanywhere.com/';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc overview
@@ -20,8 +20,8 @@ angular
     //'ngTouch',
     'ngMaterial',
     'ui.bootstrap',
-    //'angularFileUpload',
-    //'ngFileUpload',
+    'angularFileUpload',
+    'ngFileUpload',
     'angular-inview',
     'ngFileSaver',
     'd3'])
@@ -71,6 +71,10 @@ angular
   .factory('Frontier', function($resource) {
       var urlBase = BaseURL+'graph/frontier/';
       return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+  })
+  .factory('ImportGraph', function($resource) {
+      var urlBase = BaseURL+'graph/import/graph/';
+      return $resource(urlBase, {}, {'update' : {method: 'PUT'}});
   })
   .factory('ViewParameters', function() {
       var params = {'charge': -120, 'linkDistance': 50, 'zoom': false, 'showLabels': false};

@@ -79,6 +79,9 @@ angular.module('whisperApp')
             if (!newData) { // || newData === oldData
                 return;
             }
+                //var FORCE_ON = (nodes.length < MAX_NODES_LAYOUT);
+                var FORCE_ON = false;
+
                 var currentGraph = angular.fromJson(newData[0]);
                 scope.params.showLabels = newData[3];
                 scope.source = angular.fromJson(newData[2]);
@@ -198,22 +201,19 @@ angular.module('whisperApp')
 
                     force.on("tick", scope.updatePositions);
 
-                    if (nodes.length < MAX_NODES_LAYOUT) {
+                    if (FORCE_ON) {
                         force.start();
                     }
                     else {
-                        /*var drag = d3.behavior.drag()
-                            .origin(function(d) { return d; })
-                            .on("drag", function(d) {
-                                    d.x = Math.max(radius, Math.min(width - radius, d3.event.x));
-                                    d.y = Math.max(radius, Math.min(width - radius, d3.event.y));
-                                    scope.updatePositions();
-                                });*/
-                        //node.on('mousedown.drag', null);
-
                         for (var d in nodes) {
-                            nodes[d].x = Math.random() * (width-radius); // FIXME : which width ?
-                            nodes[d].y = Math.random() * (height-radius);
+                            if (nodes[d].x == undefined && nodes[d].y == undefined) {
+                                nodes[d].x = Math.random() * (width-radius); // FIXME : which width ?
+                                nodes[d].y = Math.random() * (height-radius);
+                            }
+                            else {
+                                nodes[d].x = nodes[d].x * width;
+                                nodes[d].y = nodes[d].y * height;
+                            }
                             nodes[d].fixed = true;
                         }
                         force.start();
