@@ -27,7 +27,8 @@ angular.module('whisperApp')
         'ImportGraph',
         'FileUploader',
         'Upload',
-        function ($scope, $log, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob, Frontier, ImportGraph, FileUploader, Upload) {
+        'ToggleForceLayout',
+        function ($scope, $log, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob, Frontier, ImportGraph, FileUploader, Upload, ToggleForceLayout) {
       $scope.currentIndex = 0;
       $scope.graphList = [];
       $scope.currentGraph = null;
@@ -237,6 +238,11 @@ angular.module('whisperApp')
             console.debug("toggle " + navID + " is done");
           });
       };
+    }
+
+    $scope.layout = ToggleForceLayout;
+    $scope.toggleForceLayout = function() {
+        $scope.layout.on = !$scope.layout.on;
     }
   }])
   .controller('existingGraphCtrl', ['$scope', function($scope) {

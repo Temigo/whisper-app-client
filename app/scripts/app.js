@@ -86,6 +86,9 @@ angular
       };
       return params;
   })
+  .factory('ToggleForceLayout', function() {
+      return {'on': true};
+  })
   .factory('SelectionNodes', ['$rootScope', function($rootScope) {
       var params = {};
       params.instances = [];

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('whisperApp')
-.directive('d3graph', ['d3Service', 'd3tipService', 'ViewParameters', 'SelectionNodes', function(d3Service, d3tipService, ViewParameters, SelectionNodes) {
+.directive('d3graph', ['d3Service', 'd3tipService', 'ViewParameters', 'SelectionNodes', 'ToggleForceLayout', function(d3Service, d3tipService, ViewParameters, SelectionNodes, ToggleForceLayout) {
     //Constants for the SVG
     var width = 500,
         radius = 8,
@@ -23,6 +23,7 @@ angular.module('whisperApp')
       link: function(scope, element, attrs) {
           scope.params = ViewParameters;
           scope.s = SelectionNodes;
+          scope.layout = ToggleForceLayout;
           scope.selectionNodes = SelectionNodes.getCurrent();
           scope.$watch('s.current', function(newValue, oldValue) {
               if (newValue !== oldValue) {
@@ -74,19 +75,20 @@ angular.module('whisperApp')
               }
           }, true);
 
-        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels', 'frontier'], function(newData, oldData) {
+        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels', 'frontier', 'layout.on'], function(newData, oldData) {
             svg.selectAll('*').remove();
             if (!newData) { // || newData === oldData
                 return;
             }
                 //var FORCE_ON = (nodes.length < MAX_NODES_LAYOUT);
-                var FORCE_ON = false;
+                var FORCE_ON = scope.layout.on;
 
                 var currentGraph = angular.fromJson(newData[0]);
                 scope.params.showLabels = newData[3];
                 scope.source = angular.fromJson(newData[2]);
                 scope.frontier = angular.fromJson(newData[4]);
-
+                scope.layout.on = newData[5];
+                
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
                 var links = currentGraph.links;

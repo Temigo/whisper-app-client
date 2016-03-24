@@ -31,6 +31,11 @@
                 <md-tooltip md-direction="top">Find infected frontier</md-tooltip>
                 <md-icon>all_out</md-icon>
             </md-button>
+            <md-button class="md-fab md-raised md-mini" ng-click="toggleForceLayout()">
+                <md-tooltip md-direction="top">Enable layout computing</md-tooltip>
+                <md-icon ng-if="layout.on">pause</md-icon>
+                <md-icon ng-if="!layout.on">play_arrow</md-icon>
+            </md-button>
         </md-fab-actions>
     <!--</md-toolbar>-->
 </md-fab-speed-dial>
