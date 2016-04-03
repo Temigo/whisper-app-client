@@ -114,6 +114,7 @@ angular.module('whisperApp')
         infection.nodes = [];
         $scope.currentInfection = angular.toJson(infection);
         $scope.source = [];
+        $scope.seeds = [];
         $scope.timeElapsed = 0;
     };
 
@@ -154,9 +155,8 @@ angular.module('whisperApp')
     };
 
     $scope.seeds = [];
-    $scope.selectSeeds = 1;
     $scope.simulateInfection = function(seeds, ratio, proba) {
-        console.log(seeds);
+        $scope.seeds = seeds;
         SimulateInfection.query({'currentGraph': $scope.currentGraph, 'seeds': {"data": seeds}, 'ratio': ratio, 'proba': proba}, function(data) {
             $scope.currentInfection = data.infectionGraph;
         });
@@ -216,7 +216,7 @@ angular.module('whisperApp')
 
     $scope.graphUploader = new FileUploader();
     $scope.graphUploader.url = BaseURL + 'graph/import/graph/';
-    $scope.graphUploader.method = 'PUT';
+    $scope.graphUploader.method = 'POST';
     $scope.graphUploader.withCredentials = true;
     $scope.graphUploader.autoUpload = true;
     $scope.uploadGraph = function($fileContent, infection){

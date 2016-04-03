@@ -87,7 +87,7 @@
     </md-content>
 </md-sidenav>
 
-<d3graph graph-data="{{currentGraph}}" infection-data="{{currentInfection}}" infect-mode="infectMode" source="{{source}}" infect-node="infectNode(node, infected)" selectSeeds="{{selectSeeds}}" seeds="seeds" frontier="{{convexHull}}"></d3graph>
+<d3graph graph-data="{{currentGraph}}" infection-data="{{currentInfection}}" infect-mode="infectMode" source="{{source}}" infect-node="infectNode(node, infected)" seeds="{{seeds}}" frontier="{{convexHull}}"></d3graph>
 <md-toolbar>
     <div ng-if="source.length" class="md-toolbar-tools">
         Mean Time : {{timeElapsed}} s

@@ -16,8 +16,7 @@ angular.module('whisperApp')
           infectMode: '=',
           source: '@',
           infectNode: '&',
-          selectSeeds: '@',
-          seeds: '=',
+          seeds: '@',
           frontier: '@'
       },
       link: function(scope, element, attrs) {
@@ -84,6 +83,7 @@ angular.module('whisperApp')
                 scope.params.showLabels = newData[3];
                 scope.source = angular.fromJson(newData[2]);
                 scope.frontier = angular.fromJson(newData[4]);
+
                 scope.layout.on = newData[5];
 
                 //Read the data from the mis element
@@ -98,7 +98,7 @@ angular.module('whisperApp')
                     nodes[d].infected = (infected_nodes.map(function(item) { return item.id; }).indexOf(nodes[d].id) != -1);
                     nodes[d].source = (scope.source.indexOf(nodes[d].id) !== -1);
                     nodes[d].in_frontier = (scope.frontier.indexOf(nodes[d].id) !== -1);
-
+                    nodes[d].is_seed = (scope.seeds.indexOf(nodes[d].id) !== -1);
                 }
 
                     //Create all the line svgs but without locations yet
@@ -117,6 +117,7 @@ angular.module('whisperApp')
                         if (d.source) { color_index = 2; }
                         if (d.selected) { color_index = 5; }
                         if (d.in_frontier) { color_index = 6; }
+                        if (d.is_seed) { color_index = 16; }
                         return color(color_index);
                     };
 
