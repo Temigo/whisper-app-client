@@ -80,19 +80,18 @@ angular.module('whisperApp')
             if (!newData) { // || newData === oldData
                 return;
             }
-                //var FORCE_ON = (nodes.length < MAX_NODES_LAYOUT);
-                var FORCE_ON = scope.layout.on;
-
                 var currentGraph = angular.fromJson(newData[0]);
                 scope.params.showLabels = newData[3];
                 scope.source = angular.fromJson(newData[2]);
                 scope.frontier = angular.fromJson(newData[4]);
                 scope.layout.on = newData[5];
-                
+
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
                 var links = currentGraph.links;
                 var infected_nodes = angular.fromJson(newData[1]).nodes;
+
+                var FORCE_ON = scope.layout.on && (nodes.length < MAX_NODES_LAYOUT);
 
                 for (var d in nodes) { // typeof(d) = int
                     nodes[d].selected = false;
@@ -212,10 +211,10 @@ angular.module('whisperApp')
                                 nodes[d].x = Math.random() * (width-radius); // FIXME : which width ?
                                 nodes[d].y = Math.random() * (height-radius);
                             }
-                            else {
+                            /*else {
                                 nodes[d].x = nodes[d].x * width;
                                 nodes[d].y = nodes[d].y * height;
-                            }
+                            }*/
                             nodes[d].fixed = true;
                         }
                         force.start();

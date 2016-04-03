@@ -1,5 +1,6 @@
 'use strict';
-var BaseURL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://temigo.pythonanywhere.com/';
+//var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -206,22 +207,31 @@ angular.module('whisperApp')
     };
 
     /* Upload */
-    $scope.uploadInfection = function($fileContent){
-        $scope.currentInfection = $fileContent;
-    };
+    /*$scope.infectionUploader = new FileUploader();
+    $scope.infectionUploader.url = BaseURL + 'graph/import/infection/';
+    $scope.infectionUploader.method = 'PUT';
+    $scope.infectionUploader.withCredentials = true;
+    $scope.infectionUploader.autoUpload = true;*/
+
 
     $scope.graphUploader = new FileUploader();
     $scope.graphUploader.url = BaseURL + 'graph/import/graph/';
     $scope.graphUploader.method = 'PUT';
     $scope.graphUploader.withCredentials = true;
     $scope.graphUploader.autoUpload = true;
-    $scope.uploadGraph = function($fileContent){
+    $scope.uploadGraph = function($fileContent, infection){
+        if (infection == undefined) { infection = false; }
         Upload.upload({
             url: BaseURL + 'graph/import/graph/',
             data: {file: $fileContent}
         }).then(function(data) {
             $log.debug(data);
-            $scope.currentGraph = data.data;
+            if (infection) {
+                $scope.currentInfection = data.data;
+            }
+            else {
+                $scope.currentGraph = data.data;
+            }
         });
     };
 
@@ -243,7 +253,7 @@ angular.module('whisperApp')
     $scope.layout = ToggleForceLayout;
     $scope.toggleForceLayout = function() {
         $scope.layout.on = !$scope.layout.on;
-    }
+    };
   }])
   .controller('existingGraphCtrl', ['$scope', function($scope) {
       $scope.watch('currentIndex', function(newVal, oldVal) {

@@ -30,7 +30,17 @@
 			</h4>
 		</uib-accordion-heading>
 
-		<input type="file" on-read-file="uploadInfection($fileContent)" accept="application/json"/>
+		<!--<input type="file" on-read-file="uploadInfection($fileContent)" accept="application/json"/>-->
+
+		<md-content layout="column" layout-align="center center">
+			<div flex>
+				<p class="inset">Accepted formats: JSON (NetworkX node_link_data), Pajek</p>
+			</div>
+			<md-button class="md-primary md-raised" ngf-select="uploadGraph($file, true)">
+				<md-icon>file_upload</md-icon>
+				Upload Graph
+			</md-button>
+		</md-content>
 
 	</uib-accordion-group>
 	<!--<uib-accordion-group is-open="status.open5">

@@ -31,7 +31,11 @@
 				<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
             </h4>
 		</uib-accordion-heading>
-		<md-content layout layout-align="center center">
+
+		<md-content layout="column" layout-align="center center">
+			<div flex>
+				<p class="inset">Accepted formats: JSON (NetworkX node_link_data), Pajek</p>
+			</div>
 			<md-button class="md-primary md-raised" ngf-select="uploadGraph($file)">
 				<md-icon>file_upload</md-icon>
 				Upload Graph
