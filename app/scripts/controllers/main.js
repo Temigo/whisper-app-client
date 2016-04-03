@@ -121,7 +121,9 @@ angular.module('whisperApp')
     // [{name: "Source of BFS tree", value: null, help: "Infected node"}]
     $scope.algorithmMethods = [{id: 1, name: "Shah and Zaman", params: []},
                                 {id: 2, name: "Netsleuth", params: []},
-                                {id: 3, name: "Pinto", params: [{name: "Observers", nodes: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]}];
+                                {id: 3, name: "Pinto", params: [{name: "Observers", nodes: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]},
+                                {id: 4, name: "Fioriti and Chinnici", params: []},
+                                {id: 5, name: "Remi & Henri", params: []}];
     $scope.algorithmMethod = $scope.algorithmMethods[0];
     $scope.multiple = {};
 
@@ -207,13 +209,6 @@ angular.module('whisperApp')
     };
 
     /* Upload */
-    /*$scope.infectionUploader = new FileUploader();
-    $scope.infectionUploader.url = BaseURL + 'graph/import/infection/';
-    $scope.infectionUploader.method = 'PUT';
-    $scope.infectionUploader.withCredentials = true;
-    $scope.infectionUploader.autoUpload = true;*/
-
-
     $scope.graphUploader = new FileUploader();
     $scope.graphUploader.url = BaseURL + 'graph/import/graph/';
     $scope.graphUploader.method = 'POST';
