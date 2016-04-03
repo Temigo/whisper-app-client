@@ -74,7 +74,7 @@ angular.module('whisperApp')
               }
           }, true);
 
-        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels', 'frontier', 'layout.on'], function(newData, oldData) {
+        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels', 'frontier', 'layout.on', 'seeds'], function(newData, oldData) {
             svg.selectAll('*').remove();
             if (!newData) { // || newData === oldData
                 return;
@@ -83,8 +83,8 @@ angular.module('whisperApp')
                 scope.params.showLabels = newData[3];
                 scope.source = angular.fromJson(newData[2]);
                 scope.frontier = angular.fromJson(newData[4]);
-
                 scope.layout.on = newData[5];
+                scope.seeds = angular.fromJson(newData[6]);
 
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
