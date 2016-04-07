@@ -58,19 +58,19 @@ angular
   })
   .factory('Algorithm', function($resource) {
       var urlBase = BaseURL+'graph/algorithm/';
-      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+      return $resource(urlBase, {}, {'query' : {method: 'POST', isArray: false}});
   })
   .factory('GenerateGraph', function($resource) {
       var urlBase = BaseURL+'graph/generate/';
-      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+      return $resource(urlBase, {}, {'query' : {method: 'POST', isArray: false}});
   })
   .factory('SimulateInfection', function($resource) {
       var urlBase = BaseURL+'graph/simulate/';
-      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+      return $resource(urlBase, {}, {'query' : {method: 'POST', isArray: false}});
   })
   .factory('Frontier', function($resource) {
       var urlBase = BaseURL+'graph/frontier/';
-      return $resource(urlBase, {}, {'query' : {method: 'GET', isArray: false}});
+      return $resource(urlBase, {}, {'query' : {method: 'POST', isArray: false}});
   })
   .factory('ImportGraph', function($resource) {
       var urlBase = BaseURL+'graph/import/graph/';

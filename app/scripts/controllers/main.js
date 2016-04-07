@@ -125,7 +125,8 @@ angular.module('whisperApp')
                                 {id: 2, name: "Netsleuth", params: []},
                                 {id: 3, name: "Pinto", params: [{name: "Observers", nodes: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]},
                                 {id: 4, name: "Fioriti and Chinnici", params: []},
-                                {id: 5, name: "Remi & Henri", params: []}];
+                                {id: 5, name: "Remi", params: []},
+                                {id: 6, name: "Remi modified", params: []}];
     $scope.algorithmMethod = $scope.algorithmMethods[0];
     $scope.multiple = {};
 
@@ -154,6 +155,8 @@ angular.module('whisperApp')
             $scope.timeElapsedList = data.timeElapsed;
             $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
             $scope.inProgress = false;
+        }, function(error) {
+            $scope.error = error.statusText;
         });
 
     };
