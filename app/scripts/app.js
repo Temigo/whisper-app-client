@@ -1,6 +1,6 @@
 'use strict';
-//var BaseURL = 'http://temigo.pythonanywhere.com/';
-var BaseURL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://temigo.pythonanywhere.com/';
+//var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc overview
@@ -24,7 +24,11 @@ angular
     'ngFileUpload',
     'angular-inview',
     'ngFileSaver',
+    'angular-loading-bar',
     'd3'])
+    .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+      cfpLoadingBarProvider.includeSpinner = false;
+    }])
     .config(function($httpProvider) {
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     })

@@ -122,10 +122,10 @@ angular.module('whisperApp')
                     var standardColor = function(d) {
                         var color_index = 1;
                         if (d.infected) { color_index = 0; }
-                        if (d.source) { color_index = 2; }
-                        if (d.selected) { color_index = 5; }
                         if (d.in_frontier) { color_index = 6; }
                         if (d.is_seed) { color_index = 16; }
+                        if (d.source) { color_index = 2; }
+                        if (d.selected) { color_index = 5; }
                         return color(color_index);
                     };
 

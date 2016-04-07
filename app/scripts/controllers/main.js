@@ -1,6 +1,6 @@
 'use strict';
-//var BaseURL = 'http://temigo.pythonanywhere.com/';
-var BaseURL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://temigo.pythonanywhere.com/';
+//var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -38,7 +38,7 @@ angular.module('whisperApp')
 
       Graph.query(function(data) {
           $scope.graphList = data.results;
-          $scope.currentGraph = data.results[$scope.currentIndex].data;
+          $scope.currentGraph = angular.fromJson(data.results[$scope.currentIndex].data);
       });
 
      $scope.infectionList = [];
@@ -47,7 +47,7 @@ angular.module('whisperApp')
 
      Infection.query(function(data) {
           $scope.infectionList = data.results;
-          $scope.currentInfection = data.results[$scope.currentInfectionIndex].data;
+          $scope.currentInfection = angular.fromJson(data.results[$scope.currentInfectionIndex].data);
       });
 
     $scope.parseInt = function(number) {
@@ -57,12 +57,11 @@ angular.module('whisperApp')
 
     $scope.setCurrentIndex = function(index) {
         $scope.currentIndex = index;
-        $scope.currentGraph = $scope.graphList[index].data;
+        $scope.currentGraph = angular.fromJson($scope.graphList[index].data);
     };
 
     $scope.setCurrentInfectionIndex = function(index) {
-        console.log($scope.infectionList);
-        $scope.currentInfection = $scope.infectionList[index].data;
+        $scope.currentInfection = angular.fromJson($scope.infectionList[index].data);
     };
 
     /*
@@ -114,10 +113,12 @@ angular.module('whisperApp')
     $scope.reinitializeInfection = function() {
         var infection = angular.fromJson($scope.currentInfection);
         infection.nodes = [];
+        infection.links = [];
         $scope.currentInfection = angular.toJson(infection);
         $scope.source = [];
         $scope.seeds = [];
         $scope.timeElapsed = 0;
+        $scope.convexHull = [];
     };
 
     // [{name: "Source of BFS tree", value: null, help: "Infected node"}]
