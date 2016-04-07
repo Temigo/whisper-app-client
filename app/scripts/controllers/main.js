@@ -1,6 +1,6 @@
 'use strict';
-var BaseURL = 'http://temigo.pythonanywhere.com/';
-//var BaseURL = 'http://127.0.0.1:8000/';
+//var BaseURL = 'http://temigo.pythonanywhere.com/';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -96,14 +96,16 @@ angular.module('whisperApp')
                             {id: 26, name: "Barabási–Albert graph", group: "Random Graphs", description: "Returns a random graph according to the Barabási–Albert preferential attachment model.", params: [{name: "n", value: 0}, {name: "m", value: 0}]}];
     // Default value
     $scope.generationMethod =   $scope.generateMethods[0];
+    $scope.positions = {};
     $scope.generateGraph = function(generateMethod, infection) {
         infection = typeof(infection) !== 'undefined' ? infection : false;
         GenerateGraph.query({'generateMethod':generateMethod}, function (data) {
             if (infection) {
-                $scope.currentInfection = data;
+                $scope.currentInfection = data.graph;
             }
             else {
-                $scope.currentGraph = data;
+                $scope.currentGraph = data.graph;
+                $scope.positions = data.positions;
                 $scope.reinitializeInfection();
             }
         });

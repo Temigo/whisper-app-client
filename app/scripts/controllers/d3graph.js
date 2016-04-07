@@ -17,7 +17,8 @@ angular.module('whisperApp')
           source: '@',
           infectNode: '&',
           seeds: '@',
-          frontier: '@'
+          frontier: '@',
+          positions: '@'
       },
       link: function(scope, element, attrs) {
           scope.params = ViewParameters;
@@ -74,7 +75,7 @@ angular.module('whisperApp')
               }
           }, true);
 
-        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels', 'frontier', 'layout.on', 'seeds'], function(newData, oldData) {
+        scope.$watchGroup(['data', 'infectionData', 'source', 'params.showLabels', 'frontier', 'layout.on', 'seeds', 'positions'], function(newData, oldData) {
             svg.selectAll('*').remove();
             if (!newData) { // || newData === oldData
                 return;
@@ -85,6 +86,7 @@ angular.module('whisperApp')
                 scope.frontier = angular.fromJson(newData[4]);
                 scope.layout.on = newData[5];
                 scope.seeds = angular.fromJson(newData[6]);
+                scope.positions = angular.fromJson(newData[7]);
 
                 //Read the data from the mis element
                 var nodes = currentGraph.nodes;
@@ -99,6 +101,12 @@ angular.module('whisperApp')
                     nodes[d].source = (scope.source.indexOf(nodes[d].id) !== -1);
                     nodes[d].in_frontier = (scope.frontier.indexOf(nodes[d].id) !== -1);
                     nodes[d].is_seed = (scope.seeds.indexOf(nodes[d].id) !== -1);
+                    if (nodes[d].id in scope.positions) {
+                        // Positions in [-1; 1]
+                        nodes[d].x = (scope.positions[nodes[d].id][0]+1) * width/2;
+                        nodes[d].y = (scope.positions[nodes[d].id][1]+1) * height/2;
+                    }
+
                 }
 
                     //Create all the line svgs but without locations yet
@@ -201,23 +209,24 @@ angular.module('whisperApp')
                             .attr("cy", function (d) { return d.y; });
                     };
 
+                    if (scope.positions !== {}) {
+                        scope.updatePositions();
+                    }
+
                     force.on("tick", scope.updatePositions);
 
                     if (FORCE_ON) {
                         force.start();
                     }
                     else {
-                        for (var d in nodes) {
+
+                        /*for (var d in nodes) {
                             if (nodes[d].x == undefined && nodes[d].y == undefined) {
                                 nodes[d].x = Math.random() * (width-radius); // FIXME : which width ?
                                 nodes[d].y = Math.random() * (height-radius);
                             }
-                            /*else {
-                                nodes[d].x = nodes[d].x * width;
-                                nodes[d].y = nodes[d].y * height;
-                            }*/
                             nodes[d].fixed = true;
-                        }
+                        }*/
                         force.start();
                         force.tick();
                         force.stop();
