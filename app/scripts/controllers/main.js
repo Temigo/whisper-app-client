@@ -1,6 +1,6 @@
 'use strict';
-var BaseURL = 'http://temigo.pythonanywhere.com/';
-//var BaseURL = 'http://127.0.0.1:8000/';
+//var BaseURL = 'http://temigo.pythonanywhere.com/';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -126,24 +126,32 @@ angular.module('whisperApp')
                                 {id: 2, name: "Netsleuth", params: []},
                                 {id: 3, name: "Pinto", params: [{name: "Observers", nodes: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]},
                                 {id: 4, name: "Fioriti and Chinnici", params: []},
-                                {id: 5, name: "Remi", params: []},
-                                {id: 6, name: "Remi modified", params: []}];
+                                {id: 5, name: "The faster, the guiltier", params: []},
+                                {id: 6, name: "The faster, the guiltier (modified version)", params: []}];
     $scope.algorithmMethod = $scope.algorithmMethods[0];
     $scope.multiple = {};
 
     $scope.inProgress = false;
     $scope.sourceFrequencies = {};
     $scope.timeElapsedList = [];
+    $scope.sourceDistances = {};
     $scope.applyAlgorithm = function(algorithmMethod, multiple) {
         if (!multiple.enabled) { multiple.times = 1; }
-        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times};
+        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds};
         $scope.source = [];
         $scope.timeElapsed = 0;
         $scope.inProgress = true;
 
         Algorithm.query(params, function (data) {
+            console.log(data);
             for (var j = 0; j < data.source.length; j++) {
                 var source = data.source[j];
+                $scope.sourceDistances[source] = {};
+
+                angular.forEach(data.distances[source], function(value, key) {
+                    console.log(key, value);
+                    $scope.sourceDistances[source][key] = value;
+                });
                 if ($scope.source.indexOf(source) == -1) {
                     $scope.source.push(source);
                     $scope.sourceFrequencies[source] = 1;
