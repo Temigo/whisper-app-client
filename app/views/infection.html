@@ -1,7 +1,7 @@
 
-<h1 class="md-title">Infection {{currentInfectionIndex}} for {{graphList[currentIndex].name}}</h1>
+<!--<h1 class="md-title">Infection {{currentInfectionIndex}} for {{graphList[currentIndex].name}}</h1>-->
 <uib-accordion>
-	<uib-accordion-group is-open="status.open7">
+	<!--<uib-accordion-group is-open="status.open7">
 		<uib-accordion-heading>
 			<h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -15,13 +15,12 @@
                 <label for="infection_id" class="col-sm-2 control-label">Infection</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="infection_id" ng-model="currentInfectionIndex" ng-options="parseInt(index) as infection.name for (index, infection) in infectionList" ng-change="setCurrentInfectionIndex(currentInfectionIndex)">
-                        <!--<option value="">Choisir</option>-->
                     </select>
                     <p ng-if="infectionList === []">No infection graphs are available.</p>
                 </div>
             </div>
         </form>
-	</uib-accordion-group>
+	</uib-accordion-group>-->
 	<uib-accordion-group is-open="status.open4">
 		<uib-accordion-heading>
 			<h4 class="panel-title">

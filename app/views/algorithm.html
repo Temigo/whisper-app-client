@@ -42,11 +42,10 @@
 
 <md-list ng-if="source.length">
 	<md-subheader class="md-no-sticky md-primary">More informations on sources</md-subheader>
-	<md-list-item class="md-2-line" ng-repeat="s in source">
+	<md-list-item class="md-2-line" ng-repeat="s in source | orderBy : source_order : true">
 		<md-icon class="md-avatar-icon">album</md-icon>
 		<!--<span class="glyphicon glyphicon-chevron-right md-avatar"></span>-->
 	  <div class="md-list-item-text" layout="column">
-
 		<h3>   Node {{s}}</h3>
 		<h4> was found {{sourceFrequencies[s]}} times</h4>
 		<p ng-if="seeds.length">Distance from seeds : {{sourceDistances[s]}}</p>

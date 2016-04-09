@@ -1,4 +1,4 @@
-<h1 class="md-title">Graph : {{ graphList[currentIndex].name }}</h1>
+<h1 class="md-title">Graph : {{ currentGraph.graph.name || graphList[currentIndex].name  }}</h1>
 
 <uib-accordion close-others="oneAtATime">
 	<uib-accordion-group is-open="status.open3">

@@ -30,6 +30,11 @@ angular.module('whisperApp')
         'Upload',
         'ToggleForceLayout',
         function ($scope, $log, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob, Frontier, ImportGraph, FileUploader, Upload, ToggleForceLayout) {
+      $scope.error = "";
+      $scope.closeAlert = function() {
+        $scope.error = "";
+      };
+
       $scope.currentIndex = 0;
       $scope.graphList = [];
       $scope.currentGraph = null;
@@ -135,6 +140,7 @@ angular.module('whisperApp')
     $scope.sourceFrequencies = {};
     $scope.timeElapsedList = [];
     $scope.sourceDistances = {};
+    $scope.source_order = function(s) { return $scope.sourceFrequencies[s]; };
     $scope.applyAlgorithm = function(algorithmMethod, multiple) {
         if (!multiple.enabled) { multiple.times = 1; }
         var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds};
