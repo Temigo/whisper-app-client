@@ -7,7 +7,8 @@ angular.module('whisperApp')
       scope: {
           'currentNodes': '@',
           'nodes': '=',
-          'select': '='
+          'select': '=',
+          'title': '@',
       },
       templateUrl: 'views/selectNodes.html',
       link: function(scope, element, attrs) {

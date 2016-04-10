@@ -141,7 +141,6 @@ angular.module('whisperApp')
                                     scope.selectionNodes.add(d);
                                 }
                             }
-                            console.log(scope.selectionNodes);
                             d.selected = !d.selected;
                             /*if (scope.selectSeeds) {
                                 scope.seeds.push(d);
@@ -170,7 +169,7 @@ angular.module('whisperApp')
                             .attr("dy", "0.35em")
                             .text(function(d) { return d.id; })
                             .style("stroke", "gray");
-                        var node = d3.selectAll("circle");
+                        var node = svg.selectAll("circle");
                     }
                     else {
                         var node = svg.selectAll(".node")

@@ -1,6 +1,6 @@
 'use strict';
-var BaseURL = 'http://temigo.pythonanywhere.com/';
-//var BaseURL = 'http://127.0.0.1:8000/';
+//var BaseURL = 'http://temigo.pythonanywhere.com/';
+var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -114,7 +114,9 @@ angular.module('whisperApp')
             }
         });
     };
-
+    /*
+    Clean graph/infection : delete every old attribute
+    */
     $scope.reinitializeInfection = function() {
         var infection = angular.fromJson($scope.currentInfection);
         infection.nodes = [];
@@ -126,7 +128,6 @@ angular.module('whisperApp')
         $scope.convexHull = [];
     };
 
-    // [{name: "Source of BFS tree", value: null, help: "Infected node"}]
     $scope.algorithmMethods = [{id: 1, name: "Shah and Zaman", params: []},
                                 {id: 2, name: "Netsleuth", params: []},
                                 {id: 3, name: "Pinto", params: [{name: "Observers", nodes: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]},
@@ -136,7 +137,6 @@ angular.module('whisperApp')
     $scope.algorithmMethod = $scope.algorithmMethods[0];
     $scope.multiple = {};
 
-    $scope.inProgress = false;
     $scope.sourceFrequencies = {};
     $scope.timeElapsedList = [];
     $scope.sourceDistances = {};
@@ -148,7 +148,6 @@ angular.module('whisperApp')
         var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
         $scope.source = [];
         $scope.timeElapsed = 0;
-        $scope.inProgress = true;
 
         Algorithm.query(params, function (data) {
             $scope.mean = data.mean;
@@ -158,7 +157,6 @@ angular.module('whisperApp')
                 $scope.sourceDistances[source] = {};
 
                 angular.forEach(data.distances[source], function(value, key) {
-                    console.log(key, value);
                     $scope.sourceDistances[source][key] = value;
                 });
                 if ($scope.source.indexOf(source) == -1) {
@@ -171,11 +169,9 @@ angular.module('whisperApp')
             }
             $scope.timeElapsedList = data.timeElapsed;
             $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
-            $scope.inProgress = false;
         }, function(error) {
-            $scope.error = error.statusText;
+            $scope.error = "Error "+ error.status + " : " + error.statusText;
         });
-
     };
 
     $scope.seeds = [];
