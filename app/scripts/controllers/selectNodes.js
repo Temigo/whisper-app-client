@@ -5,6 +5,7 @@ angular.module('whisperApp')
   return {
       restrict: 'EA',
       scope: {
+          'currentNodes': '@',
           'nodes': '=',
           'select': '='
       },
@@ -25,6 +26,30 @@ angular.module('whisperApp')
               scope.p.set(newValue);
               scope.select = newValue;
           });
+
+          // Functions for autocomplete
+          // scope.currentNodes = scope.currentNodes.map(function(item) { return item.id; });
+          scope.$watch('currentNodes', function(newValue, oldValue) {
+             if (newValue === oldValue) { return; }
+             scope.currentNodes = newValue;
+         }, true);
+         scope.querySearch = function(query) {
+             var nodes = angular.fromJson(scope.currentNodes);
+           return query ? nodes.filter(scope.createFilterFor(query)) : [];
+         };
+         scope.createFilterFor = function(query) {
+             var lowerCaseQuery = angular.lowercase(query);
+             return function filterFn(node) {
+                return node.id.toString().indexOf(lowerCaseQuery) === 0;
+             };
+         };
+         scope.transformChip = function(chip) {
+             if (angular.isObject(chip)) {
+                 return chip;
+             }
+             return {"id": chip};
+         };
+
       }
   };
 }]);

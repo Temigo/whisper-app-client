@@ -4,7 +4,19 @@
 </button>-->
 <md-content layout-padding layout-align="center center">
     <md-switch ng-model="select">
-        Select nodes
+        Select nodes manually
     </md-switch>
-    <md-chips ng-model="nodes" ng-attr-readonly="true"></md-chips>
+    <md-chips ng-model="nodes" md-autocomplete-snap md-transform-chip="transformChip($chip)" md-require-match="true">
+        <md-autocomplete placeholder="Search for a node"
+            md-autoselect="true" md-select-on-match="true" md-match-case-insensitive="true"
+            md-selected-item="selectedNode"
+            md-search-text="searchNode"
+            md-items="node in querySearch(searchNode)"
+            md-item-text="node.id">
+            <span md-highlight-text="searchNode">{{node.id}}</span>
+        </md-autocomplete>
+        <md-chip-template>
+            {{$chip.id}}
+        </md-chip-template>
+    </md-chips>
 </md-content>
