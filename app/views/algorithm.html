@@ -1,44 +1,63 @@
 
-<!--<form class="form-horizontal" method="post" action="/graph/import/algorithm/" enctype="multipart/form-data">
-	<div class="form-actions">
-		<input type="file" name="import_algorithm" accept="application/*"/>
-		<button type="submit" class="btn btn-primary">
-			<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-			Import Algorithm (*.py)
-		</button>
-	</div>
-</form>-->
-<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod, multiple)">
-	<select class="form-control" name="algorithm_method" ng-model="algorithmMethod" ng-options="method.name for method in algorithmMethods track by method.id">
-	</select>
-	<h4 class="md-title" ng-show="algorithmMethod.params.length">Parameters of algorithm</h4>
-	<!--<div class="input-group" ng-repeat="param in algorithmMethod.params" ng-if="param.selectNodes == undefined">
-		<span class="input-group-addon" id="siz-addon">{{param.name}}</span>
 
-		<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}" class="form-control" aria-describedby="siz-addon" placeholder="{{param.help}}"/>
-	</div>-->
-	<md-content layout="column" layout-padding>
-		<md-input-container ng-repeat="param in algorithmMethod.params" ng-if="param.selectNodes == undefined">
-			<label>{{param.name}}</label>
-			<input ng-model="param.value" type="number" step="{{param.float ? 0.01 : 1}}" aria-describedby="siz-addon" placeholder="{{param.help}}"/>
-		</md-input-container>
-		<div class="input-group" ng-repeat="param in algorithmMethod.params" ng-if="param.selectNodes != undefined">
-			<select-nodes nodes="param.nodes" select="param.selectNodes" current-nodes="{{currentGraph.nodes}}" title="{{param.name}}"></select-nodes>
-		</div>
-		<div layout-gt-sm="row" layout-padding>
-			<md-input-container class="md-block" flex="50">
-				<md-checkbox ng-model="multiple.enabled" aria-label="Checkbox 1" >
-				  Apply multiple
-				</md-checkbox>
-			</md-input-container>
-			<md-input-container class="md-block" ng-if="multiple.enabled" flex="50">
-				<label>Number of times</label>
-				<input ng-model="multiple.times" type="number"/>
-			</md-input-container>
-		</div>
-	</md-content>
-	<md-button class="md-primary md-raised" type="submit">Apply</md-button>
-</form>
+<uib-accordion>
+	<uib-accordion-group is-open="status.open7">
+		<uib-accordion-heading>
+			<h4 class="panel-title">
+				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOneAlgorithm" aria-expanded="true" aria-controls="collapseOneAlgorithms"><span class="glyphicon glyphicon-pushpin" aria-hidden="true"> </span>  Existing</a>
+				<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open7, 'glyphicon-chevron-right': !status.open7}"></i>
+			</h4>
+		</uib-accordion-heading>
+
+		<form class="form-horizontal" ng-submit="applyAlgorithm(algorithmMethod, multiple)">
+			<select class="form-control" name="algorithm_method" ng-model="algorithmMethod" ng-options="method.name for method in algorithmMethods track by method.id">
+			</select>
+			<h4 class="md-title" ng-show="algorithmMethod.params.length">Parameters of algorithm</h4>
+			<!--<div class="input-group" ng-repeat="param in algorithmMethod.params" ng-if="param.selectNodes == undefined">
+				<span class="input-group-addon" id="siz-addon">{{param.name}}</span>
+
+				<input ng-model="param.value" type="number" ng-attr-step="{{param.float ? 0.01 : 1}}" class="form-control" aria-describedby="siz-addon" placeholder="{{param.help}}"/>
+			</div>-->
+			<md-content layout="column" layout-padding>
+				<md-input-container ng-repeat="param in algorithmMethod.params" ng-if="param.selectNodes == undefined">
+					<label>{{param.name}}</label>
+					<input ng-model="param.value" type="number" step="{{param.float ? 0.01 : 1}}" aria-describedby="siz-addon" placeholder="{{param.help}}"/>
+				</md-input-container>
+				<div class="input-group" ng-repeat="param in algorithmMethod.params" ng-if="param.selectNodes != undefined">
+					<select-nodes nodes="param.nodes" select="param.selectNodes" current-nodes="{{currentGraph.nodes}}" title="{{param.name}}"></select-nodes>
+				</div>
+				<div layout-gt-sm="row" layout-padding>
+					<md-input-container class="md-block" flex="50">
+						<md-checkbox ng-model="multiple.enabled" aria-label="Checkbox 1" >
+						  Apply multiple
+						</md-checkbox>
+					</md-input-container>
+					<md-input-container class="md-block" ng-if="multiple.enabled" flex="50">
+						<label>Number of times</label>
+						<input ng-model="multiple.times" type="number"/>
+					</md-input-container>
+				</div>
+			</md-content>
+			<md-button class="md-primary md-raised" type="submit">Apply</md-button>
+		</form>
+	</uib-accordion-group>
+
+	<uib-accordion-group is-open="status.open8">
+		<uib-accordion-heading>
+			<h4 class="panel-title">
+				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwoAlgorithm" aria-expanded="true" aria-controls="collapseTwoAlgorithms"><span class="glyphicon glyphicon-send" aria-hidden="true"> </span>  Custom</a>
+				<i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': status.open8, 'glyphicon-chevron-right': !status.open8}"></i>
+			</h4>
+		</uib-accordion-heading>
+
+		<form ng-submit="applyAlgorithm({id: -1, name: 'Custom', params: []}, {enabled: false}, customAlgorithm)">
+			<div ng-model="customAlgorithm" ui-codemirror ui-refresh="status.open8" ui-codemirror-opts="codeMirrorOptions">
+			</div>
+			<md-button class="md-primary md-raised" type="submit">Apply</md-button>
+		</form>
+	</uib-accordion-group>
+
+</uib-accordion>
 
 <md-card ng-if="source.length && mean > 0">
 	<md-card-title>

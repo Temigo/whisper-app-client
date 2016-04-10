@@ -1,6 +1,6 @@
 'use strict';
-//var BaseURL = 'http://temigo.pythonanywhere.com/';
-var BaseURL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://temigo.pythonanywhere.com/';
+//var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -30,10 +30,33 @@ angular.module('whisperApp')
         'Upload',
         'ToggleForceLayout',
         function ($scope, $log, $compile, $mdSidenav, $window, Graph, Infection, Algorithm, GenerateGraph, SimulateInfection, $timeout, FileSaver, Blob, Frontier, ImportGraph, FileUploader, Upload, ToggleForceLayout) {
+      /* Error Options */
       $scope.error = "";
       $scope.closeAlert = function() {
         $scope.error = "";
       };
+
+      /* Code Mirror Options */
+      $scope.customAlgorithm = "\
+import networkx as nx\n\
+import numpy as np\n\
+\n\
+class CustomAlgorithm():\n\
+    def run(self, graph, i_graph):\n\
+        sources = []\n\
+        # Compute sources here\n\
+        \n\
+        return sources";
+      $scope.codeMirrorOptions = {
+          theme:'vibrant-ink',
+          mode:{name: 'python', version: 3, singleLineStringErrors: false},
+          matchBrackets: true,
+          autoCloseBrackets: true,
+          showTrailingSpace: true,
+          autocomplete: true, // Not working
+          indentUnit: 4,
+          lineNumbers: true,
+          autofocus: true};
 
       $scope.currentIndex = 0;
       $scope.graphList = [];
@@ -143,15 +166,16 @@ angular.module('whisperApp')
     $scope.mean = 0;
     $scope.variance = 0;
     $scope.source_order = function(s) { return $scope.sourceFrequencies[s]; };
-    $scope.applyAlgorithm = function(algorithmMethod, multiple) {
+    $scope.applyAlgorithm = function(algorithmMethod, multiple, customAlgorithm) {
         if (!multiple.enabled) { multiple.times = 1; }
-        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
+        var params = {'algorithmMethod': algorithmMethod, 'algo': customAlgorithm, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
         $scope.source = [];
         $scope.timeElapsed = 0;
-
+        console.log(params);
         Algorithm.query(params, function (data) {
             $scope.mean = data.mean;
             $scope.variance = data.variance;
+            $scope.error = data.error;
             for (var j = 0; j < data.source.length; j++) {
                 var source = data.source[j];
                 $scope.sourceDistances[source] = {};
@@ -170,7 +194,7 @@ angular.module('whisperApp')
             $scope.timeElapsedList = data.timeElapsed;
             $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
         }, function(error) {
-            $scope.error = "Error "+ error.status + " : " + error.statusText;
+            $scope.error = "Error "+ error.status + " : " + error.statusText + "\n" + $scope.error;
         });
     };
 

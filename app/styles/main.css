@@ -81,3 +81,9 @@ body {
     border-bottom: 0;
   }
 }
+
+/* Textarea */
+md-input-container textarea[md-no-autogrow].md-input {
+    height: inherit;
+    overflow-y: auto;
+}
