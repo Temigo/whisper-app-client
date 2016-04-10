@@ -23,22 +23,34 @@
 		<select-nodes nodes="param.nodes" select="param.selectNodes"></select-nodes>
 	</div>
 	<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-		<md-checkbox ng-model="multiple.enabled" aria-label="Checkbox 1" flex="60">
-		  Apply multiple
-		</md-checkbox>
-		<md-input-container class="md-block" ng-if="multiple.enabled" flex="40">
+		<md-input-container class="md-block" flex="50">
+			<md-checkbox ng-model="multiple.enabled" aria-label="Checkbox 1" >
+			  Apply multiple
+			</md-checkbox>
+		</md-input-container>
+		<md-input-container class="md-block" ng-if="multiple.enabled" flex="50">
 			<label>Number of times</label>
 			<input ng-model="multiple.times" type="number"/>
 		</md-input-container>
 	</md-content>
 	<div class="text-center" layout="row">
 		<button class="btn btn-default" type="submit">Apply algorithm</button>
-		<!--<div ng-show="inProgress" layout="row" layout-sm="column" layout-align="space-around">
-			<md-progress-circular md-diameter="40" md-mode="indeterminate" value="{{progress}}"></md-progress-circular>
-		</div>-->
 	</div>
 </form>
 
+<md-card ng-if="source.length && mean > 0">
+	<md-card-title>
+		<md-card-title-text>
+			<span class="md-headline">Stability Measurement</span>
+			<span class="md-subhead">
+				Mean : {{mean}} Variance : {{variance}}
+			</span>
+		</md-card-title-text>
+		<!--<md-card-title-media>
+			<div class="md-media-lg card-media"></div>
+		</md-card-title-media>-->
+	</md-card-title>
+</md-card>
 
 <md-list ng-if="source.length">
 	<md-subheader class="md-no-sticky md-primary">More informations on sources</md-subheader>

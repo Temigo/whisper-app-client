@@ -1,6 +1,6 @@
 'use strict';
-//var BaseURL = 'http://temigo.pythonanywhere.com/';
-var BaseURL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://temigo.pythonanywhere.com/';
+//var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -140,16 +140,19 @@ angular.module('whisperApp')
     $scope.sourceFrequencies = {};
     $scope.timeElapsedList = [];
     $scope.sourceDistances = {};
+    $scope.mean = 0;
+    $scope.variance = 0;
     $scope.source_order = function(s) { return $scope.sourceFrequencies[s]; };
     $scope.applyAlgorithm = function(algorithmMethod, multiple) {
         if (!multiple.enabled) { multiple.times = 1; }
-        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds};
+        var params = {'algorithmMethod': algorithmMethod, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
         $scope.source = [];
         $scope.timeElapsed = 0;
         $scope.inProgress = true;
 
         Algorithm.query(params, function (data) {
-            console.log(data);
+            $scope.mean = data.mean;
+            $scope.variance = data.variance;
             for (var j = 0; j < data.source.length; j++) {
                 var source = data.source[j];
                 $scope.sourceDistances[source] = {};
@@ -166,7 +169,6 @@ angular.module('whisperApp')
                     $scope.sourceFrequencies[source]++;
                 }
             }
-            //$scope.source = data.source;
             $scope.timeElapsedList = data.timeElapsed;
             $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
             $scope.inProgress = false;
@@ -177,8 +179,12 @@ angular.module('whisperApp')
     };
 
     $scope.seeds = [];
+    $scope.ratio = 0;
+    $scope.proba = 0;
     $scope.simulateInfection = function(seeds, ratio, proba) {
         $scope.seeds = seeds;
+        $scope.ratio = ratio;
+        $scope.proba = proba;
         SimulateInfection.query({'currentGraph': $scope.currentGraph, 'seeds': {"data": seeds}, 'ratio': ratio, 'proba': proba}, function(data) {
             $scope.currentInfection = data.infectionGraph;
         });

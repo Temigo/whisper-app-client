@@ -1,4 +1,28 @@
-<!doctype html> <html> <head> <meta charset="utf-8"> <title></title> <meta name="description" content=""> <meta name="viewport" content="width=device-width"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel="stylesheet" href="styles/vendor.ef0dbbe2.css"> <link rel="stylesheet" href="styles/main.16c86e60.css"> <!-- Material Icons --> <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- D3.js --> <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> <style>/* D3.JS */
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(app) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="components/angular-loading-bar/build/loading-bar.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- D3.js -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <style>
+    /* D3.JS */
     .node {
     stroke: #fff;
     stroke-width: 1.5px;
@@ -41,6 +65,88 @@
       left: 0;
     }
     /* UI Bootstrap */
-    .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }</style> </head> <body ng-app="whisperApp" class="container-fluid"> <!--[if lte IE 8]>
+    .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+    </style>
+  </head>
+  <body ng-app="whisperApp" class="container-fluid">
+    <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]--> <!-- Add your site or application content here --> <div class="header"> <h1>Whisper App</h1> </div> <div class="row"> <div ng-view=""></div> </div> <div class="footer"> <div class="row"> <div class="col-md-2"> <p><span class="glyphicon glyphicon-heart"></span> from the PSC team</p> </div> <div class="col-md-10"> <!--<h1 class="md-subhead">Legend</h1>--> <md-grid-list md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height="fit" md-gutter="2px" md-gutter-gt-sm="1px"> <md-grid-tile md-rowspan="1" md-colspan="1"> <color-node color="#aec7e8"></color-node> Node </md-grid-tile> <md-grid-tile md-rowspan="1" md-colspan="1"> <color-node color="#1f77b4"></color-node> Infected node </md-grid-tile> <md-grid-tile md-rowspan="1" md-colspan="1"> <color-node color="#ff7f0e"></color-node> Suspected source </md-grid-tile> <md-grid-tile md-rowspan="1" md-colspan="1"> <color-node color="#98df8a"></color-node> Selected node </md-grid-tile> </md-grid-list> </div> </div> </div> <script src="scripts/vendor.fa6c52e7.js"></script> <script src="scripts/scripts.1391742b.js"></script> </body> </html>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div class="header">
+      <h1>Whisper App</h1>
+    </div>
+
+    <div class="row">
+    <div ng-view=""></div>
+    </div>
+
+    <div class="footer">
+      <div class="row">
+        <div class="col-md-2">
+            <p><span class="glyphicon glyphicon-heart"></span> from the PSC team</p>
+        </div>
+        <div class="col-md-10">
+            <!--<h1 class="md-subhead">Legend</h1>-->
+            <md-grid-list
+                  md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6"
+                  md-row-height="fit"
+                  md-gutter="2px" md-gutter-gt-sm="1px" >
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#aec7e8"></color-node>
+                    Node
+                </md-grid-tile>
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#1f77b4"></color-node>
+                    Infected node
+                </md-grid-tile>
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#ff7f0e"></color-node>
+                    Suspected source
+                </md-grid-tile>
+                <md-grid-tile md-rowspan="1" md-colspan="1">
+                    <color-node color="#98df8a"></color-node>
+                    Selected node
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- build:js(app) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="components/jquery/dist/jquery.js"></script>
+    <script src="components/angular/angular.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="components/angular-animate/angular-animate.js"></script>
+    <script src="components/angular-cookies/angular-cookies.js"></script>
+    <script src="components/angular-resource/angular-resource.js"></script>
+    <script src="components/angular-route/angular-route.js"></script>
+    <script src="components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="components/angular-touch/angular-touch.js"></script>
+    <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="components/angular-aria/angular-aria.js"></script>
+    <script src="components/angular-messages/angular-messages.js"></script>
+    <script src="components/angular-material/angular-material.js"></script>
+    <script src="components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="components/ng-file-upload/ng-file-upload.js"></script>
+    <script src="components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+    <script src="components/blob-polyfill/Blob.js"></script>
+    <script src="components/file-saver.js/FileSaver.js"></script>
+    <script src="components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
+    <script src="components/angular-inview/angular-inview.js"></script>
+    <script src="components/angular-loading-bar/build/loading-bar.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/d3graph.js"></script>
+        <script src="scripts/controllers/selectNodes.js"></script>
+        <script src="scripts/controllers/onReadFile.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
