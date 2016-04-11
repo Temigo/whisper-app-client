@@ -53,7 +53,7 @@ class CustomAlgorithm():\n\
           matchBrackets: true,
           autoCloseBrackets: true,
           showTrailingSpace: true,
-          autocomplete: true, // Not working
+          styleActiveLine: true,
           indentUnit: 4,
           lineNumbers: true,
           autofocus: true};
