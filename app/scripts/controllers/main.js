@@ -167,11 +167,10 @@ class CustomAlgorithm():\n\
     $scope.variance = 0;
     $scope.source_order = function(s) { return $scope.sourceFrequencies[s]; };
     $scope.applyAlgorithm = function(algorithmMethod, multiple, customAlgorithm) {
-        if (!multiple.enabled) { multiple.times = 1; }
-        var params = {'algorithmMethod': algorithmMethod, 'algo': customAlgorithm, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
+        if (!multiple.enabled) { multiple.times = 1; multiple.average = 20; }
+        var params = {'algorithmMethod': algorithmMethod, 'algo': customAlgorithm, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'average': multiple.average, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
         $scope.source = [];
         $scope.timeElapsed = 0;
-        console.log(params);
         Algorithm.query(params, function (data) {
             $scope.mean = data.mean;
             $scope.variance = data.variance;
