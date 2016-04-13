@@ -156,7 +156,8 @@ class CustomAlgorithm():\n\
                                 {id: 3, name: "Pinto", params: [{name: "Observers", nodes: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]},
                                 {id: 4, name: "Fioriti and Chinnici", params: []},
                                 {id: 5, name: "The faster, the guiltier", params: []},
-                                {id: 6, name: "The faster, the guiltier (modified version)", params: []}];
+                                {id: 6, name: "The faster, the guiltier (modified version)", params: []},
+                                {id: 7, name: "Outside-in", params: [{name: "Probability of infection", value: $scope.proba, float: true}]}];
     $scope.algorithmMethod = $scope.algorithmMethods[0];
     $scope.multiple = {};
 
@@ -166,6 +167,7 @@ class CustomAlgorithm():\n\
     $scope.mean = 0;
     $scope.variance = 0;
     $scope.detailed_study = {};
+    $scope.no_source = false;
     $scope.source_order = function(s) { return $scope.sourceFrequencies[s]; };
     $scope.applyAlgorithm = function(algorithmMethod, multiple, customAlgorithm) {
         if (!multiple.enabled) { multiple.times = 1; }
@@ -194,6 +196,7 @@ class CustomAlgorithm():\n\
                         $scope.sourceFrequencies[source]++;
                     }
                 }
+                $scope.no_source = (data.source == -1);
                 $scope.timeElapsedList = data.timeElapsed;
                 $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
             }

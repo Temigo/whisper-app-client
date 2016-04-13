@@ -96,7 +96,10 @@
         <span flex></span>
         Sources : {{source}}
     </div>
-    <div ng-if="!source.length" class="md-toolbar-tools">
+    <div ng-if="!source.length && !no_source" class="md-toolbar-tools">
         No algorithm applied
+    </div>
+    <div ng-if="no_source" class="md-toolbar-tools">
+        No source found
     </div>
 </md-toolbar>
