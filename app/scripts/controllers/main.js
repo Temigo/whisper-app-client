@@ -168,6 +168,7 @@ class CustomAlgorithm():\n\
     $scope.variance = 0;
     $scope.detailed_study = {};
     $scope.no_source = false;
+    $scope.diameter = -1;
     $scope.source_order = function(s) { return $scope.sourceFrequencies[s]; };
     $scope.applyAlgorithm = function(algorithmMethod, multiple, customAlgorithm) {
         if (!multiple.enabled) { multiple.times = 1; }
@@ -196,6 +197,7 @@ class CustomAlgorithm():\n\
                         $scope.sourceFrequencies[source]++;
                     }
                 }
+                $scope.diameter = data.diameter;
                 $scope.no_source = (data.source == -1);
                 $scope.timeElapsedList = data.timeElapsed;
                 $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
