@@ -165,36 +165,53 @@ class CustomAlgorithm():\n\
     $scope.sourceDistances = {};
     $scope.mean = 0;
     $scope.variance = 0;
+    $scope.detailed_study = {};
     $scope.source_order = function(s) { return $scope.sourceFrequencies[s]; };
     $scope.applyAlgorithm = function(algorithmMethod, multiple, customAlgorithm) {
-        if (!multiple.enabled) { multiple.times = 1; multiple.average = 20; }
-        var params = {'algorithmMethod': algorithmMethod, 'algo': customAlgorithm, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'average': multiple.average, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
+        if (!multiple.enabled) { multiple.times = 1; }
+        if (multiple.average === undefined) { multiple.average = 20; }
+        if (multiple.detailed === undefined) { multiple.detailed = false; }
+        var params = {'algorithmMethod': algorithmMethod, 'algo': customAlgorithm, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'average': multiple.average, 'detailed': multiple.detailed, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
         $scope.source = [];
         $scope.timeElapsed = 0;
         Algorithm.query(params, function (data) {
-            $scope.mean = data.mean;
-            $scope.variance = data.variance;
-            $scope.error = data.error;
-            for (var j = 0; j < data.source.length; j++) {
-                var source = data.source[j];
-                $scope.sourceDistances[source] = {};
+            if (!multiple.detailed) {
+                $scope.mean = data.mean;
+                $scope.variance = data.variance;
+                $scope.error = data.error;
+                for (var j = 0; j < data.source.length; j++) {
+                    var source = data.source[j];
+                    $scope.sourceDistances[source] = {};
 
-                angular.forEach(data.distances[source], function(value, key) {
-                    $scope.sourceDistances[source][key] = value;
-                });
-                if ($scope.source.indexOf(source) == -1) {
-                    $scope.source.push(source);
-                    $scope.sourceFrequencies[source] = 1;
+                    angular.forEach(data.distances[source], function(value, key) {
+                        $scope.sourceDistances[source][key] = value;
+                    });
+                    if ($scope.source.indexOf(source) == -1) {
+                        $scope.source.push(source);
+                        $scope.sourceFrequencies[source] = 1;
+                    }
+                    else {
+                        $scope.sourceFrequencies[source]++;
+                    }
                 }
-                else {
-                    $scope.sourceFrequencies[source]++;
-                }
+                $scope.timeElapsedList = data.timeElapsed;
+                $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
             }
-            $scope.timeElapsedList = data.timeElapsed;
-            $scope.timeElapsed = $scope.timeElapsedList.reduce(function(a, b){return a+b;}) / multiple.times;
+            else {
+                // Detailed study
+                $scope.detailed_study = data.data;
+                var blob = new Blob([data.data], {type: 'text/csv'});
+                var a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+                a.href = (window.URL || window.webkitURL).createObjectURL( blob );
+                a.download = "detailed.csv";
+                a.click();
+            }
         }, function(error) {
             $scope.error = "Error "+ error.status + " : " + error.statusText + "\n" + $scope.error;
         });
+
     };
 
     $scope.seeds = [];
