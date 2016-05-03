@@ -45,10 +45,11 @@ angular.module('whisperApp')
              };
          };
          scope.transformChip = function(chip) {
-             if (angular.isObject(chip)) {
+             /*if (angular.isObject(chip)) {
                  return chip;
              }
-             return {"id": chip};
+             return {"id": chip};*/
+             return chip.id;
          };
 
       }
