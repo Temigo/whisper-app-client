@@ -1,6 +1,6 @@
 'use strict';
-//var BaseURL = 'http://temigo.pythonanywhere.com/';
-var BaseURL = 'http://127.0.0.1:8000/';
+var BaseURL = 'http://temigo.pythonanywhere.com/';
+//var BaseURL = 'http://127.0.0.1:8000/';
 
 /**
  * @ngdoc function
@@ -152,7 +152,7 @@ class CustomAlgorithm():\n\
     };
 
     $scope.algorithmMethods = [{id: 1, name: "Shah and Zaman", params: []},
-                                {id: 2, name: "Netsleuth", params: []},
+                                {id: 2, name: "Netsleuth", params: [{name: "Probability of infection", value: $scope.proba, float: true}]},
                                 {id: 3, name: "Pinto", params: [{name: "Observers", nodes: [], selectNodes: true}, {name: "Mean", value: 0, float: true}, {name: "Variance", value: 1, float: true}]},
                                 {id: 4, name: "Fioriti and Chinnici", params: []},
                                 {id: 5, name: "The faster, the guiltier", params: []},
@@ -174,7 +174,8 @@ class CustomAlgorithm():\n\
         if (!multiple.enabled) { multiple.times = 1; }
         if (multiple.average === undefined) { multiple.average = 20; }
         if (multiple.detailed === undefined) { multiple.detailed = false; }
-        var params = {'algorithmMethod': algorithmMethod, 'algo': customAlgorithm, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'average': multiple.average, 'detailed': multiple.detailed, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
+        if (multiple.measure === undefined) { multiple.measure = false; }
+        var params = {'algorithmMethod': algorithmMethod, 'algo': customAlgorithm, 'currentGraph': $scope.currentGraph, 'currentInfection': $scope.currentInfection, 'times': multiple.times, 'average': multiple.average, 'detailed': multiple.detailed, 'measure': multiple.measure, 'seeds': $scope.seeds, 'ratio': $scope.ratio, 'proba': $scope.proba};
         $scope.source = [];
         $scope.timeElapsed = 0;
         Algorithm.query(params, function (data) {
